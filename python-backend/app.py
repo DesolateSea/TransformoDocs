@@ -33,10 +33,10 @@ class SentimentAnalysis(Resource):
 
         sentiment = sentiment_pipeline(text)
         
-        return jsonify({
-            "message": "Sentiment analysis complete",
-            "sentiment": sentiment
-        })
+        response = make_response({"message": "Sentiment analysis complete", "sentiment": sentiment})
+        response.status_code = 200
+
+        return response
 
 
 @app.route('/health')
