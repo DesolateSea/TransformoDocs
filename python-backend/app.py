@@ -38,6 +38,24 @@ class SentimentAnalysis(Resource):
 
         return response
 
+class OCR(Resource):
+    def post(self):
+        # receiving pdf from the request
+        pdf = request.files['pdf']
+        # converting pdf to text
+        reader = PdfReader(pdf)
+
+        # Extract text, replace None with empty string
+        # out = "\n".join(page.extract_text() or "" for page in reader.pages)
+        out = [page.extract_text() or "" for page in reader.pages]
+        
+        response = make_response({"message" : "Text extracted from PDF", "text" : out})
+
+        response.status_code = 200
+
+        return response
+
+
 
 @app.route('/health')
 def health():
