@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
+from PyPDF2 import PdfReader
+from flask import Flask, request, jsonify,make_response
 from flask_restful import Resource, Api
 from transformers import pipeline
-
+import numpy as np
 app = Flask(__name__)
 api = Api(app)
-
 # Named Entity Recognition (NER) pipeline
 ner_pipeline = pipeline("ner", model="dbmdz/bert-large-cased-finetuned-conll03-english")
 
@@ -16,27 +16,40 @@ class NamedEntityRecognition(Resource):
     def get(self):
         text = request.args.get('text')
         if not text:
-            return jsonify({"error": "Missing 'text' parameter."})
+            return {"error": "Missing 'text' parameter."}, 400  # Explicit HTTP 400 for bad request
 
-        entities = ner_pipeline(text)
-        
+        # Get entities from the NER pipeline
+        raw_entities = ner_pipeline(text)
+
+        # Convert float32 to float for JSON serialization
+        entities = [
+            {key: (float(value) if isinstance(value, np.float32) else value) for key, value in entity.items()}
+            for entity in raw_entities
+        ]
+
         return jsonify({
             "message": "NER analysis complete",
             "entities": entities
         })
-
 class SentimentAnalysis(Resource):
     def get(self):
         text = request.args.get('text')
         if not text:
-            return jsonify({"error": "Missing 'text' parameter."})
-
-        sentiment = sentiment_pipeline(text)
+            return {"error": "Missing 'text' parameter."}, 400  # Explicit HTTP 400 for bad request
         
-        response = make_response({"message": "Sentiment analysis complete", "sentiment": sentiment})
-        response.status_code = 200
-
-        return response
+        app.logger.info(f"Received text for sentiment analysis: {text}")
+        
+        try:
+            sentiment = sentiment_pipeline(text)
+        except Exception as e:
+            app.logger.error(f"Error during sentiment analysis: {e}")
+            return {"error": "Sentiment analysis failed", "details": str(e)}, 500  # HTTP 500 for server error
+        
+        # Return JSON response
+        return {
+            "message": "Sentiment analysis complete",
+            "sentiment": sentiment
+        }, 200  # Explicit HTTP 200
 
 class OCR(Resource):
     def post(self):
