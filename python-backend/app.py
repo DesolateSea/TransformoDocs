@@ -2,6 +2,8 @@ from PyPDF2 import PdfReader
 from flask import Flask, request, jsonify,make_response
 from flask_restful import Resource, Api
 from transformers import pipeline
+from werkzeug.utils import secure_filename
+
 import numpy as np
 app = Flask(__name__)
 api = Api(app)
@@ -53,21 +55,33 @@ class SentimentAnalysis(Resource):
 
 class OCR(Resource):
     def post(self):
-        # receiving pdf from the request
-        pdf = request.files['pdf']
-        # converting pdf to text
-        reader = PdfReader(pdf)
-
-        # Extract text, replace None with empty string
-        # out = "\n".join(page.extract_text() or "" for page in reader.pages)
-        out = [page.extract_text() or "" for page in reader.pages]
+        # Check if 'pdf' is part of the request
+        if 'pdf' not in request.files:
+            return make_response({"message": "No PDF file provided"}, 400)
         
-        response = make_response({"message" : "Text extracted from PDF", "text" : out})
+        pdf = request.files['pdf']
 
-        response.status_code = 200
+        # Check if the file is empty
+        if pdf.filename == '':
+            return make_response({"message": "No selected file"}, 400)
 
-        return response
+        # Ensure the file is a valid PDF
+        if not pdf.filename.lower().endswith('.pdf'):
+            return make_response({"message": "Invalid file format. Only PDF is allowed."}, 400)
 
+        try:
+            # Converting PDF to text
+            reader = PdfReader(pdf)
+
+            # Extract text, replace None with empty string
+            out = [page.extract_text() or "" for page in reader.pages]
+
+            response = make_response({"message": "Text extracted from PDF", "text": out})
+            response.status_code = 200
+            return response
+        except Exception as e:
+            # Catch any error related to PDF reading
+            return make_response({"message": f"Error reading PDF: {str(e)}"}, 500)
 
 
 @app.route('/health')
@@ -87,6 +101,6 @@ def internal_error(error):
 # Add resources to the API
 api.add_resource(NamedEntityRecognition, '/ner')           # Example: GET /ner?text=SomeText
 api.add_resource(SentimentAnalysis, '/sentiment')          # Example: GET /sentiment?text=SomeText
-
+api.add_resource(OCR, '/ocr')                             # Example: POST /ocr
 if __name__ == '__main__':
     app.run(debug=True)
