@@ -1,0 +1,62 @@
+import React, { useState,useCallback } from 'react';
+import { useDispatch } from 'react-redux';// Import useDispatch hook from react-redux
+import { loginSuccess } from '../../Store/userSlice';// Import loginSuccess action from userSlice
+import { ConfirmPasswordProps } from '../../Lib/interface/Authentication';
+
+const ConfirmPassword: React.FC<ConfirmPasswordProps> = ({ value, setValue , API }) => {
+  const dispatch = useDispatch();
+  const [msg, setMsg] = useState<string | null>(null);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value: fieldValue } = e.target;
+      setValue({...value, [name]: fieldValue});
+    },
+    [setValue]
+  );
+
+  const handleConfirm = useCallback(() => {
+    if (value.PASSWORD !== value.CPASSWORD) {
+      setMsg('Passwords do not match');
+      return;
+    }
+
+    API.confirmPasswordChange({ PASSWORD: value.PASSWORD, setRegister });
+  }, [value, API]);
+
+  const setRegister = useCallback(
+    (info: any) => {
+      dispatch(loginSuccess(info));
+    },
+    [dispatch]
+  );
+
+  return (
+    <div className="bottom">
+      <div className="container flex flex-col text-left px-16">
+        <label className="text-white head-info">New Password*</label>
+        <input
+          className="input-detail"
+          name="PASSWORD"
+          value={value.PASSWORD}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="flex flex-col text-left px-16">
+        <label className="text-white head-info">Confirm Password*</label>
+        <input
+          className="input-detail"
+          name="CPASSWORD"
+          value={value.CPASSWORD}
+          onChange={handleChange}
+        />
+      </div>
+      <button className="enterdetail btn" onClick={handleConfirm}>
+        Confirm
+      </button>
+      {msg && <div className="msg text-red-500 mt-2 text-base text-center">{msg}</div>}
+    </div>
+  );
+};
+
+export default ConfirmPassword;
