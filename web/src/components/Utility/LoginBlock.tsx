@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../style/loginBlock.css";
+import "../../../style/loginBlock.css";
 import Signup from "./signup";
 import Login from "./login";
 import OTPVerification from "./OTPverification";
