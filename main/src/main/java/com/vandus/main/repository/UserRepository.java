@@ -1,5 +1,5 @@
 package com.vandus.main.repository;
 
-public class index {
+public class UserRepository {
     
 }
