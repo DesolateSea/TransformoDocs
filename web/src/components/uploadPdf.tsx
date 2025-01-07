@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Upload, Download, FileText } from 'lucide-react';
 
 const MAX_FILE_SIZE_MB = 8;
-const UPLOAD_PDF_URL = `${import.meta.env.VITE_REACT_APP_BACKWEB || 'http://localhost:3000'}/upload/pdf`;
+const UPLOAD_PDF_URL = "http://localhost:8080/api/public/v1/upload/pdf";
 
 const UploadComponent: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [response, setResponse] = useState<Blob | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+
+  useEffect(() => {
+    // this is working
+    const test = "http://localhost:8080/api/public/test";
+    fetch(test)
+      .then(response => console.log("GET TEST", response))
+      .catch(error => console.error(error));
+
+    const post_test = "http://localhost:8080/api/public/test";
+    fetch(post_test, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        field: 'value',
+      }),
+    })
+    .then(response => console.log("POST TEST", response))
+    .catch(error => console.error(error));
+  }, []);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
