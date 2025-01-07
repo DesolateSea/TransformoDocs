@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux"; // Import useDispatch hook from react-redux
+import { useDispatch,useSelector } from "react-redux"; // Import useDispatch hook from react-redux
 import { loginSuccess } from "../../Store/userSlice"; // Import loginSuccess action from userSlice
 import { LoginProps } from "../../Lib/interface/Authentication";
-
+import { RootState } from "../../store";
 const Login: React.FC<LoginProps> = ({ value, setValue, API }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [msg, setMsg] = useState<string>("");
-
+  const mode = useSelector((state: RootState) => state.mode.mode);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...value,
@@ -25,9 +25,9 @@ const Login: React.FC<LoginProps> = ({ value, setValue, API }) => {
   };
 
   return (
-    <div className="bottom">
-      <div className="flex flex-col text-left px-16">
-        <div className="text-white head-info">Email*</div>
+    <div className={`bottom ${mode ? "dark-mode" : ""}`}>
+      <div className="flex flex-col text-left px-2">
+        <div className={`head-info ${mode?"dark-mode":""}`}>Email*</div>
         <input
           className="input-detail"
           name="EMAIL"
@@ -35,8 +35,8 @@ const Login: React.FC<LoginProps> = ({ value, setValue, API }) => {
           onChange={handleChange}
         />
       </div>
-      <div className="flex flex-col px-16 text-left">
-        <div className="text-white head-info">Password*</div>
+      <div className="flex flex-col px-2 text-left">
+        <div className={`head-info ${mode?"dark-mode":""}`}>Password*</div>
         <input
           className="input-detail"
           name="PASSWORD"
