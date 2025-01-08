@@ -1,0 +1,125 @@
+.footer {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    width: 100vw;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    margin-top:100vh;
+}
+
+.footer-logo {
+    flex: 1;
+    text-align: left;
+    display: flex; /* Ensure proper alignment */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.footer-logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.footer-comp {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footer-heading {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(220, 220, 220);
+}
+
+.footer-sub-heading ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-item {
+    font-size: 14px;
+    font-weight: 400;
+    color: #b3c2d1;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.footer-item:hover {
+    color: #4f46e5;
+}
+
+@media screen and (max-width: 1024px) {
+    .footer-logo {
+        margin-bottom: 1rem;
+        text-align: left; /* Center-align the logo */
+    }
+
+    .footer-components {
+        grid-template-columns: repeat(3, 3fr); /* Adjust grid for tablets */
+        gap: 1.5rem;
+    }
+
+    .footer-heading {
+        font-size: 14px;
+    }
+
+    .footer-item {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .footer {
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .footer-logo {
+        justify-content: center;
+    }
+
+    .footer-components {
+        grid-template-columns: repeat(3, 3fr); /* Adjust grid for tablets */
+        gap: 2rem;
+    }
+
+    .footer-heading {
+        font-size: 14px;
+    }
+
+    .footer-item {
+        font-size: 12px;
+    }
+}
+
+
+@media screen and (max-width: 480px) {
+    .footer {
+        padding: 1rem;
+        gap: 1rem;
+        margin-top:100vh;
+
+    }
+    .footer-logo {
+        justify-content: center;
+        margin-bottom: 0.5rem;
+
+    }
+    .footer-components {
+        grid-template-columns: repeat(2, 2fr); /* Adjust grid for tablets */
+        gap: 1rem;
+    }
+    .footer-heading {
+        font-size: 12px;
+    }
+    .footer-item {
+        font-size: 10px;
+    }
+}
