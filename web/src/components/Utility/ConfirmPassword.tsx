@@ -2,11 +2,12 @@ import React, { useState,useCallback } from 'react';
 import { useDispatch } from 'react-redux';// Import useDispatch hook from react-redux
 import { loginSuccess } from '../../Store/userSlice';// Import loginSuccess action from userSlice
 import { ConfirmPasswordProps } from '../../Lib/interface/Authentication';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 const ConfirmPassword: React.FC<ConfirmPasswordProps> = ({ value, setValue , API }) => {
   const dispatch = useDispatch();
   const [msg, setMsg] = useState<string | null>(null);
-
+  const mode = useSelector((state: RootState) => state.mode.mode);
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value: fieldValue } = e.target;
@@ -33,8 +34,8 @@ const ConfirmPassword: React.FC<ConfirmPasswordProps> = ({ value, setValue , API
 
   return (
     <div className="bottom">
-      <div className="container flex flex-col text-left px-16">
-        <label className="text-white head-info">New Password*</label>
+      <div className="container flex flex-col text-left px-2">
+        <label className={`head-info ${mode? "dark-mode":""}`}>New Password*</label>
         <input
           className="input-detail"
           name="PASSWORD"
@@ -42,8 +43,8 @@ const ConfirmPassword: React.FC<ConfirmPasswordProps> = ({ value, setValue , API
           onChange={handleChange}
         />
       </div>
-      <div className="flex flex-col text-left px-16">
-        <label className="text-white head-info">Confirm Password*</label>
+      <div className="flex flex-col text-left px-2">
+        <label className={`head-info ${mode? "dark-mode":""}`}>Confirm Password*</label>
         <input
           className="input-detail"
           name="CPASSWORD"

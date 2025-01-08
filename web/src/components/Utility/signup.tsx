@@ -1,8 +1,9 @@
 import React from "react";
 import { SignupProps } from "../../Lib/interface/Authentication";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 const Signup: React.FC<SignupProps> = ({ value, setValue, Update, AUTH, API }) => {
-
+  const mode = useSelector((state: RootState) => state.mode.mode);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...value,
@@ -12,8 +13,8 @@ const Signup: React.FC<SignupProps> = ({ value, setValue, Update, AUTH, API }) =
 
   return (
     <div className="bottom">
-      <div className="container flex flex-col text-left px-16">
-        <div className="text-white head-info">Email*</div>
+      <div className="container flex flex-col text-left px-2">
+        <div className={`head-info ${mode?"dark-mode":""}`}>Email*</div>
         <input
           className="input-detail"
           name="EMAIL"
@@ -21,8 +22,8 @@ const Signup: React.FC<SignupProps> = ({ value, setValue, Update, AUTH, API }) =
           onChange={handleChange}
         />
       </div>
-      <div className="flex flex-col px-16 text-left">
-        <div className="text-white head-info">Password*</div>
+      <div className="flex flex-col px-2 text-left">
+        <div className={`head-info ${mode?"dark-mode":""}`}>Password*</div>
         <input
           className="input-detail"
           name="PASSWORD"

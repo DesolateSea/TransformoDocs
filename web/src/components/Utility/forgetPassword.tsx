@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { ForgetPasswordProps } from "../../Lib/interface/Authentication";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 const ForgetPassword: React.FC<ForgetPasswordProps> = ({ EMAIL, setValue, AUTH, Update, API }) => {
   const [msg, setMsg] = useState<string>("");
+  const mode = useSelector((state: RootState) => state.mode.mode);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -12,8 +15,8 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({ EMAIL, setValue, AUTH, 
 
   return (
     <div className="bottom">
-      <div className="container flex flex-col text-left px-16">
-        <label className="text-white head-info">Email*</label>
+      <div className="container flex flex-col text-left px-2">
+        <label className={`head-info ${mode?"dark-mode":""}`}>Email*</label>
         <input
           className="input-detail"
           name="EMAIL"
