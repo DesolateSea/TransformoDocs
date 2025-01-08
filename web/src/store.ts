@@ -3,10 +3,11 @@ import persistReducer from 'redux-persist/es/persistReducer';
 import persistStore from 'redux-persist/es/persistStore';
 import storage from 'redux-persist/lib/storage';
 import userReducer from './Store/userSlice';
-
+import ModeReducer from './Store/darkLightSlice';
 // Define the root state type based on the reducers
 const rootReducer = combineReducers({
   user: userReducer,
+  mode: ModeReducer,
 });
 
 // Define a type for the root state

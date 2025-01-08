@@ -6,13 +6,21 @@ import OTPVerification from "./OTPverification";
 import ForgetPassword from "./forgetPassword";
 import ConfirmPassword from "./ConfirmPassword";
 import { LoginBlockProps } from "../../Lib/interface/Authentication";
-
+import icon from "../../constants/icons.json";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { toggleDarkLight } from "../../Store/darkLightSlice";
 const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
   const [signupLog, setSL] = useState<number>(0); // 0: Login, 1: Signup, 2: OTP Verification, 3: Forget Password, 4: OTP for Password Reset, 5: Confirm Password
   const [userInfo, setUserInfo] = useState<{ EMAIL: string; PASSWORD: string }>({ EMAIL: "", PASSWORD: "" });
   const [OTP, setOTP] = useState<{ AUTHENTICATION: string; OTP: string }>({ AUTHENTICATION: "", OTP: "" });
   const [PASS, setPASS] = useState<{ AUTHENTICATION: string; PASSWORD: string; CPASSWORD: string }>({AUTHENTICATION: "",PASSWORD: "", CPASSWORD: "",});
   const [FOREMAIL, setEMAIL] = useState<string>("");
+  const GOOGLE = import.meta.env.VITE_REACT_APP_GOOGLELOGIN;
+  const GITHUB = import.meta.env.VITE_REACT_APP_GITHUB;
+  const mode = useSelector((state: RootState) => state.mode.mode);
+  const dispatch = useDispatch();
+  console.log(mode);
   const Update = (step: number) => {
     setSL(step);
   };
@@ -52,7 +60,19 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
   };
 
   return (
-    <div className="loginBlock">
+    <div className={`loginBlock ${mode ? "dark-mode" : ""}`}>
+      <button className={`${mode? "text-white":"text-black"}`}onClick={()=>dispatch(toggleDarkLight())}>{mode ? "Dark Mode" : "Light Mode"}</button>
+      <div
+        className={`platform-heading relative  ${
+          mode ? "text-white" : "text-black"
+        } flex flex-row items-center gap-2`}
+      >
+        <img src="Logo.png" alt="logo" className="w-10 h-10" />
+        <span className={`${mode ? "text-white" : "text-pink-500"} text-xl font-bold  absolute left-7 top-2`} style={{fontFamily:"unset"}}>
+          ransformoDocs
+        </span>
+      </div>
+
       <div className="text-white heading">{getHeading()}</div>
       <div className="text-white subheading">{getSubheading()}</div>
 
@@ -74,27 +94,29 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
       )}
 
       {/* Toggle links based on login or signup state */}
-      <div className="login-changeinfo">
-        {signupLog === 1 || signupLog === 2 ? (
-          <div className="text-white" onClick={() => Update(0)}>
-            Already have an account?
-          </div>
-        ) : (
-          <div className="loged">
-            {signupLog !== 3 && (
-              <div className="mr-10 text-white" onClick={() => Update(3)}>
-                Forgot password?
-              </div>
-            )}
-            <div className="text-white" onClick={() => Update(1)}>
-              Create an account
-            </div>
-          </div>
-        )}
-      </div>
+      <div className={`login-changeinfo ${mode ? "dark-mode" : ""}`}>
+      {signupLog === 1 || signupLog === 2 ? (
+        <>
+          <span>Already have an account?</span>
+          <span onClick={() => Update(0)} className="link-page">Login</span>
+        </>
+      ) : (
+        <>
+          <span>Create an account</span>
+          <span onClick={() => Update(1)} className="link-page">Sign Up</span>
 
-      <div className="flex flex-row px-5 orsection">
-        <hr className="text-white line" /> OR <hr className="text-white line" />
+          {signupLog !== 3 && (
+            <>
+              <span>Forgot password?</span>
+              <span onClick={() => Update(3)} className="link-page">Reset Password</span>
+            </>
+          )}
+        </>
+      )}
+    </div>
+
+      <div className={`flex flex-row px-5 orsection ${mode ? "dark-mode" : ""}`}>
+        <hr className={`line`} /> OR <hr className={`line`} />
       </div>
 
       {/* Social login buttons */}
@@ -102,11 +124,11 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
         <button
           className="google-signin-button"
           onClick={() => {
-            window.open("http://localhost:4000/api/auth/google/callback", "_self");
+            window.open(GOOGLE, "_self");
           }}
         >
           <img
-            src="https://banner2.cleanpng.com/20240111/qtv/transparent-google-logo-colorful-google-logo-with-bold-green-1710929465092.webp"
+            src={icon.google}
             alt="Google logo"
           />
           <span>Sign in with Google</span>
@@ -114,11 +136,11 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
         <button
           className="github-signin-button"
           onClick={() => {
-            window.open("http://localhost:4000/api/auth/github", "_self");
+            window.open(GITHUB, "_self");
           }}
         >
           <img
-            src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+            src={icon.github}
             alt="GitHub logo"
           />
           <span>Sign in with GitHub</span>
