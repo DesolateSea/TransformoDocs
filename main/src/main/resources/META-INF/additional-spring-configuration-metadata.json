@@ -1,0 +1,44 @@
+{
+    "properties": [
+        {
+            "name": "vandus.client.url",
+            "type": "java.lang.String",
+            "description": "Client URL"
+        },
+        {
+            "name": "vandus.jwt.secret",
+            "type": "java.lang.String",
+            "description": "JWT Secret"
+        },
+        {
+            "name": "vandus.jwt.expiration",
+            "type": "java.lang.Long",
+            "description": "JWT Expiration"
+        },
+        {
+            "name": "vandus.api.public",
+            "type": "java.lang.String",
+            "description": "Public API URL"
+        },
+        {
+            "name": "vandus.api.private",
+            "type": "java.lang.String",
+            "description": "Private API URL"
+        },
+        {
+            "name": "vandus.fileupload.directory",
+            "type": "java.lang.String",
+            "description": "File Upload Directory"
+        },
+        {
+            "name": "vandus.mail.username",
+            "type": "java.lang.String",
+            "description": "Mail Username"
+        },
+        {
+            "name": "vandus.mail.password",
+            "type": "java.lang.String",
+            "description": "Mail Password"
+        }
+    ]
+}
