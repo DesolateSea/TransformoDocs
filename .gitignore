@@ -49,3 +49,9 @@ coverage
 
 # venv
 venv/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
