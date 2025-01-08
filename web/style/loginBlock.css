@@ -30,11 +30,15 @@ body {
 }
 
 .heading {
-    font-size: 28px;
+    font-size: 23px;
     font-weight: 600;
     color: #111827;
     margin-bottom: 1rem;
     transition: color 0.3s ease;
+    text-align: left;
+    padding:10px;
+    padding-left: 25px;
+    font-family: system-ui;
 }
 
 .loginBlock.dark-mode .heading {
@@ -81,7 +85,7 @@ body {
 }
 
 .enterdetail {
-    width: 95%;
+    width: 100%;
     padding: 0.75rem;
     font-size: 16px;
     font-weight: 500;
@@ -96,7 +100,18 @@ body {
 .enterdetail:hover {
     background-color: #1d4ed8;
 }
-
+.resend{
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #63666e;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 .loginBlock.dark-mode .enterdetail {
     background-color: #4f46e5;
 }
@@ -205,16 +220,21 @@ body {
 /* Container styling */
 .login-changeinfo {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
-    gap: 5px; /* Spacing between rows and columns */
+    grid-template-columns: auto 1fr; /* Two equal-width columns */
+    gap: 10px; /* Spacing between rows and columns */
     padding: 10px;
     margin-top:20px;
     margin-left:20px;
-    text-align: left; /* Centers text within each grid cell */
     position: relative;
     color:#3c3c3c
   }
-  
+.login-changeinfo .left{
+    text-align: left;
+}
+.login-changeinfo .right{
+    text-align: right;
+    padding-right:10px;
+}
   .login-changeinfo.dark-mode {
     color: rgb(119, 132, 142); /* Light text for contrast */
   }
@@ -251,3 +271,11 @@ body {
     margin-bottom:20px;
     color:#1f2937;
   }
+.platform-heading.dark-mode>span{
+    color:rgb(195, 185, 213);
+
+}
+.platform-heading>span{
+    color:palevioletred;
+
+}

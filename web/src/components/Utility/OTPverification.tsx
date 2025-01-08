@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { OTPVerificationProps } from "../../Lib/interface/Authentication";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 const OTPVerification: React.FC<OTPVerificationProps> = ({ value, setValue, Update, PASS, work, API }) => {
-  const [timer, setTimer] = useState<number>(300); // 5 minutes in seconds
+  const [timer, setTimer] = useState<number>(10); // 5 minutes in seconds
   const [msg, setMsg] = useState<string>("");
   const [isResendVisible, setIsResendVisible] = useState<boolean>(false);
-
+  const mode = useSelector((state: RootState) => state.mode.mode);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...value,
@@ -31,11 +33,13 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ value, setValue, Upda
 
   return (
     <div className="bottom">
-      <div className="container flex flex-col text-left px-16">
-        <div className="text-white head-info">OTP</div>
+      <div className="container flex flex-col text-left px-2">
+        <div className="flex flex-row justify-between mb-7">
+        <div className={`head-info ${mode?"dark-mode":""}`}>OTP</div>
         {isResendVisible ? null : (
-          <span className="text-white timer">Resend in {formatTime()}</span>
+          <span className={`timer ${mode?"text-white":"text-gray-800"}`}>Resend in {formatTime()}</span>
         )}
+        </div>
         <input
           className="input-detail"
           name="OTP"
@@ -44,10 +48,10 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ value, setValue, Upda
           onChange={handleChange}
         />
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row gap-4">
         {isResendVisible && (
           <button
-            className="enterdetail btn"
+            className=" btn resend"
             onClick={() => {
               API.resendOTP({value}, setTimer, setMsg);
             }}

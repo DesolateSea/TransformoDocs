@@ -61,20 +61,18 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
 
   return (
     <div className={`loginBlock ${mode ? "dark-mode" : ""}`}>
-      <button className={`${mode? "text-white":"text-black"}`}onClick={()=>dispatch(toggleDarkLight())}>{mode ? "Dark Mode" : "Light Mode"}</button>
+      {/* <button className={`${mode? "text-white":"text-black"}`}onClick={()=>dispatch(toggleDarkLight())}>{mode ? "Dark Mode" : "Light Mode"}</button> */}
       <div
-        className={`platform-heading relative  ${
-          mode ? "text-white" : "text-black"
-        } flex flex-row items-center gap-2`}
+        className={`platform-heading ${mode?"dark-mode":""} relative  flex flex-row items-center gap-2`}
       >
         <img src="Logo.png" alt="logo" className="w-10 h-10" />
-        <span className={`${mode ? "text-white" : "text-pink-500"} text-xl font-bold  absolute left-7 top-2`} style={{fontFamily:"unset"}}>
+        <span className={` text-xl font-bold  absolute left-7 top-2`} style={{fontFamily:"unset"}}>
           ransformoDocs
         </span>
       </div>
 
-      <div className="text-white heading">{getHeading()}</div>
-      <div className="text-white subheading">{getSubheading()}</div>
+      <div className=" heading">{getHeading()}</div>
+      <div className=" subheading">{getSubheading()}</div>
 
       {/* Render based on current state */}
       {signupLog === 1 ? (
@@ -97,8 +95,8 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
       <div className={`login-changeinfo ${mode ? "dark-mode" : ""}`}>
       {signupLog === 1 || signupLog === 2 ? (
         <>
-          <span>Already have an account?</span>
-          <span onClick={() => Update(0)} className="link-page">Login</span>
+          <span className="left">Already have an account?</span>
+          <span onClick={() => Update(0)} className="link-page right">Login</span>
         </>
       ) : (
         <>

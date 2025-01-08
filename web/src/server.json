@@ -1,6 +1,6 @@
 {
     "Auth":{
-        "signup":"/api/auth/signin",
+        "signup":"/api/public/v1/auth/signup",
         "otpVerification":"/api/auth/OTPverification",
         "login":"/api/auth/login",
         "forget":"/api/auth/forgetPassword",
