@@ -62,7 +62,8 @@ const Footer = () => {
     ];
 
     return (
-        <footer className="footer container bg-slate-950 flex flex-col  px-6 py-8">
+        // <footer className=" w-full footer-container bottom-0 h-fit">
+        <div className="footer  bg-slate-950 flex flex-col  px-6 py-8">
             {/* Logo Section */}
             <div className="footer-logo flex flex-col  mb-6">
                 <div className="relative flex items-center">
@@ -103,7 +104,8 @@ const Footer = () => {
                     </a>
                 </span>
             </div>
-        </footer>
+        </div>
+        // </footer>
     );
 };
 

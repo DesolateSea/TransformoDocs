@@ -10,6 +10,7 @@ import LoginPage from './container/LoginPage';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import Footer from './components/Ui/Footer';
+import Test from './components/Ui/Test';
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
@@ -23,7 +24,7 @@ if (rootElement) {
                     <Route path="convert-non-machine-readable" element={<ConvertNonMachineReadable />} />
                     <Route path="convert-image" element={<ConvertImage />} /> {/* Add route for ConvertImage */}
                     <Route path="/login" element={<LoginPage />} />
-                    <Route path="/ui" element = {<Footer></Footer>} />
+                    <Route path="/ui" element = {<Test></Test>} />
                 </Routes>
             </Router>
             </Provider>
