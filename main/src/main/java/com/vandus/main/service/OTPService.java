@@ -64,7 +64,7 @@ public class OTPService {
         try {
             message.setFrom();
             message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
-            message.setSubject("OTP");
+            message.setSubject(otp + " is OTP to sign up to TransformoDocs");
             message.setContent(createVerificationEmail(otp), "text/html");
 
             try {
