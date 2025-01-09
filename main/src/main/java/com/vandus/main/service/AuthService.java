@@ -8,7 +8,7 @@ import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +18,7 @@ public class AuthService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtUtil jwtUtil;
