@@ -36,14 +36,9 @@
             "description": "File Upload Directory"
         },
         {
-            "name": "vandus.mail.username",
+            "name": "vandus.mail",
             "type": "java.lang.String",
-            "description": "Mail Username"
-        },
-        {
-            "name": "vandus.mail.password",
-            "type": "java.lang.String",
-            "description": "Mail Password"
+            "description": "Mail Sender"
         }
     ]
 }

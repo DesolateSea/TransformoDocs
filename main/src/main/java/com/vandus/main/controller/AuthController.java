@@ -4,6 +4,7 @@ import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
+import com.vandus.main.util.exception.UnableToSendOTPException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,27 +32,51 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> signup(@RequestParam String email, @RequestParam String password) {
         try {
-            String token = authService.signup(email, password);
+            authService.signup(email, password);
 
             otpService.sendOTP(email);
 
-            // temporary
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Signup successful");
-            response.put("token", token);
+            response.put("message", "Signup successful. Please check your email for OTP.");
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (UserAlreadyExistsException ex) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", ex.getMessage());
+
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        } catch (UnableToSendOTPException ex) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", ex.getMessage());
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
     @PostMapping("/verify")
     public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String email, @RequestBody String otp) {
-        // to be implemented
-        return null;
+        try {
+            boolean isValid = otpService.verifyOTP(email, otp);
+
+            if (isValid) {
+                authService.verifyEmail(email);
+                
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "OTP verified successfully");
+
+                return ResponseEntity.ok(response);
+            } else {
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Invalid OTP");
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            }
+        } catch (InvalidEmailPasswordException ex) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid email");
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
     
 
@@ -59,13 +84,16 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> login(@RequestParam String email, @RequestParam String password) {
         try {
             String token = authService.login(email, password);
+
             Map<String, String> response = new HashMap<>();
             response.put("message", "Login successful");
             response.put("token", token);
+
             return ResponseEntity.ok(response);
         } catch (InvalidEmailPasswordException ex) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", ex.getMessage());
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
