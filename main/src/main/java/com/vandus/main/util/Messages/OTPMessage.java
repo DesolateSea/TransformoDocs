@@ -1,4 +1,4 @@
-package com.vandus.main.util.Messages;
+package com.vandus.main.util.messages;
 
 import java.time.Year;
 
@@ -20,7 +20,7 @@ public class OTPMessage {
                     padding: 0;
                 }
                 .container {
-                    width: 100%;
+                    width: 100%%;
                     max-width: 600px;
                     margin: 30px auto;
                     background-color: #ffffff;
@@ -110,7 +110,7 @@ public class OTPMessage {
                     padding: 0;
                 }
                 .container {
-                    width: 100%;
+                    width: 100%%;
                     max-width: 600px;
                     margin: 30px auto;
                     background-color: #ffffff;

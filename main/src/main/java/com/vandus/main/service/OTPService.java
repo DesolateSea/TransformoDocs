@@ -1,6 +1,8 @@
 package com.vandus.main.service;
 
 import com.vandus.main.repository.UserRepository;
+import static com.vandus.main.util.messages.OTPMessage.createVerificationEmail;
+
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UnableToSendOTPException;
 
@@ -30,9 +32,6 @@ public class OTPService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @Value("${vandus.mail}")
-    private String mailUsername;
-
     public void sendOTP(String email) {
         if (!userRepository.findByEmail(email).isPresent())
             throw new InvalidEmailPasswordException("Invalid email");
@@ -60,10 +59,10 @@ public class OTPService {
         MimeMessage message = mailSender.createMimeMessage();
 
         try {
-            message.setFrom(mailUsername);
+            message.setFrom();
             message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(email));
             message.setSubject("OTP");
-            message.setText("OTP: " + otp);
+            message.setContent(createVerificationEmail(otp), "text/html");
 
             try {
                 mailSender.send(message);
