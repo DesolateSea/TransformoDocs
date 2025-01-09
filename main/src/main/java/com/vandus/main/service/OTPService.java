@@ -7,7 +7,6 @@ import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UnableToSendOTPException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,7 +16,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -40,6 +39,8 @@ public class OTPService {
         String otpKey = "otp:" + email;
         String otp = generateRandomOTP();
         redisTemplate.opsForValue().set(otpKey, otp, 5, TimeUnit.MINUTES);
+        
+        System.out.println("\n\033[1;33m[LOG]\033[0m SIGNUP \033[1;34m" + email + "\033[0m with OTP \033[1;32m" + otp + "\033[0m\n");
         sendOTPMail(email, otp);
     }
 
@@ -52,7 +53,9 @@ public class OTPService {
     }
 
     private String generateRandomOTP() {
-        return String.valueOf(Math.abs(new Random().nextInt()));
+        SecureRandom rng = new SecureRandom();
+        int otp = 100000 + rng.nextInt(900000);
+        return String.valueOf(otp);
     }
 
     private void sendOTPMail(String email, String otp) {
