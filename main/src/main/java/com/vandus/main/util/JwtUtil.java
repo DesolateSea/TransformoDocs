@@ -3,6 +3,8 @@ package com.vandus.main.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.WeakKeyException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,7 @@ public class JwtUtil {
 
     public JwtUtil(@Value("${vandus.jwt.secret}") String secret) {
         if (secret.length() < 32) {
-            throw new IllegalArgumentException("JWT secret must be at least 32 characters long");
+            throw new WeakKeyException("JWT secret must be at least 32 characters long");
         }
         this.secret = secret;
     }
@@ -28,7 +30,7 @@ public class JwtUtil {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -41,7 +43,7 @@ public class JwtUtil {
     }
 
     private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token).getBody();
     }
 
     private boolean isTokenExpired(String token) {
