@@ -16,6 +16,11 @@
             "description": "JWT Expiration"
         },
         {
+            "name": "vandus.csrf.enabled",
+            "type": "java.lang.Boolean",
+            "description": "CSRF Enabled"
+        },
+        {
             "name": "vandus.api.public",
             "type": "java.lang.String",
             "description": "Public API URL"
@@ -31,14 +36,9 @@
             "description": "File Upload Directory"
         },
         {
-            "name": "vandus.mail.username",
+            "name": "vandus.mail",
             "type": "java.lang.String",
-            "description": "Mail Username"
-        },
-        {
-            "name": "vandus.mail.password",
-            "type": "java.lang.String",
-            "description": "Mail Password"
+            "description": "Mail Sender"
         }
     ]
 }

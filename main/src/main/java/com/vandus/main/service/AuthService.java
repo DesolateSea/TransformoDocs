@@ -8,7 +8,7 @@ import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,22 +18,31 @@ public class AuthService {
     private UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    public String signup(String email, String password) {
-        if (userRepository.findByEmail(email).isPresent())
+    public void signup(String email, String password) {
+        User user = userRepository.findByEmail(email).orElse(null);
+
+        if (user != null && user.isEmailVerified())
             throw new UserAlreadyExistsException("User with email " + email + " already exists");
 
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(passwordEncoder.encode(password));
+        if (user == null) {
+            // Create new user if not found
+            User newUser = new User(email, password);
+            userRepository.save(newUser);
+        }
+    }
+
+    public void verifyEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new InvalidEmailPasswordException("Invalid email"));
+
+        user.setEmailVerified(true);
 
         userRepository.save(user);
-
-        return jwtUtil.generateToken(email);
     }
 
     public String login(String email, String password) {
