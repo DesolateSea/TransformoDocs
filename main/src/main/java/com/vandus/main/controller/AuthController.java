@@ -8,7 +8,12 @@ import com.vandus.main.util.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +35,7 @@ public class AuthController {
 
             otpService.sendOTP(email);
 
+            // temporary
             Map<String, String> response = new HashMap<>();
             response.put("message", "Signup successful");
             response.put("token", token);
@@ -41,6 +47,13 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
         }
     }
+
+    @PostMapping("/verify")
+    public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String email, @RequestBody String otp) {
+        // to be implemented
+        return null;
+    }
+    
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestParam String email, @RequestParam String password) {
