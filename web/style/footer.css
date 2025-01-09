@@ -1,13 +1,14 @@
 .footer {
     background-color: #1f2937;
+    /* position: absolute; */
     color: #f3f4f6;
-    width: 100vw;
+    width: 100%;
     padding: 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    margin-top:100vh;
+    bottom:0;
 }
 
 .footer-logo {
@@ -122,4 +123,7 @@
     .footer-item {
         font-size: 10px;
     }
+}
+.footer-container{
+    background-color: #1f2937;
 }
