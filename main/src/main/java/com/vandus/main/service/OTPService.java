@@ -52,6 +52,8 @@ public class OTPService {
         String otpKey = "otp:" + email;
         if (!otp.equals(redisTemplate.opsForValue().get(otpKey)))
             throw new InvalidOTPException("Invalid OTP");
+
+        redisTemplate.delete(otpKey);
     }
 
     private String generateRandomOTP() {
