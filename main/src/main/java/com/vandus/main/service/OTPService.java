@@ -5,6 +5,7 @@ import static com.vandus.main.util.messages.OTPMessage.createVerificationEmail;
 
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UnableToSendOTPException;
+import com.vandus.main.util.exception.InvalidOTPException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -44,12 +45,13 @@ public class OTPService {
         sendOTPMail(email, otp);
     }
 
-    public boolean verifyOTP(String email, String otp) {
+    public void verifyOTP(String email, String otp) {
         if (!userRepository.findByEmail(email).isPresent())
             throw new InvalidEmailPasswordException("Invalid email");
 
         String otpKey = "otp:" + email;
-        return otp.equals(redisTemplate.opsForValue().get(otpKey));
+        if (!otp.equals(redisTemplate.opsForValue().get(otpKey)))
+            throw new InvalidOTPException("Invalid OTP");
     }
 
     private String generateRandomOTP() {
