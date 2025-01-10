@@ -1,16 +1,7 @@
 package com.vandus.main.dto;
 
-public class AuthResponse {
-    public String message;
+public class AuthResponse extends MessageResponse {
     public String token;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     public String getToken() {
         return token;

@@ -34,7 +34,7 @@ public class AuthService {
         if (user != null)
             user.setPassword(hashedPassword);
         else 
-            userRepository.save(new User(email, hashedPassword););
+            userRepository.save(new User(email, hashedPassword));
     }
 
     public void verifyEmail(String email) {
