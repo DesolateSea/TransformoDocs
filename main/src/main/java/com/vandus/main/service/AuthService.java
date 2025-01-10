@@ -26,14 +26,12 @@ public class AuthService {
     public void signup(String email, String password) {
         User user = userRepository.findByEmail(email).orElse(null);
 
-        if (user != null && user.isEmailVerified())
+        if (user != null)
             throw new UserAlreadyExistsException("User with email " + email + " already exists");
 
-        if (user == null) {
-            // Create new user if not found
-            User newUser = new User(email, password);
-            userRepository.save(newUser);
-        }
+        String hashedPassword = passwordEncoder.encode(password);
+        User newUser = new User(email, hashedPassword);
+        userRepository.save(newUser);
     }
 
     public void verifyEmail(String email) {
