@@ -35,11 +35,11 @@ public class AuthController {
     private OTPService otpService;
 
     @PostMapping("/signup")
+
     public ResponseEntity<Map<String, String>> signup(@RequestBody SignupRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
 
-        try {
             authService.signup(email, password);
 
             otpService.sendOTP(email);
@@ -48,25 +48,13 @@ public class AuthController {
             response.put("message", "Signup successful. Please check your email for OTP.");
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (UserAlreadyExistsException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
-        } catch (UnableToSendOTPException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
-    }
 
     @PostMapping("/verify")
     public ResponseEntity<Map<String, String>> verifyEmail(@RequestBody OTPVerifyRequest request) {
         String email = request.getEmail();
         String otp = request.getOtp();
 
-        try {
             boolean isValid = otpService.verifyOTP(email, otp);
 
             if (isValid) {
@@ -81,13 +69,7 @@ public class AuthController {
                 errorResponse.put("error", "Invalid OTP");
 
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-            }
-        } catch (InvalidEmailPasswordException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid email");
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-        }
+            }   
     }
     
 
@@ -96,7 +78,6 @@ public class AuthController {
         String email = request.getEmail();
         String password = request.getPassword();
         
-        try {
             String token = authService.login(email, password);
 
             Map<String, String> response = new HashMap<>();
@@ -104,11 +85,5 @@ public class AuthController {
             response.put("token", token);
 
             return ResponseEntity.ok(response);
-        } catch (InvalidEmailPasswordException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        }
     }
 }
