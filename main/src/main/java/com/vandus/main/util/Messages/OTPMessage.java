@@ -1,4 +1,4 @@
-package com.vandus.main.util.messages;
+package com.vandus.main.util.Messages;
 
 import java.time.Year;
 
