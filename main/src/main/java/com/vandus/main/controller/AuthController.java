@@ -2,6 +2,11 @@ package com.vandus.main.controller;
 
 import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
+
+import com.vandus.main.dto.SignupRequest;
+import com.vandus.main.dto.LoginRequest;
+import com.vandus.main.dto.OTPVerifyRequest;
+
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
 import com.vandus.main.util.exception.UnableToSendOTPException;
@@ -30,7 +35,10 @@ public class AuthController {
     private OTPService otpService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signup(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<Map<String, String>> signup(@RequestBody SignupRequest request) {
+        String email = request.getEmail();
+        String password = request.getPassword();
+
         try {
             authService.signup(email, password);
 
@@ -54,7 +62,10 @@ public class AuthController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String email, @RequestBody String otp) {
+    public ResponseEntity<Map<String, String>> verifyEmail(@RequestBody OTPVerifyRequest request) {
+        String email = request.getEmail();
+        String otp = request.getOtp();
+
         try {
             boolean isValid = otpService.verifyOTP(email, otp);
 
@@ -81,7 +92,10 @@ public class AuthController {
     
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
+        String email = request.getEmail();
+        String password = request.getPassword();
+        
         try {
             String token = authService.login(email, password);
 
