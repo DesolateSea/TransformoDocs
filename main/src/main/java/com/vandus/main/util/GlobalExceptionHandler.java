@@ -8,6 +8,7 @@ import com.vandus.main.util.exception.UserAlreadyExistsException;
 import com.vandus.main.util.exception.InvalidOTPException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,40 +17,33 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private ResponseEntity<ErrorResponse> handleException(HttpStatusCode statusCode, Exception exception) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setError(exception.getMessage());
+        return ResponseEntity.status(statusCode).body(errorResponse);
+    }
+
     @ExceptionHandler(InvalidEmailPasswordException.class)
     public ResponseEntity<ErrorResponse> handleInvalidEmailPasswordException(
             InvalidEmailPasswordException exception) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setError(exception.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        return handleException(HttpStatus.UNAUTHORIZED, exception);
     }
 
     @ExceptionHandler(UnableToSendOTPException.class)
     public ResponseEntity<ErrorResponse> handleUnableToSendOTPException(
             UnableToSendOTPException exception) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setError(exception.getMessage());
-
-        exception.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        return handleException(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(
             UserAlreadyExistsException exception) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setError(exception.getMessage());
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        return handleException(HttpStatus.CONFLICT, exception);
     }
 
     @ExceptionHandler(InvalidOTPException.class)
     public ResponseEntity<ErrorResponse> handleInvalidOTPException(
             InvalidOTPException exception) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setError(exception.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        return handleException(HttpStatus.UNAUTHORIZED, exception);
     }
 }

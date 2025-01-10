@@ -1,6 +1,6 @@
 package com.vandus.main.dto;
 
-public class Response {
+public class MessageResponse {
     protected String message;
 
     public String getMessage() {
