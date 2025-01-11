@@ -6,7 +6,7 @@ import com.vandus.main.service.OTPService;
 import com.vandus.main.dto.SignupRequest;
 import com.vandus.main.dto.LoginRequest;
 import com.vandus.main.dto.OTPVerifyRequest;
-import com.vandus.main.dto.ResetPasswordReq;
+import com.vandus.main.dto.ResetPasswordRequest;
 import com.vandus.main.dto.ErrorResponse;
 import com.vandus.main.dto.AuthResponse;
 import com.vandus.main.dto.MessageResponse;
@@ -79,89 +79,43 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgetPassword(@RequestBody String email) {
-        try {
-            // Verify if user already exists
-            if (authService.resetPasswordReq(email)) {
-                // Send OTP for email verification
-                otpService.sendRestRequestOTP(email);
-                AuthResponse response = new AuthResponse();
-                response.setMessage("Reset password OTP sent successfully");
-                return ResponseEntity.ok(response);
-            } else {
-                ErrorResponse errorResponse = new ErrorResponse();
-                errorResponse.setError("Invalid Email");
+    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody String email) {
+        otpService.sendResetRequestOTP(email);
 
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-            }
-        } catch (InvalidEmailPasswordException ex) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setError("Invalid email");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        }
+        MessageResponse response = new MessageResponse();
+        response.setMessage("Reset password OTP sent successfully");
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/verify-reset-otp")
-    public ResponseEntity<?> verifyResetOtp(@RequestBody OTPVerifyRequest req) {
+    public ResponseEntity<AuthResponse> verifyResetPasswordOTP(@RequestBody OTPVerifyRequest req) {
         String email = req.getEmail();
         String otp = req.getOtp();
-        try {
-            if (otpService.verifyOTPReset(email, otp)) {
-                if (otpService.deleteOTP("reset:" + email)) {
-                    AuthResponse response = new AuthResponse();
-                    String token = otpService.getConfirmPasswordToken(email);
-                    response.setMessage("OTP reset successful");
-                    response.setToken(token);
-                    return ResponseEntity.ok(response);
-                } else {
-                    ErrorResponse errorResponse = new ErrorResponse();
-                    errorResponse.setError("Internal server error");
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-                }
+        
+        otpService.verifyResetPasswordOTP(email, otp);
 
-            } else {
-                ErrorResponse errorResponse = new ErrorResponse();
-                errorResponse.setError("Invalid OTP");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-            }
-        } catch (InvalidEmailPasswordException ex) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setError("Invalid email");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        }
+        String token = otpService.getConfirmPasswordToken(email);
+
+        AuthResponse response = new AuthResponse();
+        response.setMessage("OTP reset successful");
+        response.setToken(token);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/update-password")
-    public ResponseEntity<?> updatePassword(@RequestBody ResetPasswordReq req) {
+    public ResponseEntity<MessageResponse> updatePassword(@RequestBody ResetPasswordRequest req) {
         String email = req.getEmail();
         String password = req.getPassword();
         String token = req.getToken();
-        try {
-            if (otpService.verifyResetToken(email, token)) {
-                boolean remove = otpService.deleteOTP("confirm:" + email);
-                if (remove) {
-                    authService.resetPassword(email, password);
-                    AuthResponse response = new AuthResponse();
-                    response.setMessage("Password is reset successfully");
-                    return ResponseEntity.ok(response);
-                } else {
-                    ErrorResponse errorResponse = new ErrorResponse();
-                    errorResponse.setError("Internal server error");
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-                }
-            } else {
-                ErrorResponse errorResponse = new ErrorResponse();
-                errorResponse.setError("Token is expired");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-            }
-        } catch (InvalidEmailPasswordException ex) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setError("Invalid email");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        } catch (UserNotFoundException ex) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setError("User Not Found");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        }
+
+        otpService.verifyResetPasswordToken(email, token);
+        authService.resetPassword(email, password);
+
+        MessageResponse response = new MessageResponse();
+        response.setMessage("Password is reset successfully");
+
+        return ResponseEntity.ok(response);
     }
 }

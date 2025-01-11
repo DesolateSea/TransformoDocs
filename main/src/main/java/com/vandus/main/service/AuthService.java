@@ -36,7 +36,7 @@ public class AuthService {
             user.setPassword(hashedPassword);
         else 
             user = new User(email, hashedPassword);
-            
+
         userRepository.save(user);
     }
 
@@ -66,13 +66,4 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
     }
-
-    public boolean resetPasswordReq(String email) {
-        // verify user's email is verified
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new InvalidEmailPasswordException("Invalid email or password"));
-
-        return user != null && user.isEmailVerified();
-    }
-
 }
