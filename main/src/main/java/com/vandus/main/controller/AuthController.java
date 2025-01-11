@@ -9,6 +9,8 @@ import com.vandus.main.dto.OTPVerifyRequest;
 import com.vandus.main.dto.AuthResponse;
 import com.vandus.main.dto.MessageResponse;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class AuthController {
     private OTPService otpService;
 
     @PostMapping("/signup")
-    public ResponseEntity<MessageResponse> signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<MessageResponse> signup(@RequestBody @Valid SignupRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
 

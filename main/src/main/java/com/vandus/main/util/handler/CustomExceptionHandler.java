@@ -1,4 +1,4 @@
-package com.vandus.main.util;
+package com.vandus.main.util.handler;
 
 import com.vandus.main.dto.ErrorResponse;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class CustomExceptionHandler {
 
     private ResponseEntity<ErrorResponse> handleException(HttpStatusCode statusCode, Exception exception) {
         ErrorResponse errorResponse = new ErrorResponse();
