@@ -7,6 +7,7 @@ import com.vandus.main.util.JwtUtil;
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
 
+import com.vandus.main.util.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,9 @@ public class AuthService {
         if (user != null)
             user.setPassword(hashedPassword);
         else 
-            userRepository.save(new User(email, hashedPassword));
+            user = new User(email, hashedPassword);
+            
+        userRepository.save(user);
     }
 
     public void verifyEmail(String email) {
@@ -55,4 +58,21 @@ public class AuthService {
 
         return jwtUtil.generateToken(email);
     }
+
+    public void resetPassword(String email, String password) {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
+        
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    public boolean resetPasswordReq(String email) {
+        // verify user's email is verified
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new InvalidEmailPasswordException("Invalid email or password"));
+
+        return user != null && user.isEmailVerified();
+    }
+
 }

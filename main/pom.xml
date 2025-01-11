@@ -97,7 +97,14 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
+
+        <!-- Spring actuator (for analysis) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
@@ -107,5 +114,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
