@@ -2,9 +2,13 @@ package com.vandus.main.controller;
 
 import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
-import com.vandus.main.util.exception.InvalidEmailPasswordException;
-import com.vandus.main.util.exception.UserAlreadyExistsException;
-import com.vandus.main.util.exception.UnableToSendOTPException;
+
+import com.vandus.main.dto.SignupRequest;
+import com.vandus.main.dto.LoginRequest;
+import com.vandus.main.dto.OTPVerifyRequest;
+import com.vandus.main.dto.ResetPasswordReq;
+import com.vandus.main.dto.ErrorResponse;
+import com.vandus.main.dto.AuthResponse;
 
 import com.vandus.main.util.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.vandus.main.util.exception.*;
 @RestController
 @RequestMapping("${vandus.api.public}/auth")
 public class AuthController {
@@ -31,152 +32,135 @@ public class AuthController {
     private OTPService otpService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signup(@RequestParam String email, @RequestParam String password) {
-        try {
-            authService.signup(email, password);
+    public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest request) {
+        String email = request.getEmail();
+        String password = request.getPassword();
 
-            otpService.sendOTP(email);
+        authService.signup(email, password);
+        otpService.sendOTP(email);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Signup successful. Please check your email for OTP.");
+        AuthResponse response = new AuthResponse();
+        response.setMessage("Signup successful. Please check your email for OTP.");
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (UserAlreadyExistsException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
-        } catch (UnableToSendOTPException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<Map<String, String>> verifyEmail(@RequestParam String email, @RequestBody String otp) {
-        try {
-            boolean isValid = otpService.verifyOTP(email, otp);
+    public ResponseEntity<?> verifyEmail(@RequestBody OTPVerifyRequest request) {
+        String email = request.getEmail();
+        String otp = request.getOtp();
 
-            if (isValid) {
-                authService.verifyEmail(email);
-                otpService.deleteOTP("otp:"+email);
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "OTP verified successfully");
+        boolean isValid = otpService.verifyOTP(email, otp);
 
-                return ResponseEntity.ok(response);
-            } else {
-                Map<String, String> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Invalid OTP");
-
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-            }
-        } catch (InvalidEmailPasswordException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid email");
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-        }
-    }
-    
-
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestParam String email, @RequestParam String password) {
-        try {
-            String token = authService.login(email, password);
-
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Login successful");
-            response.put("token", token);
+        if (isValid) {
+            authService.verifyEmail(email);
+            otpService.deleteOTP("otp:"+email);
+            AuthResponse response = new AuthResponse();
+            response.setMessage("OTP verified successfully");
 
             return ResponseEntity.ok(response);
-        } catch (InvalidEmailPasswordException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
+        } else {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError("Invalid OTP");
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
     @PostMapping("/forgetPassword")
-    public ResponseEntity<Map<String, String>> forgetPassword(@RequestParam String email) {
+    public ResponseEntity<?> forgetPassword(@RequestBody String email) {
         try{
             //Verify if user already exist
             if(authService.resetPasswordReq(email)){
                 //otpSend for emailVerification
                 otpService.sendRestRequestOTP(email);
-
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Reset password otp sent successfully");
+                AuthResponse response = new AuthResponse();
+                response.setMessage("Reset password otp sent successfully");
                 return ResponseEntity.ok(response);
             }else{
-                Map<String, String> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Invalid email");
+                ErrorResponse errorResponse = new ErrorResponse();
+                errorResponse.setError("Invalid Email");
 
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
             }
         }catch (InvalidEmailPasswordException ex){
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid email");
-
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError("Invalid email");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
     @PostMapping("/verifyResetOtp")
-    public ResponseEntity<Map<String, String>> verifyResetOtp(@RequestParam String email, @RequestParam String otp) {
+    public ResponseEntity<?> verifyResetOtp(@RequestBody OTPVerifyRequest req) {
+        String email = req.getEmail();
+        String otp = req.getOtp();
         try{
             if(otpService.verifyOTPReset(email, otp)){
                 if(otpService.deleteOTP("reset:"+email)){
-                    Map<String, String> response = new HashMap<>();
+                    AuthResponse response = new AuthResponse();
                     String token = otpService.getConfirmPasswordToken(email);
-                    response.put("message", "OTP reset successful");
-                    response.put("AUTHENTICATION", token);
+                    response.setMessage("OTP reset successful");
+                    response.setToken(token);
                     return ResponseEntity.ok(response);
                 }else{
-                    Map<String, String> errorResponse = new HashMap<>();
-                    errorResponse.put("error", "Internal server error");
+                    ErrorResponse errorResponse = new ErrorResponse();
+                    errorResponse.setError("Internal server error");
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
                 }
-                
+
             }else{
-                Map<String, String> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Invalid OTP");
+                ErrorResponse errorResponse = new ErrorResponse();
+                errorResponse.setError("Invalid OTP");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
         }catch(InvalidEmailPasswordException ex){
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid email");
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError("Invalid email");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
     @PostMapping("/setNewPassword")
-    public ResponseEntity<Map<String, String>> setNewPassword(@RequestParam String email, @RequestParam String password,@RequestParam String token) {
+    public ResponseEntity<?> setNewPassword(@RequestBody ResetPasswordReq req ) {
+        String email = req.getEmail();
+        String password = req.getPassword();
+        String token = req.getToken();
         try{
             if(otpService.verifyResetToken(email,token)){
                 boolean remove = otpService.deleteOTP("confirm:"+email);
                 if(remove){
                     authService.resetPassword(email,password);
-                    Map<String, String> response = new HashMap<>();
-                    response.put("message", "Reset password successful");
-                    return ResponseEntity.ok(response);    
+                    AuthResponse response = new AuthResponse();
+                    response.setMessage("Password is reset successfully");
+                    return ResponseEntity.ok(response);
                 }else{
-                    Map<String, String> errorResponse = new HashMap<>();
-                    errorResponse.put("error", "Internal server error");
+                    ErrorResponse errorResponse = new ErrorResponse();
+                    errorResponse.setError("Internal server error");
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
                 }
             }else{
-                Map<String, String> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Token is expired");
+                ErrorResponse errorResponse = new ErrorResponse();
+                errorResponse.setError("Token is expired");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             }
         }catch(InvalidEmailPasswordException ex){
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid email");
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError("Invalid email");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }catch(UserNotFoundException ex){
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "User not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setError("User Not Found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+        String email = request.getEmail();
+        String password = request.getPassword();
+
+        String token = authService.login(email, password);
+
+        AuthResponse response = new AuthResponse();
+        response.setMessage("Login successful");
+        response.setToken(token);
+
+        return ResponseEntity.ok(response);
     }
 }
