@@ -9,6 +9,7 @@ import com.vandus.main.dto.OTPVerifyRequest;
 import com.vandus.main.dto.ResetPasswordReq;
 import com.vandus.main.dto.ErrorResponse;
 import com.vandus.main.dto.AuthResponse;
+import com.vandus.main.dto.MessageResponse;
 
 import com.vandus.main.util.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,39 +33,31 @@ public class AuthController {
     private OTPService otpService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<MessageResponse> signup(@RequestBody SignupRequest request) {
         String email = request.getEmail();
         String password = request.getPassword();
 
         authService.signup(email, password);
         otpService.sendOTP(email);
 
-        AuthResponse response = new AuthResponse();
+        MessageResponse response = new MessageResponse();
         response.setMessage("Signup successful. Please check your email for OTP.");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verifyEmail(@RequestBody OTPVerifyRequest request) {
+    public ResponseEntity<MessageResponse> verifyEmail(@RequestBody OTPVerifyRequest request) {
         String email = request.getEmail();
         String otp = request.getOtp();
 
-        boolean isValid = otpService.verifyOTP(email, otp);
+        otpService.verifyOTP(email, otp);
+        authService.verifyEmail(email);
+        
+        MessageResponse response = new MessageResponse();
+        response.setMessage("OTP verified successfully");
 
-        if (isValid) {
-            authService.verifyEmail(email);
-            otpService.deleteOTP("otp:"+email);
-            AuthResponse response = new AuthResponse();
-            response.setMessage("OTP verified successfully");
-
-            return ResponseEntity.ok(response);
-        } else {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setError("Invalid OTP");
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-        }
+        return ResponseEntity.ok(response);
     }
     @PostMapping("/forgetPassword")
     public ResponseEntity<?> forgetPassword(@RequestBody String email) {
