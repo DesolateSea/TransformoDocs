@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import Footer from './components/Ui/Footer';
 import Test from './components/Ui/Test';
+import LoginUser from './container/LoginUser';
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
@@ -19,7 +20,7 @@ if (rootElement) {
             <Provider store={store}>
             <Router>
                 <Routes>
-                    <Route path="/" element={<App />} />
+                    <Route path="/" element={<LoginUser />} />
                     <Route path="convert-pdf" element={<ConvertPdf />} />
                     <Route path="convert-non-machine-readable" element={<ConvertNonMachineReadable />} />
                     <Route path="convert-image" element={<ConvertImage />} /> {/* Add route for ConvertImage */}

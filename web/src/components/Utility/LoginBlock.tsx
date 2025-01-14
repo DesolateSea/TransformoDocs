@@ -61,7 +61,7 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
 
   return (
     <div className={`loginBlock ${mode ? "dark-mode" : ""}`}>
-      <button className={`${mode? "text-white":"text-black"}`}onClick={()=>dispatch(toggleDarkLight())}>{mode ? "Dark Mode" : "Light Mode"}</button>
+      {/* <button className={`${mode? "text-white":"text-black"}`}onClick={()=>dispatch(toggleDarkLight())}>{mode ? "Dark Mode" : "Light Mode"}</button> */}
       <div
         className={`platform-heading ${mode?"dark-mode":""} relative  flex flex-row items-center gap-2`}
       >
