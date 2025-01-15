@@ -7,11 +7,8 @@ import com.vandus.main.dto.SignupRequest;
 import com.vandus.main.dto.LoginRequest;
 import com.vandus.main.dto.OTPVerifyRequest;
 import com.vandus.main.dto.ResetPasswordRequest;
-import com.vandus.main.dto.ErrorResponse;
 import com.vandus.main.dto.AuthResponse;
 import com.vandus.main.dto.MessageResponse;
-
-import com.vandus.main.util.exception.UserNotFoundException;
 
 import jakarta.validation.Valid;
 
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import com.vandus.main.util.exception.*;
 
 @RestController
 @RequestMapping("${vandus.api.public}/auth")
