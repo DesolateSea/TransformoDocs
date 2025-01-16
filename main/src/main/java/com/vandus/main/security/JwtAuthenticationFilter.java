@@ -16,9 +16,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import static java.util.Arrays.stream;
 
 @Component
 public class JwtAuthenticationFilter implements Filter {
+
+    private String[] publicEndpoints = new String[] {
+        "/api/public",
+        "/api/auth",
+        "/actuator"
+    };
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -29,19 +36,20 @@ public class JwtAuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         // Public API
-        if (httpRequest.getRequestURI().startsWith("/api/public")) {
+        String requestURI = httpRequest.getRequestURI();
+        if (stream(publicEndpoints).anyMatch(requestURI::startsWith)) {
             chain.doFilter(request, response);
             return;
         }
 
         // Private API
         String jwtToken = extractTokenFromRequest(httpRequest);
-
         if (jwtToken != null && jwtUtil.isTokenValid(jwtToken)) {
             chain.doFilter(request, response);
-        } else {
-            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+            return;
         }
+        
+        httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
     }
 
     private String extractTokenFromRequest(HttpServletRequest request) {

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("${vandus.api.public}/auth")
+@RequestMapping("${vandus.api.auth}")
 public class AuthController {
 
     @Autowired
@@ -77,8 +77,8 @@ public class AuthController {
         return ResponseEntity.ok(responseObj);
     }
 
-    @PostMapping("/verify-email")
-    public ResponseEntity<MessageResponse> verifyEmail(@RequestBody OTPVerifyRequest request) {
+    @PostMapping("/verify-email-otp")
+    public ResponseEntity<MessageResponse> verifyEmailOtp(@RequestBody OTPVerifyRequest request) {
         String email = request.getEmail();
         String otp = request.getOtp();
 
