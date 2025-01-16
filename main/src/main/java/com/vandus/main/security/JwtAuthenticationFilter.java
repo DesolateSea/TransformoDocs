@@ -10,13 +10,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
 @Component
-public class JWTAuthFilter implements Filter {
+public class JwtAuthenticationFilter implements Filter {
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -33,15 +35,32 @@ public class JWTAuthFilter implements Filter {
         }
 
         // Private API
-        String authHeader = httpRequest.getHeader("Authorization");
+        String jwtToken = extractTokenFromRequest(httpRequest);
+
+        if (jwtToken != null && jwtUtil.isTokenValid(jwtToken)) {
+            chain.doFilter(request, response);
+        } else {
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+        }
+    }
+
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        // Check Authorization header
+        String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String jwtToken = authHeader.substring(7);
-            if (jwtUtil.isTokenValid(jwtToken)) {
-                chain.doFilter(request, response);
-                return;
+            return authHeader.substring(7);
+        }
+
+        // Check Cookies
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
 
-        httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+        return null;
     }
 }
