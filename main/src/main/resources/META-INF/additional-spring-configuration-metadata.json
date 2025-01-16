@@ -1,44 +1,73 @@
 {
-    "properties": [
-        {
-            "name": "vandus.client.url",
-            "type": "java.lang.String",
-            "description": "Client URL"
-        },
-        {
-            "name": "vandus.jwt.secret",
-            "type": "java.lang.String",
-            "description": "JWT Secret"
-        },
-        {
-            "name": "vandus.jwt.expiration",
-            "type": "java.lang.Long",
-            "description": "JWT Expiration"
-        },
-        {
-            "name": "vandus.csrf.enabled",
-            "type": "java.lang.Boolean",
-            "description": "CSRF Enabled"
-        },
-        {
-            "name": "vandus.api.public",
-            "type": "java.lang.String",
-            "description": "Public API URL"
-        },
-        {
-            "name": "vandus.api.private",
-            "type": "java.lang.String",
-            "description": "Private API URL"
-        },
-        {
-            "name": "vandus.fileupload.directory",
-            "type": "java.lang.String",
-            "description": "File Upload Directory"
-        },
-        {
-            "name": "vandus.mail",
-            "type": "java.lang.String",
-            "description": "Mail Sender"
-        }
-    ]
+  "properties": [
+    {
+      "name": "vandus.client.url",
+      "type": "java.lang.String",
+      "description": "Client URL"
+    },
+    {
+      "name": "vandus.python.api.url",
+      "type": "java.lang.String",
+      "description": "A description for 'vandus.python.api.url'"
+    },
+
+    {
+      "name": "vandus.jwt.secret",
+      "type": "java.lang.String",
+      "description": "JWT Secret"
+    },
+    {
+      "name": "vandus.jwt.expiration",
+      "type": "java.lang.Long",
+      "description": "JWT Expiration"
+    },
+    {
+      "name": "vandus.jwt.cookie.name",
+      "type": "java.lang.String",
+      "description": "JWT Cookie Name"
+    },
+    {
+      "name": "vandus.jwt.cookie.max-age",
+      "type": "java.lang.Integer",
+      "description": "JWT Cookie Max Age"
+    },
+    {
+      "name": "vandus.jwt.cookie.secure",
+      "type": "java.lang.Boolean",
+      "description": "Whether to use secure cookies (HTTPS only)"
+    },
+    {
+      "name": "vandus.csrf.enabled",
+      "type": "java.lang.Boolean",
+      "description": "CSRF Enabled"
+    },
+
+    {
+      "name": "vandus.api.public",
+      "type": "java.lang.String",
+      "description": "Public API URL"
+    },
+    {
+      "name": "vandus.api.private",
+      "type": "java.lang.String",
+      "description": "Private API URL"
+    },
+    {
+      "name": "vandus.api.auth",
+      "type": "java.lang.String",
+      "description": "Auth API URL"
+    },
+
+    {
+      "name": "vandus.fileupload.directory",
+      "type": "java.lang.String",
+      "description": "File Upload Directory"
+    },
+
+    {
+      "name": "vandus.mail",
+      "type": "java.lang.String",
+      "description": "Mail Sender"
+    }
+  ]
 }
