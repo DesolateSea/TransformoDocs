@@ -1,15 +1,8 @@
 package com.vandus.main.controller;
 
+import com.vandus.main.dto.*;
 import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
-
-import com.vandus.main.dto.SignupRequest;
-import com.vandus.main.dto.LoginRequest;
-import com.vandus.main.dto.OTPVerifyRequest;
-import com.vandus.main.dto.ResetPasswordRequest;
-import com.vandus.main.dto.ErrorResponse;
-import com.vandus.main.dto.AuthResponse;
-import com.vandus.main.dto.MessageResponse;
 
 import com.vandus.main.util.exception.UserNotFoundException;
 
@@ -19,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.vandus.main.util.exception.*;
 
@@ -79,8 +69,8 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody String email) {
-        otpService.sendResetRequestOTP(email);
+    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody ForgetPasswordRequest request) {
+        otpService.sendResetRequestOTP(request.getEmail());
 
         MessageResponse response = new MessageResponse();
         response.setMessage("Reset password OTP sent successfully");

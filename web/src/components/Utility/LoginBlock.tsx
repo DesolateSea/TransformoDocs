@@ -19,7 +19,7 @@ const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
   const GOOGLE = import.meta.env.VITE_REACT_APP_GOOGLELOGIN;
   const GITHUB = import.meta.env.VITE_REACT_APP_GITHUB;
   const mode = useSelector((state: RootState) => state.mode.mode);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   console.log(mode);
   const Update = (step: number) => {
     setSL(step);
