@@ -12,8 +12,8 @@ interface UserState {
 
 // Define the structure of user info
 interface UserInfo {
-  id: string;
-  name: string;
+  // id: string;
+  // name: string;
   email: string;
   // Add other fields as per the user information you expect
 }

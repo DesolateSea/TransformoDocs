@@ -1,12 +1,13 @@
+import { EmailVerificationProps } from "./Authentication";
 import {
   LoginAuthProps,
   SignupPropsAPI,
-  VerficationPropsAPI,
   ResendPropsAPI,
   ConfirmPasswordAPI,
   ForgetPasswordPropsAPI,
-} from './AuthenticationAPI';
-
+  VerficationPropsAPI,
+} from "./AuthenticationAPI";
+import { VerficationProps } from "./Authentication";
 interface Auth {
   /**
    * Resend the OTP (One Time Password) to the user.
@@ -15,15 +16,19 @@ interface Auth {
    * @param {Function} setMsg - Function to set the message to display to the user.
    * @returns {Promise<void>} - Promise resolving to no value.
    */
-  resendOTP(props: ResendPropsAPI, setTimer: Function, setMsg: Function): Promise<void>;
+  resendOTP(
+    props: ResendPropsAPI,
+    setTimer: Function,
+    setMsg: Function
+  ): Promise<void>;
 
   /**
    * Verify the OTP entered by the user.
-   * @param {VerficationPropsAPI} props - The props object containing OTP and user information.
+   * @param {EmailVerificationProps} props - The props object containing OTP and user information.
    * @param {Function} setMsg - Function to set the message to display to the user.
    * @returns {Promise<void>} - Promise resolving to no value.
    */
-  verifyOTP(props: VerficationPropsAPI, setMsg: Function): Promise<void>;
+  verifyOTP(props: EmailVerificationProps, setMsg: Function): Promise<void>;
 
   /**
    * Handle forgot password process by sending an email to the user.
@@ -31,7 +36,10 @@ interface Auth {
    * @param {Function} setMsg - Function to set the message to display to the user.
    * @returns {Promise<void>} - Promise resolving to no value.
    */
-  forgotPassword(props: ForgetPasswordPropsAPI, setMsg: Function): Promise<void>;
+  forgotPassword(
+    props: ForgetPasswordPropsAPI,
+    setMsg: Function
+  ): Promise<void>;
 
   /**
    * Confirm password change process after OTP verification.
@@ -47,7 +55,11 @@ interface Auth {
    * @param {Function} navigate - Function to navigate to a different page upon successful login.
    * @returns {Promise<void>} - Promise resolving to no value.
    */
-  login(props: LoginAuthProps, setMsg: Function, navigate: Function): Promise<void>;
+  login(
+    props: LoginAuthProps,
+    setMsg: Function,
+    navigate: Function
+  ): Promise<void>;
 
   /**
    * Handle the user registration process (signup).
@@ -61,6 +73,13 @@ interface Auth {
    * @returns {Promise<void>} - Promise resolving to no value.
    */
   logout(): Promise<void>;
+  /**
+   * Handle reset password otp verification process.
+   * @param {Props} props - The props object containing OTP and user information.
+   * @param {Function} setMsg - Function to set the message to display to the user.
+   * @throws {Error} - Throws an error if OTP verification fails.
+   */
+  verifyResetOtp(props: VerficationPropsAPI, setMsg: Function): Promise<void>;
 }
 
 export default Auth;
