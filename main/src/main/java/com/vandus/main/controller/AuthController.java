@@ -23,7 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -135,10 +138,6 @@ public class AuthController {
 
 
     @PostMapping("/forgot-password")
-<<<<<<< HEAD
-    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody ForgetPasswordRequest request) {
-        otpService.sendResetRequestOTP(request.getEmail());
-=======
     @Operation(
         summary="Send reset password OTP",
         description="Send reset password OTP to user's email for password reset"
@@ -148,7 +147,6 @@ public class AuthController {
     })
     public ResponseEntity<MessageResponse> forgetPassword(@RequestBody String email) {
         otpService.sendResetRequestOTP(email);
->>>>>>> 71da6b2cafae665b6d72620efdf92f292c427310
 
         MessageResponse response = new MessageResponse();
         response.setMessage("Reset password OTP sent successfully");
