@@ -8,5 +8,8 @@
         "resetPassword":"/api/auth/reset-password",
         "verifyResetOtp":"/api/auth/verify-reset-otp",
         "logout":"/api/auth/logout"
+    },
+    "User":{
+        "getUserInfo":"/api/private/user/"
     }
 }

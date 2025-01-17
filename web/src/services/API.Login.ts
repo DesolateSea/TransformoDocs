@@ -194,6 +194,7 @@ class AuthService implements Auth {
 
       // Update register state to mark user as successfully registered
       console.log("Successfully changed password");
+      window.location.reload();
       // props.setRegister({
       //   state: true,
       //   info: "Password changed successfully",
@@ -219,14 +220,14 @@ class AuthService implements Auth {
       // Send request to log in the user
       const response: AxiosResponse = await this.postRequest(
         this.server.Auth.login,
-        { ...props.value }
+        { email: props.value.EMAIL, password: props.value.PASSWORD }
       );
       if (response.status !== 200) throw new Error("Invalid Credentials");
-
+      console.log(response.data);
       // Update register state with user info
       props.setRegister({
         state: true,
-        info: response.data.info,
+        info: response.data,
       });
       navigate("/"); // Navigate to the home page after successful login
       setMsg("You are logged in!");

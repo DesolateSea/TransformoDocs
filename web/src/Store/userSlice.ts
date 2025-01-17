@@ -1,6 +1,6 @@
 // src/features/userSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { UserVerify } from '../scripts/UserAuth'; // Adjust the import path
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { UserVerify } from "../scripts/UserAuth"; // Adjust the import path
 
 // Define the structure of the user state
 interface UserState {
@@ -12,9 +12,10 @@ interface UserState {
 
 // Define the structure of user info
 interface UserInfo {
-  // id: string;
+  id: string;
   // name: string;
   email: string;
+  emailVerified: boolean;
   // Add other fields as per the user information you expect
 }
 
@@ -28,7 +29,7 @@ const initialState: UserState = {
 
 // Create an async thunk for user verification
 export const verifyUser = createAsyncThunk<UserInfo | null>(
-  'user/verifyUser',
+  "user/verifyUser",
   async () => {
     const info: UserInfo | null = await UserVerify();
     return info;
@@ -37,7 +38,7 @@ export const verifyUser = createAsyncThunk<UserInfo | null>(
 
 // Create a slice
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     loginSuccess: (state, action: PayloadAction<UserInfo>) => {
@@ -57,19 +58,22 @@ const userSlice = createSlice({
       .addCase(verifyUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(verifyUser.fulfilled, (state, action: PayloadAction<UserInfo | null>) => {
-        if (action.payload) {
-          state.isAuthenticated = true;
-          state.userInfo = action.payload;
-        } else {
-          state.isAuthenticated = false;
-          state.userInfo = null;
+      .addCase(
+        verifyUser.fulfilled,
+        (state, action: PayloadAction<UserInfo | null>) => {
+          if (action.payload) {
+            state.isAuthenticated = true;
+            state.userInfo = action.payload;
+          } else {
+            state.isAuthenticated = false;
+            state.userInfo = null;
+          }
+          state.loading = false;
         }
-        state.loading = false;
-      })
+      )
       .addCase(verifyUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Error occurred';
+        state.error = action.error.message || "Error occurred";
       });
   },
 });
