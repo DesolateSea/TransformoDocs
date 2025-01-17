@@ -11,7 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -43,32 +42,12 @@ public class JwtAuthenticationFilter implements Filter {
         }
 
         // Private API
-        String jwtToken = extractTokenFromRequest(httpRequest);
+        String jwtToken = jwtUtil.extractTokenFromRequest(httpRequest);
         if (jwtToken != null && jwtUtil.isTokenValid(jwtToken)) {
             chain.doFilter(request, response);
             return;
         }
         
         httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
-    }
-
-    private String extractTokenFromRequest(HttpServletRequest request) {
-        // Check Authorization header
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7);
-        }
-
-        // Check Cookies
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("jwt".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-
-        return null;
     }
 }

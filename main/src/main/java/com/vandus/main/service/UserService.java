@@ -20,4 +20,12 @@ public class UserService {
         user.setPassword(null);
         return user;
     }
+
+    public User getUserByEmail(String email) {
+        User user = userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+        user.setPassword(null);
+        return user;
+    }
 }

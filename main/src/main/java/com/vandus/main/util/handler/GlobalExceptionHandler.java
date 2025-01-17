@@ -1,6 +1,7 @@
 package com.vandus.main.util.handler;
 
 import com.vandus.main.dto.ValidationErrorResponse;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,8 +16,11 @@ import static java.util.stream.Collectors.toList;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    /*
+     * Error: Validation error
+     * Status: 400 Bad Request
+     */
     public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        
         List<ValidationErrorResponse.FieldErrorDetails> errorDetails = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
