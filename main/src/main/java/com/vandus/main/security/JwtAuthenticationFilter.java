@@ -23,7 +23,8 @@ public class JwtAuthenticationFilter implements Filter {
     private String[] publicEndpoints = new String[] {
         "/api/public",
         "/api/auth",
-        "/actuator"
+        "/actuator", // Spring Boot Actuator
+        "/swagger-ui", // Springdoc Swagger UI
     };
 
     @Autowired
