@@ -41,3 +41,21 @@ Spring Boot Backend for TransformoDocs, a Spring Boot project that leverages Spr
     ```sh
     mvn spring-boot:run
     ```
+
+## Updating Documentation
+
+1. Install widdershins:
+    ```sh
+    npm install widdershins -g
+    ```
+
+2. Make sure the server is running.
+    ```sh
+    cd main
+    mvn spring-boot:run
+    ```
+
+3. Run the following command with correct URL and file path to generate the documentation:
+    ```sh
+    widdershins http://localhost:8080/api/public/v1/api-docs -o ../docs/SERVER.md -c false
+    ```
