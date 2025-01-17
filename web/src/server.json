@@ -1,12 +1,12 @@
 {
     "Auth":{
-        "register":"/api/public/v1/auth/register",
-        "verifyEmail":"/api/public/v1/auth/verify-email",
-        "login":"/api/public/v1/auth/login",
-        "forgetPassword":"/api/public/v1/auth/forgot-password",
-        "updatePassword":"/api/public/v1/auth/update-password",
-        "resetPassword":"/api/public/v1/auth/reset-password",
-        "verifyResetOtp":"/api/public/v1/auth/verify-reset-otp",
+        "register":"/api/auth/register",
+        "verifyEmail":"/api/auth/verify-email",
+        "login":"/api/auth/login",
+        "forgetPassword":"/api/auth/forgot-password",
+        "updatePassword":"/api/auth/update-password",
+        "resetPassword":"/api/auth/reset-password",
+        "verifyResetOtp":"/api/auth/verify-reset-otp",
         "logout":"/api/auth/logout"
     }
 }

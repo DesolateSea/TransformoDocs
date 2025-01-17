@@ -3,10 +3,21 @@ package com.vandus.main.controller;
 import com.vandus.main.dto.*;
 import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
+import com.vandus.main.util.CookieUtil;
 
 import com.vandus.main.util.exception.UserNotFoundException;
 
+import com.vandus.main.dto.SignupRequest;
+import com.vandus.main.dto.LoginRequest;
+import com.vandus.main.dto.OTPVerifyRequest;
+import com.vandus.main.dto.ResetPasswordRequest;
+import com.vandus.main.dto.AuthResponse;
+import com.vandus.main.dto.MessageResponse;
+import com.vandus.main.dto.ForgetPasswordRequest;
+
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +25,8 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.vandus.main.util.exception.*;
-
 @RestController
-@RequestMapping("${vandus.api.public}/auth")
+@RequestMapping("${vandus.api.auth}")
 public class AuthController {
 
     @Autowired
@@ -25,6 +34,9 @@ public class AuthController {
 
     @Autowired
     private OTPService otpService;
+
+    @Autowired
+    private CookieUtil cookieUtil;
 
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> signup(@RequestBody @Valid SignupRequest request) {
@@ -41,21 +53,33 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request, HttpServletResponse response) {
         String email = request.getEmail();
         String password = request.getPassword();
 
         String token = authService.login(email, password);
 
-        AuthResponse response = new AuthResponse();
-        response.setMessage("Login successful");
-        response.setToken(token);
+        cookieUtil.setJwtCookie(response, token);
 
-        return ResponseEntity.ok(response);
+        AuthResponse responseObj = new AuthResponse();
+        responseObj.setMessage("Login successful");
+        responseObj.setToken(token);
+
+        return ResponseEntity.ok(responseObj);
     }
 
-    @PostMapping("/verify-email")
-    public ResponseEntity<MessageResponse> verifyEmail(@RequestBody OTPVerifyRequest request) {
+    @PostMapping("/logout")
+    public ResponseEntity<MessageResponse> logout(HttpServletRequest request, HttpServletResponse response) {
+        cookieUtil.clearJwtCookie(response);
+
+        MessageResponse responseObj = new MessageResponse();
+        responseObj.setMessage("Logged out successfully");
+
+        return ResponseEntity.ok(responseObj);
+    }
+
+    @PostMapping("/verify-email-otp")
+    public ResponseEntity<MessageResponse> verifyEmailOtp(@RequestBody OTPVerifyRequest request) {
         String email = request.getEmail();
         String otp = request.getOtp();
 

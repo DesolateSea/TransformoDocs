@@ -1,10 +1,12 @@
 package com.vandus.main.controller;
 
+import com.vandus.main.service.PythonAPIService;
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UnableToSendOTPException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class TestController {
+
+    @Autowired
+    private PythonAPIService pythonAPIService;
 
     @GetMapping("/public/test")
     public String test(HttpServletRequest request) {
@@ -30,17 +35,23 @@ public class TestController {
     }
 
     @GetMapping("/public/InvalidEmail")
-    public void InvalidEmailChecker() throws Exception {
+    public void InvalidEmailChecker() {
         throw new InvalidEmailPasswordException("Invalid Email Password");
     }
-    @GetMapping("public/WrongOTP")
-    public void OTPChecker() throws Exception
-    {
+
+    @GetMapping("/public/WrongOTP")
+    public void OTPChecker() {
         throw new UnableToSendOTPException("Unable to send OTP");
     }
-     @GetMapping("public/UserExists")
-    public void UserChecker() throws Exception
-     {
-         throw new UserAlreadyExistsException("User Already Exists");
-     }
+
+    @GetMapping("/public/UserExists")
+    public void UserChecker() {
+        throw new UserAlreadyExistsException("User Already Exists");
+    }
+
+    @GetMapping("/public/python/health")
+    public String healthTest() {
+        return pythonAPIService.health();
+    }
+
 }

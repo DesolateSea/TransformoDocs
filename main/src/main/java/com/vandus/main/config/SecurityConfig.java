@@ -1,6 +1,6 @@
 package com.vandus.main.config;
 
-import com.vandus.main.security.JWTAuthFilter;
+import com.vandus.main.security.JwtAuthenticationFilter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +13,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
-    private JWTAuthFilter jwtAuthFilter;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Value("${vandus.csrf.enabled}")
     private boolean csrfEnabled;
@@ -29,7 +30,7 @@ public class SecurityConfig {
             http.csrf(csrfCustomizer -> csrfCustomizer.disable());
         
         return http
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 
