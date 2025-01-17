@@ -1,0 +1,19 @@
+package com.vandus.main.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class DocumentationConfig {
+
+    @Bean
+    public OpenAPI apiDocumentation() {
+        return new OpenAPI()
+            .info(new Info()
+                .title("TransformoDocs")
+                .description("API for TransformoDocs")
+                .version("1.0.0"));
+    }
+}
