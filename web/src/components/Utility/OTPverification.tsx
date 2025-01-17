@@ -3,8 +3,15 @@ import { OTPVerificationProps } from "../../Lib/interface/Authentication";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
-const OTPVerification: React.FC<OTPVerificationProps> = ({ value, setValue, Update, PASS, work, API }) => {
-  const [timer, setTimer] = useState<number>(10); // 5 minutes in seconds
+const OTPVerification: React.FC<OTPVerificationProps> = ({
+  value,
+  setValue,
+  Update,
+  PASS,
+  work,
+  API,
+}) => {
+  const [timer, setTimer] = useState<number>(300); // 5 minutes in seconds
   const [msg, setMsg] = useState<string>("");
   const [isResendVisible, setIsResendVisible] = useState<boolean>(false);
   const mode = useSelector((state: RootState) => state.mode.mode);
@@ -35,10 +42,12 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ value, setValue, Upda
     <div className="bottom">
       <div className="container flex flex-col text-left px-2">
         <div className="flex flex-row justify-between mb-7">
-        <div className={`head-info ${mode?"dark-mode":""}`}>OTP</div>
-        {isResendVisible ? null : (
-          <span className={`timer ${mode?"text-white":"text-gray-800"}`}>Resend in {formatTime()}</span>
-        )}
+          <div className={`head-info ${mode ? "dark-mode" : ""}`}>OTP</div>
+          {isResendVisible ? null : (
+            <span className={`timer ${mode ? "text-white" : "text-gray-800"}`}>
+              Resend in {formatTime()}
+            </span>
+          )}
         </div>
         <input
           className="input-detail"
@@ -53,7 +62,7 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ value, setValue, Upda
           <button
             className=" btn resend"
             onClick={() => {
-              API.resendOTP({value}, setTimer, setMsg);
+              API.resendOTP({ value }, setTimer, setMsg);
             }}
           >
             Resend
@@ -62,13 +71,19 @@ const OTPVerification: React.FC<OTPVerificationProps> = ({ value, setValue, Upda
         <button
           className="enterdetail btn"
           onClick={() => {
-            API.verifyOTP({ value, Update, PASS, work }, setMsg);
+            if (work == 1) {
+              API.verifyResetOtp({ value, Update, PASS }, setMsg);
+            } else {
+              API.verifyOTP({ value, setValue, Update, PASS }, setMsg);
+            }
           }}
         >
           Enter
         </button>
       </div>
-      {msg && <div className="mt-2 text-base text-center text-red-500 msg">{msg}</div>}
+      {msg && (
+        <div className="mt-2 text-base text-center text-red-500 msg">{msg}</div>
+      )}
     </div>
   );
 };

@@ -1,8 +1,11 @@
 package com.vandus.main.controller;
 
+import com.vandus.main.dto.*;
 import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
 import com.vandus.main.util.CookieUtil;
+
+import com.vandus.main.util.exception.UserNotFoundException;
 
 import com.vandus.main.dto.SignupRequest;
 import com.vandus.main.dto.LoginRequest;
@@ -10,6 +13,7 @@ import com.vandus.main.dto.OTPVerifyRequest;
 import com.vandus.main.dto.ResetPasswordRequest;
 import com.vandus.main.dto.AuthResponse;
 import com.vandus.main.dto.MessageResponse;
+import com.vandus.main.dto.ForgetPasswordRequest;
 
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
