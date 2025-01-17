@@ -55,7 +55,8 @@ Spring Boot Backend for TransformoDocs, a Spring Boot project that leverages Spr
     mvn spring-boot:run
     ```
 
-3. Run the following command with correct URL and file path to generate the documentation:
+3. Run the following command with correct URL to generate the documentation:
     ```sh
-    widdershins http://localhost:8080/api/public/v1/api-docs -o ../docs/SERVER.md -c false
+    cd docs
+    widdershins http://localhost:8080/api/public/v1/api-docs -o Server.md -l false --expandBody true --language_tabs "http" --language_tabs "shell" --language_tabs "javascript" --language_tabs "python"
     ```

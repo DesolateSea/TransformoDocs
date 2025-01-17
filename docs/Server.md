@@ -1,14 +1,15 @@
 ---
-title: OpenAPI definition v0
+title: TransformoDocs v1.0.0
 language_tabs:
-  - shell: Shell
-  - http: HTTP
-  - javascript: JavaScript
-  - ruby: Ruby
-  - python: Python
-  - php: PHP
-  - java: Java
-  - go: Go
+  - http: http
+  - shell: shell
+  - javascript: javascript
+  - python: python
+language_clients:
+  - http: ""
+  - shell: ""
+  - javascript: ""
+  - python: ""
 toc_footers: []
 includes: []
 search: true
@@ -19,21 +20,78 @@ headingLevel: 2
 
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="openapi-definition">OpenAPI definition v0</h1>
+<h1 id="transformodocs">TransformoDocs v1.0.0</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
+
+API for TransformoDocs
 
 Base URLs:
 
 * <a href="http://localhost:8080">http://localhost:8080</a>
 
-<h1 id="openapi-definition-user-authentication-api">User Authentication API</h1>
+<h1 id="transformodocs-user-authentication-api">User Authentication API</h1>
 
 API for user authentication for the client application
 
 ## verifyResetPasswordOTP
 
 <a id="opIdverifyResetPasswordOTP"></a>
+
+> Code samples
+
+```http
+POST http://localhost:8080/api/auth/verify-reset-otp HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/auth/verify-reset-otp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+const inputBody = '{
+  "email": "string",
+  "otp": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/auth/verify-reset-otp',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/auth/verify-reset-otp', headers = headers)
+
+print(r.json())
+
+```
 
 `POST /api/auth/verify-reset-otp`
 
@@ -55,6 +113,8 @@ Verify reset password OTP sent to user's email for password reset
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[OTPVerifyRequest](#schemaotpverifyrequest)|true|none|
+|» email|body|string|false|none|
+|» otp|body|string|false|none|
 
 > Example responses
 
@@ -73,6 +133,61 @@ This operation does not require authentication
 ## verifyEmailOtp
 
 <a id="opIdverifyEmailOtp"></a>
+
+> Code samples
+
+```http
+POST http://localhost:8080/api/auth/verify-email-otp HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/auth/verify-email-otp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+const inputBody = '{
+  "email": "string",
+  "otp": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/auth/verify-email-otp',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/auth/verify-email-otp', headers = headers)
+
+print(r.json())
+
+```
 
 `POST /api/auth/verify-email-otp`
 
@@ -94,6 +209,8 @@ Verify OTP sent to user's email for email verification during registration
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[OTPVerifyRequest](#schemaotpverifyrequest)|true|none|
+|» email|body|string|false|none|
+|» otp|body|string|false|none|
 
 > Example responses
 
@@ -112,6 +229,62 @@ This operation does not require authentication
 ## updatePassword
 
 <a id="opIdupdatePassword"></a>
+
+> Code samples
+
+```http
+POST http://localhost:8080/api/auth/update-password HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/auth/update-password \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+const inputBody = '{
+  "email": "string",
+  "token": "string",
+  "password": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/auth/update-password',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/auth/update-password', headers = headers)
+
+print(r.json())
+
+```
 
 `POST /api/auth/update-password`
 
@@ -134,6 +307,9 @@ Update password for a user with a reset password OTP
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[ResetPasswordRequest](#schemaresetpasswordrequest)|true|none|
+|» email|body|string|false|none|
+|» token|body|string|false|none|
+|» password|body|string|false|none|
 
 > Example responses
 
@@ -152,6 +328,61 @@ This operation does not require authentication
 ## signup
 
 <a id="opIdsignup"></a>
+
+> Code samples
+
+```http
+POST http://localhost:8080/api/auth/register HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/auth/register \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+const inputBody = '{
+  "email": "string",
+  "password": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/auth/register',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/auth/register', headers = headers)
+
+print(r.json())
+
+```
 
 `POST /api/auth/register`
 
@@ -173,6 +404,8 @@ Register a new user with email and password, sends an OTP to the user's email fo
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[SignupRequest](#schemasignuprequest)|true|none|
+|» email|body|string|true|none|
+|» password|body|string|false|none|
 
 > Example responses
 
@@ -191,6 +424,54 @@ This operation does not require authentication
 ## logout
 
 <a id="opIdlogout"></a>
+
+> Code samples
+
+```http
+POST http://localhost:8080/api/auth/logout HTTP/1.1
+Host: localhost:8080
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/auth/logout \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/auth/logout',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/auth/logout', headers = headers)
+
+print(r.json())
+
+```
 
 `POST /api/auth/logout`
 
@@ -216,6 +497,61 @@ This operation does not require authentication
 
 <a id="opIdlogin"></a>
 
+> Code samples
+
+```http
+POST http://localhost:8080/api/auth/login HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/auth/login \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+const inputBody = '{
+  "email": "string",
+  "password": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/auth/login',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/auth/login', headers = headers)
+
+print(r.json())
+
+```
+
 `POST /api/auth/login`
 
 *Login a user*
@@ -236,6 +572,8 @@ Login a user with email and password, upon successful login, a JWT token is set 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[LoginRequest](#schemaloginrequest)|true|none|
+|» email|body|string|false|none|
+|» password|body|string|false|none|
 
 > Example responses
 
@@ -254,6 +592,58 @@ This operation does not require authentication
 ## forgetPassword
 
 <a id="opIdforgetPassword"></a>
+
+> Code samples
+
+```http
+POST http://localhost:8080/api/auth/forgot-password HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/auth/forgot-password \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+const inputBody = 'string';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/auth/forgot-password',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/auth/forgot-password', headers = headers)
+
+print(r.json())
+
+```
 
 `POST /api/auth/forgot-password`
 
@@ -287,11 +677,65 @@ Send reset password OTP to user's email for password reset
 This operation does not require authentication
 </aside>
 
-<h1 id="openapi-definition-file-upload-controller">file-upload-controller</h1>
+<h1 id="transformodocs-file-upload-controller">file-upload-controller</h1>
 
 ## pdfUpload
 
 <a id="opIdpdfUpload"></a>
+
+> Code samples
+
+```http
+POST http://localhost:8080/api/public/v1/upload/pdf HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X POST http://localhost:8080/api/public/v1/upload/pdf \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+const inputBody = '{
+  "pdf": "string"
+}';
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/public/v1/upload/pdf',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Content-Type': 'application/json',
+  'Accept': '*/*'
+}
+
+r = requests.post('http://localhost:8080/api/public/v1/upload/pdf', headers = headers)
+
+print(r.json())
+
+```
 
 `POST /api/public/v1/upload/pdf`
 
@@ -324,141 +768,59 @@ This operation does not require authentication
 This operation does not require authentication
 </aside>
 
-<h1 id="openapi-definition-test-controller">test-controller</h1>
-
-## test
-
-<a id="opIdtest"></a>
-
-`GET /api/public/test`
-
-> Example responses
-
-> 200 Response
-
-<h3 id="test-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|string|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## testPost
-
-<a id="opIdtestPost"></a>
-
-`POST /api/public/test`
-
-> Example responses
-
-> 200 Response
-
-<h3 id="testpost-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|string|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## healthTest
-
-<a id="opIdhealthTest"></a>
-
-`GET /api/public/python/health`
-
-> Example responses
-
-> 200 Response
-
-<h3 id="healthtest-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|string|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## OTPChecker
-
-<a id="opIdOTPChecker"></a>
-
-`GET /api/public/WrongOTP`
-
-<h3 id="otpchecker-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## UserChecker
-
-<a id="opIdUserChecker"></a>
-
-`GET /api/public/UserExists`
-
-<h3 id="userchecker-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## InvalidEmailChecker
-
-<a id="opIdInvalidEmailChecker"></a>
-
-`GET /api/public/InvalidEmail`
-
-<h3 id="invalidemailchecker-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## testPrivate
-
-<a id="opIdtestPrivate"></a>
-
-`GET /api/private/test`
-
-> Example responses
-
-> 200 Response
-
-<h3 id="testprivate-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|string|
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-<h1 id="openapi-definition-security-controller">security-controller</h1>
+<h1 id="transformodocs-security-controller">security-controller</h1>
 
 ## getCsrfToken
 
 <a id="opIdgetCsrfToken"></a>
+
+> Code samples
+
+```http
+GET http://localhost:8080/api/public/v1/auth/_csrf HTTP/1.1
+Host: localhost:8080
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X GET http://localhost:8080/api/public/v1/auth/_csrf \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/public/v1/auth/_csrf',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': '*/*'
+}
+
+r = requests.get('http://localhost:8080/api/public/v1/auth/_csrf', headers = headers)
+
+print(r.json())
+
+```
 
 `GET /api/public/v1/auth/_csrf`
 
@@ -478,11 +840,59 @@ This operation does not require authentication
 This operation does not require authentication
 </aside>
 
-<h1 id="openapi-definition-user-controller">user-controller</h1>
+<h1 id="transformodocs-user-controller">user-controller</h1>
 
 ## getUserById
 
 <a id="opIdgetUserById"></a>
+
+> Code samples
+
+```http
+GET http://localhost:8080/api/private/user/{id} HTTP/1.1
+Host: localhost:8080
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X GET http://localhost:8080/api/private/user/{id} \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/private/user/{id}',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': '*/*'
+}
+
+r = requests.get('http://localhost:8080/api/private/user/{id}', headers = headers)
+
+print(r.json())
+
+```
 
 `GET /api/private/user/{id}`
 
@@ -509,6 +919,54 @@ This operation does not require authentication
 ## getUser
 
 <a id="opIdgetUser"></a>
+
+> Code samples
+
+```http
+GET http://localhost:8080/api/private/user/ HTTP/1.1
+Host: localhost:8080
+Accept: */*
+
+```
+
+```shell
+# You can also use wget
+curl -X GET http://localhost:8080/api/private/user/ \
+  -H 'Accept: */*'
+
+```
+
+```javascript
+
+const headers = {
+  'Accept':'*/*'
+};
+
+fetch('http://localhost:8080/api/private/user/',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+```python
+import requests
+headers = {
+  'Accept': '*/*'
+}
+
+r = requests.get('http://localhost:8080/api/private/user/', headers = headers)
+
+print(r.json())
+
+```
 
 `GET /api/private/user/`
 
