@@ -1,7 +1,7 @@
 {
     "Auth":{
         "register":"/api/auth/register",
-        "verifyEmail":"/api/auth/verify-email",
+        "verifyEmail":"/api/auth/verify-email-otp",
         "login":"/api/auth/login",
         "forgetPassword":"/api/auth/forgot-password",
         "updatePassword":"/api/auth/update-password",

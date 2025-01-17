@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import server from "../server.json";
+import { useAppDispatch } from "../Hooks/useAppRedux";
+import { verifyUser } from "../Store/userSlice";
 import {
   LoginAuthProps,
   SignupProps,
@@ -42,6 +44,7 @@ class AuthService implements Auth {
       return response;
     } catch (error: any) {
       // Throw an error with a message from the response or a default error message
+      console.log(error);
       throw new Error(error.response?.data?.message || "An error occurred");
     }
   }
@@ -225,15 +228,12 @@ class AuthService implements Auth {
       if (response.status !== 200) throw new Error("Invalid Credentials");
       console.log(response.data);
       // Update register state with user info
-      props.setRegister({
-        state: true,
-        info: response.data,
-      });
+      window.location.reload();
       navigate("/"); // Navigate to the home page after successful login
       setMsg("You are logged in!");
     } catch (error: any) {
       // Set error message
-      setMsg(error.message);
+      setMsg(error.toString());
       console.error(error);
     }
   }
