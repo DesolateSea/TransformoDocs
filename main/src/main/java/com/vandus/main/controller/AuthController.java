@@ -12,11 +12,11 @@ import com.vandus.main.dto.AuthResponse;
 import com.vandus.main.dto.MessageResponse;
 import com.vandus.main.dto.ForgetPasswordRequest;
 
+import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -36,16 +36,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
     name="User Authentication API",
     description="API for user authentication for the client application"
 )
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private OTPService otpService;
-
-    @Autowired
-    private CookieUtil cookieUtil;
+    private final AuthService authService;
+    private final OTPService otpService;
+    private final CookieUtil cookieUtil;
 
 
     @PostMapping("/register")

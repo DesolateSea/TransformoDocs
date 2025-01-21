@@ -6,7 +6,8 @@ import com.vandus.main.util.MailSenderUtil;
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.InvalidOTPException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.Base64;
 
 @Service
+@RequiredArgsConstructor
 public class OTPService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private MailSenderUtil mailSender;
-
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    private final UserRepository userRepository;
+    private final MailSenderUtil mailSender;
+    private final StringRedisTemplate redisTemplate;
 
     private final SecureRandom rng = new SecureRandom();
 

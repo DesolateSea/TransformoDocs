@@ -2,6 +2,8 @@ package com.vandus.main.controller;
 
 import com.vandus.main.service.FileUploadService;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,17 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
 
 @RestController
 @RequestMapping("${vandus.api.public}/upload")
+@RequiredArgsConstructor
 public class FileUploadController {
 
-    @Autowired
-    private FileUploadService fileUploadService;
+    private final FileUploadService fileUploadService;
 
     @PostMapping("/pdf")
     public ResponseEntity<String> pdfUpload(@RequestParam("pdf") MultipartFile file) {
