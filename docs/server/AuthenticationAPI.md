@@ -23,7 +23,7 @@ headingLevel: 2
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
-API for TransformoDocs
+API for TransformoDocs. Also avaliable as Swagger UI at /swagger-ui
 
 Base URLs:
 
@@ -204,6 +204,8 @@ Verify reset password OTP sent to user's email for password reset
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[OTPVerifyRequest](#schemaotpverifyrequest)|true|none|
+|» email|body|string|false|none|
+|» otp|body|string|false|none|
 
 > Example responses
 
@@ -390,6 +392,8 @@ Verify OTP sent to user's email for email verification during registration
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[OTPVerifyRequest](#schemaotpverifyrequest)|true|none|
+|» email|body|string|false|none|
+|» otp|body|string|false|none|
 
 > Example responses
 
@@ -578,6 +582,9 @@ Update password for a user with a reset password OTP
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[ResetPasswordRequest](#schemaresetpasswordrequest)|true|none|
+|» email|body|string|false|none|
+|» token|body|string|false|none|
+|» password|body|string|false|none|
 
 > Example responses
 
@@ -764,6 +771,8 @@ Register a new user with email and password, sends an OTP to the user's email fo
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[SignupRequest](#schemasignuprequest)|true|none|
+|» email|body|string|true|none|
+|» password|body|string|false|none|
 
 > Example responses
 
@@ -1111,6 +1120,8 @@ Login a user with email and password, upon successful login, a JWT token is set 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[LoginRequest](#schemaloginrequest)|true|none|
+|» email|body|string|false|none|
+|» password|body|string|false|none|
 
 > Example responses
 
@@ -1295,6 +1306,7 @@ Send reset password OTP to user's email for password reset
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |body|body|[ForgetPasswordRequest](#schemaforgetpasswordrequest)|true|none|
+|» email|body|string|false|none|
 
 > Example responses
 
