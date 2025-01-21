@@ -2,7 +2,7 @@
 
 SERVER_URL="${1:-http://localhost:8080}"
 
-WIDDERSHINS_OPTIONS="-l false --expandBody true --language_tabs 'http' --language_tabs 'shell' --language_tabs 'javascript' --language_tabs 'python'"
+WIDDERSHINS_OPTIONS="--expandBody true"
 DOCUMENTATION_PATH="../docs/server"
 
 echo ""

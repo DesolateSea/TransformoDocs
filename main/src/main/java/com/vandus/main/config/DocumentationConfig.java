@@ -25,7 +25,7 @@ public class DocumentationConfig {
         return new OpenAPI()
             .info(new Info()
                 .title("TransformoDocs")
-                .description("API for TransformoDocs")
+                .description("API for TransformoDocs. Also avaliable as Swagger UI at /swagger-ui")
                 .version("1.0.0"));
     }
 
