@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("${vandus.api.public}/auth")
+@RequestMapping("${vandus.api.auth}")
 public class SecurityController {
 
     @Value("${vandus.csrf.enabled}")

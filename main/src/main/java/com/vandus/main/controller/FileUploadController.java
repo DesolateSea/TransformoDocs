@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("${vandus.api.public}/upload")
+@RequestMapping("${vandus.api.private}/file-upload")
 @RequiredArgsConstructor
 public class FileUploadController {
 
