@@ -15,18 +15,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User getUserById(String id) {
-        User user = userRepository
-            .findById(id)
+        return userRepository
+            .findByIdExcludePassword(id)
             .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
-        user.setPassword(null);
-        return user;
     }
 
     public User getUserByEmail(String email) {
-        User user = userRepository
-            .findByEmail(email)
+        return userRepository
+            .findByEmailExcludePassword(email)
             .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
-        user.setPassword(null);
-        return user;
     }
 }
