@@ -1,11 +1,8 @@
 package com.vandus.main.controller;
 
-import com.vandus.main.dto.*;
 import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
 import com.vandus.main.util.CookieUtil;
-
-import com.vandus.main.util.exception.UserNotFoundException;
 
 import com.vandus.main.dto.SignupRequest;
 import com.vandus.main.dto.LoginRequest;
@@ -145,7 +142,8 @@ public class AuthController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Reset password OTP sent successfully")
     })
-    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody String email) {
+    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody ForgetPasswordRequest request) { 
+        String email = request.getEmail();
         otpService.sendResetRequestOTP(email);
 
         MessageResponse response = new MessageResponse();
@@ -189,7 +187,7 @@ public class AuthController {
     })
     public ResponseEntity<MessageResponse> updatePassword(@RequestBody ResetPasswordRequest req) {
         String email = req.getEmail();
-        String password = req.getPassword();
+        String password = req.getPassword(); 
         String token = req.getToken();
 
         otpService.verifyResetPasswordToken(email, token);
