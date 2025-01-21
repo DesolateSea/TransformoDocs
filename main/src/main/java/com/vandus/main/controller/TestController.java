@@ -54,7 +54,7 @@ public class TestController {
 
     @GetMapping("/public/python/health")
     public String healthTest() {
-        return pythonAPIService.health();
+        return pythonAPIService.checkHealth();
     }
 
 }
