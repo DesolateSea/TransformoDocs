@@ -8,6 +8,8 @@ import com.vandus.main.util.exception.UnableToSendOTPException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
 import com.vandus.main.util.exception.UserNotFoundException;
 import com.vandus.main.util.exception.InvalidOTPException;
+import com.vandus.main.util.exception.InvalidFileException;
+import com.vandus.main.util.exception.UnableToUploadFileException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,5 +71,25 @@ public class CustomExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUserNotFoundException(
             UserNotFoundException exception) {
         return handlerUtil.handleException(HttpStatus.NOT_FOUND, exception);
+    }
+
+    @ExceptionHandler(InvalidFileException.class)
+    /*
+     * Error: Invalid file type or file is empty
+     * Status: 400 Bad Request
+     */
+    public ResponseEntity<ErrorResponse> handleInvalidFileException(
+            InvalidFileException exception) {
+        return handlerUtil.handleException(HttpStatus.BAD_REQUEST, exception);
+    }
+
+    @ExceptionHandler(UnableToUploadFileException.class)
+    /*
+     * Error: Failed to upload file
+     * Status: 500 Internal Server Error
+     */
+    public ResponseEntity<ErrorResponse> handleUnableToUploadFileException(
+            UnableToUploadFileException exception) {
+        return handlerUtil.handleException(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 }
