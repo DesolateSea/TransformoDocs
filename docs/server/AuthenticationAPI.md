@@ -1322,7 +1322,7 @@ Send reset password OTP to user's email for password reset
 This operation does not require authentication
 </aside>
 
-<h1 id="transformodocs-security-controller">security-controller</h1>
+<h1 id="transformodocs-security-configuration-api">Security Configuration API</h1>
 
 ## getCsrfToken
 
@@ -1467,6 +1467,10 @@ func main() {
 
 `GET /api/auth/_csrf`
 
+*Get CSRF token*
+
+Get CSRF token for the client application
+
 > Example responses
 
 > 200 Response
@@ -1475,7 +1479,8 @@ func main() {
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|CSRF token|Inline|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|CSRF protection is disabled|Inline|
 
 <h3 id="getcsrftoken-responseschema">Response Schema</h3>
 
