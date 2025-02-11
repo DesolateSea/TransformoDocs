@@ -44,6 +44,8 @@ Spring Boot Backend for TransformoDocs, a Spring Boot project that leverages Spr
 
 ## Updating Documentation
 
+TransformoDocs uses [widdershins](https://github.com/Mermade/widdershins) to generate the documentation from the OpenAPI specification. To update the documentation, run the following commands:
+
 1. Install widdershins:
     ```sh
     npm install widdershins -g
@@ -55,8 +57,14 @@ Spring Boot Backend for TransformoDocs, a Spring Boot project that leverages Spr
     mvn spring-boot:run
     ```
 
-3. Run the following command with correct URL to generate the documentation:
-    ```sh
-    cd docs
-    widdershins http://localhost:8080/api/public/v1/api-docs -o Server.md -l false --expandBody true --language_tabs "http" --language_tabs "shell" --language_tabs "javascript" --language_tabs "python"
+3. Run the script to generate the documentation:
+
+    Windows:
+    ```powershell
+    ./update-docs.ps1 <server_url>
+    ```
+
+    Linux/Mac:
+    ```bash
+    bash update-docs.sh <server_url>
     ```

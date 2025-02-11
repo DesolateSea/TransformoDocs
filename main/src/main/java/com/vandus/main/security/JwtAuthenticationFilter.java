@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter implements Filter {
         "/api/auth",
         "/actuator", // Spring Boot Actuator
         "/swagger-ui", // Springdoc Swagger UI
+        "/api-docs", // Springdoc OpenAPI Docs
     };
 
     @Autowired

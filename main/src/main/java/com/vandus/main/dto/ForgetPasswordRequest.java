@@ -1,12 +1,11 @@
 package com.vandus.main.dto;
 
-public class ForgetPasswordRequest {
-    private String email;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+public class ForgetPasswordRequest {
+    protected String email;
 }

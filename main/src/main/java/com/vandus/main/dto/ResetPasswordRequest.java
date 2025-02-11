@@ -1,37 +1,13 @@
 package com.vandus.main.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class ResetPasswordRequest {
-    private String email;
-    private String token;
-    private String password;
-
-    public ResetPasswordRequest(String email, String password, String token) {
-        this.email = email;
-        this.password = password;
-        this.token = token;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    protected String email;
+    protected String token;
+    protected String password;
 }

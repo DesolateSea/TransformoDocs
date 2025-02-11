@@ -1,11 +1,8 @@
 package com.vandus.main.controller;
 
-import com.vandus.main.dto.*;
 import com.vandus.main.service.AuthService;
 import com.vandus.main.service.OTPService;
 import com.vandus.main.util.CookieUtil;
-
-import com.vandus.main.util.exception.UserNotFoundException;
 
 import com.vandus.main.dto.SignupRequest;
 import com.vandus.main.dto.LoginRequest;
@@ -15,11 +12,11 @@ import com.vandus.main.dto.AuthResponse;
 import com.vandus.main.dto.MessageResponse;
 import com.vandus.main.dto.ForgetPasswordRequest;
 
+import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -39,16 +36,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
     name="User Authentication API",
     description="API for user authentication for the client application"
 )
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private OTPService otpService;
-
-    @Autowired
-    private CookieUtil cookieUtil;
+    private final AuthService authService;
+    private final OTPService otpService;
+    private final CookieUtil cookieUtil;
 
 
     @PostMapping("/register")
@@ -145,7 +138,8 @@ public class AuthController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Reset password OTP sent successfully")
     })
-    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody String email) {
+    public ResponseEntity<MessageResponse> forgetPassword(@RequestBody ForgetPasswordRequest request) { 
+        String email = request.getEmail();
         otpService.sendResetRequestOTP(email);
 
         MessageResponse response = new MessageResponse();
@@ -189,7 +183,7 @@ public class AuthController {
     })
     public ResponseEntity<MessageResponse> updatePassword(@RequestBody ResetPasswordRequest req) {
         String email = req.getEmail();
-        String password = req.getPassword();
+        String password = req.getPassword(); 
         String token = req.getToken();
 
         otpService.verifyResetPasswordToken(email, token);
