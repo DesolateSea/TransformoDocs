@@ -7,30 +7,28 @@ import ModeReducer from "./Store/darkLightSlice";
 import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 
+// Persist configuration for the user slice
+const userPersistConfig = {
+  key: "user",
+  storage,
+  version: 1,
+};
+
 // Combine reducers
 const rootReducer = combineReducers({
-  user: userReducer,
-  mode: ModeReducer,
+  user: persistReducer(userPersistConfig, userReducer), // Persist only the user slice
+  mode: ModeReducer, // Do not persist mode
 });
 
 // Define a type for the root state
 export type RootState = ReturnType<typeof rootReducer>;
 
-const persistConfig = {
-  key: "root",
-  storage,
-  version: 1,
-};
-
-// Persist the root reducer
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-// Configure the store
+// Configure the store with persisted reducer
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Disable serializable check for redux-persist
+      serializableCheck: false, // Disable serializable checks for Redux Persist
     }),
 });
 
