@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { Switch } from "../Ui/switch";
 import { Bell, Mail, MessageSquare } from "lucide-react";
 
 export function NotificationsSection() {
@@ -16,14 +16,18 @@ export function NotificationsSection() {
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">Security Alerts</h4>
-              <p className="text-sm text-muted-foreground">Get notified about security events</p>
+              <p className="text-sm text-muted-foreground">
+                Get notified about security events
+              </p>
             </div>
             <Switch />
           </div>
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">System Updates</h4>
-              <p className="text-sm text-muted-foreground">Receive system update notifications</p>
+              <p className="text-sm text-muted-foreground">
+                Receive system update notifications
+              </p>
             </div>
             <Switch />
           </div>
@@ -41,7 +45,9 @@ export function NotificationsSection() {
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">Processing Updates</h4>
-              <p className="text-sm text-muted-foreground">Get notified about file processing</p>
+              <p className="text-sm text-muted-foreground">
+                Get notified about file processing
+              </p>
             </div>
             <Switch />
           </div>
@@ -59,7 +65,9 @@ export function NotificationsSection() {
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">Marketing Emails</h4>
-              <p className="text-sm text-muted-foreground">Receive product updates and news</p>
+              <p className="text-sm text-muted-foreground">
+                Receive product updates and news
+              </p>
             </div>
             <Switch />
           </div>

@@ -1,6 +1,6 @@
-import { ConversionCanvas } from "@/components/transformations/ConversionCanvas";
-import { PresetLibrary } from "@/components/transformations/PresetLibrary";
-import { ConversionHistory } from "@/components/transformations/ConversionHistory";
+import { ConversionCanvas } from "../components/transformations/ConversionCanvas";
+import { PresetLibrary } from "../components/transformations/PresetLibrary";
+import { ConversionHistory } from "../components/transformations/ConversionHistory";
 
 const Transformations = () => {
   return (

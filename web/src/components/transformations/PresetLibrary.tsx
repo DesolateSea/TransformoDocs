@@ -1,22 +1,22 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
 import { FileText, Award, Image } from "lucide-react";
 
 const presets = [
   {
     title: "Legal Doc Redactor",
     icon: FileText,
-    description: "Automatically redact sensitive information"
+    description: "Automatically redact sensitive information",
   },
   {
     title: "Certificate Normalizer",
     icon: Award,
-    description: "Standardize certificate formats"
+    description: "Standardize certificate formats",
   },
   {
     title: "Bulk Image OCR",
     icon: Image,
-    description: "Extract text from multiple images"
-  }
+    description: "Extract text from multiple images",
+  },
 ];
 
 export const PresetLibrary = () => {

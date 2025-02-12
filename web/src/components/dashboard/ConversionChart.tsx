@@ -1,6 +1,5 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { ChartContainer, ChartTooltip } from "../Ui/chart";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 const data = [
@@ -28,7 +27,9 @@ export const ConversionChart = () => {
                 fill="#8884d8"
                 paddingAngle={5}
                 dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }) =>
+                  `${name} ${(percent * 100).toFixed(0)}%`
+                }
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />

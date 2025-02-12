@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
 import { CheckCircle2, Clock, XCircle } from "lucide-react";
 
 const conversionHistory = [
   { id: 1, name: "Contract.pdf", status: "completed", time: "2 minutes ago" },
   { id: 2, name: "Invoice.docx", status: "processing", time: "5 minutes ago" },
-  { id: 3, name: "Report.pdf", status: "failed", time: "10 minutes ago" }
+  { id: 3, name: "Report.pdf", status: "failed", time: "10 minutes ago" },
 ];
 
 export const ConversionHistory = () => {

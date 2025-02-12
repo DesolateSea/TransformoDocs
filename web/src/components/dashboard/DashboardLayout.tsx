@@ -1,15 +1,21 @@
 import { DashboardSidebar } from "./DashboardSidebar";
 import { ThemeToggle } from "../ThemeToggle";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { RootState } from "../../store";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const isCollapsed = useSelector((state: RootState) => state.sidebar.isCollapsed);
+  const isCollapsed = useSelector(
+    (state: RootState) => state.sidebar.isCollapsed
+  );
 
   return (
     <div className="min-h-screen bg-background">
       <DashboardSidebar />
-      <main className={`transition-all duration-300 ${isCollapsed ? "lg:pl-16" : "lg:pl-72"}`}>
+      <main
+        className={`transition-all duration-300 ${
+          isCollapsed ? "lg:pl-16" : "lg:pl-72"
+        }`}
+      >
         <div className="flex justify-end p-4">
           <ThemeToggle />
         </div>

@@ -7,9 +7,8 @@ import ForgetPassword from "./forgetPassword";
 import ConfirmPassword from "./ConfirmPassword";
 import { LoginBlockProps } from "../../Lib/interface/Authentication";
 import icon from "../../constants/icons.json";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { toggleDarkLight } from "../../Store/darkLightSlice";
 const LoginBlock: React.FC<LoginBlockProps> = ({ API }) => {
   const [signupLog, setSL] = useState<number>(0); // 0: Login, 1: Signup, 2: OTP Verification, 3: Forget Password, 4: OTP for Password Reset, 5: Confirm Password
   const [userInfo, setUserInfo] = useState<{ EMAIL: string; PASSWORD: string }>(

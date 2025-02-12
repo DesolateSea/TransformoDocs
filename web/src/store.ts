@@ -4,6 +4,9 @@ import persistStore from "redux-persist/es/persistStore";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./Store/userSlice";
 import ModeReducer from "./Store/darkLightSlice";
+import themeReducer from "./Store/themeSlice";
+import sidebarReducer from "./Store/sidebarSlice";
+import timeRangeReducer from "./Store/timeRangeSlice";
 import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 
@@ -18,6 +21,9 @@ const userPersistConfig = {
 const rootReducer = combineReducers({
   user: persistReducer(userPersistConfig, userReducer), // Persist only the user slice
   mode: ModeReducer, // Do not persist mode
+  theme: themeReducer,
+  sidebar: sidebarReducer,
+  timeRange: timeRangeReducer,
 });
 
 // Define a type for the root state

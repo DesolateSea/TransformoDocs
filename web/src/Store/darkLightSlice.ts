@@ -5,7 +5,7 @@ interface DarkLightState {
 }
 
 const initialState: DarkLightState = {
-  mode: true,
+  mode: false,
 };
 
 export const darkLightSlice = createSlice({

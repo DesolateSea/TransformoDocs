@@ -1,8 +1,8 @@
 import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "./Ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "@/store/themeSlice";
-import { RootState } from "@/store/store";
+import { toggleTheme } from "../Store/themeSlice";
+import { RootState } from "../store";
 import { useEffect } from "react";
 
 export function ThemeToggle() {
@@ -24,11 +24,7 @@ export function ThemeToggle() {
       onClick={() => dispatch(toggleTheme())}
       className="h-9 w-9"
     >
-      {isDarkMode ? (
-        <Sun className="h-4 w-4" />
-      ) : (
-        <Moon className="h-4 w-4" />
-      )}
+      {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

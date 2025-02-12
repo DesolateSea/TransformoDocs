@@ -1,6 +1,6 @@
 import { FileText, Brain, Code, Library } from "lucide-react";
-import { CategoryCard } from "@/components/getting-started/CategoryCard";
-import { Button } from "@/components/ui/button";
+import { CategoryCard } from "../components/getting-started/CategoryCard";
+import { Button } from "../components/Ui/button";
 
 const categories = [
   {
@@ -63,7 +63,9 @@ export default function GettingStarted() {
           Interactive Tutorial
         </h2>
         <div className="flex items-center justify-center rounded-lg bg-white p-12 shadow-sm">
-          <p className="text-gray-600">Tutorial content will be implemented here</p>
+          <p className="text-gray-600">
+            Tutorial content will be implemented here
+          </p>
         </div>
       </div>
     </div>

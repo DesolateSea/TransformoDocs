@@ -1,6 +1,5 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { Button } from "../Ui/button";
 
 export function DocsSection() {
   return (
@@ -28,7 +27,7 @@ result = client.convert(
               </code>
             </pre>
           </div>
-          
+
           <div className="space-y-4">
             <h3 className="font-medium">Quick Start Guide</h3>
             <div className="grid gap-4 md:grid-cols-2">
@@ -54,7 +53,9 @@ result = client.convert(
               </Card>
             </div>
           </div>
-          <Button variant="outline" className="w-full">View Full Documentation</Button>
+          <Button variant="outline" className="w-full">
+            View Full Documentation
+          </Button>
         </div>
       </CardContent>
     </Card>

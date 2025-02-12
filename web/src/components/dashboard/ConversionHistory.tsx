@@ -1,17 +1,30 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Clock, XCircle, FileText, Image, FileArchive, ChevronDown, ChevronUp, Download } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { ScrollArea } from "../Ui/scroll-area";
+import { Badge } from "../Ui/badge";
+import {
+  CheckCircle2,
+  Clock,
+  XCircle,
+  FileText,
+  Image,
+  FileArchive,
+  ChevronDown,
+  ChevronUp,
+  Download,
+} from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Button } from "../Ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../Ui/collapsible";
 
 const conversions = [
-  { 
-    id: 1, 
-    name: "Financial_Report.pdf", 
-    status: "completed", 
+  {
+    id: 1,
+    name: "Financial_Report.pdf",
+    status: "completed",
     time: "2 minutes ago",
     type: "PDF",
     size: "2.4 MB",
@@ -21,13 +34,13 @@ const conversions = [
       pages: 12,
       quality: "High",
       outputFormat: "DOCX",
-      processedDate: "2024-02-10 15:30:22"
-    }
+      processedDate: "2024-02-10 15:30:22",
+    },
   },
-  { 
-    id: 2, 
-    name: "Product_Image.jpg", 
-    status: "processing", 
+  {
+    id: 2,
+    name: "Product_Image.jpg",
+    status: "processing",
     time: "5 minutes ago",
     type: "IMG",
     size: "1.1 MB",
@@ -37,13 +50,13 @@ const conversions = [
       resolution: "1920x1080",
       quality: "Medium",
       outputFormat: "PNG",
-      processedDate: "2024-02-10 15:28:45"
-    }
+      processedDate: "2024-02-10 15:28:45",
+    },
   },
-  { 
-    id: 3, 
-    name: "Contract_Draft.docx", 
-    status: "completed", 
+  {
+    id: 3,
+    name: "Contract_Draft.docx",
+    status: "completed",
     time: "10 minutes ago",
     type: "DOCX",
     size: "892 KB",
@@ -53,18 +66,18 @@ const conversions = [
       pages: 5,
       quality: "High",
       outputFormat: "PDF",
-      processedDate: "2024-02-10 15:25:10"
-    }
-  }
+      processedDate: "2024-02-10 15:25:10",
+    },
+  },
 ];
 
 export const ConversionHistory = () => {
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
 
   const toggleItem = (id: number) => {
-    setExpandedItems(current =>
+    setExpandedItems((current) =>
       current.includes(id)
-        ? current.filter(item => item !== id)
+        ? current.filter((item) => item !== id)
         : [...current, id]
     );
   };
@@ -119,15 +132,21 @@ export const ConversionHistory = () => {
                             {getIcon(item.type)}
                             <p className="font-medium">{item.name}</p>
                           </div>
-                          <p className="text-sm text-muted-foreground">{item.time}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {item.time}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Badge variant={
-                          item.status === "completed" ? "default" :
-                          item.status === "processing" ? "secondary" :
-                          "destructive"
-                        }>
+                        <Badge
+                          variant={
+                            item.status === "completed"
+                              ? "default"
+                              : item.status === "processing"
+                              ? "secondary"
+                              : "destructive"
+                          }
+                        >
                           {item.status}
                         </Badge>
                         <span className="text-sm text-muted-foreground min-w-[60px] text-right">
@@ -146,15 +165,21 @@ export const ConversionHistory = () => {
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <p className="font-medium">Output Format</p>
-                          <p className="text-muted-foreground">{item.details.outputFormat}</p>
+                          <p className="text-muted-foreground">
+                            {item.details.outputFormat}
+                          </p>
                         </div>
                         <div>
                           <p className="font-medium">Quality</p>
-                          <p className="text-muted-foreground">{item.details.quality}</p>
+                          <p className="text-muted-foreground">
+                            {item.details.quality}
+                          </p>
                         </div>
                         <div>
                           <p className="font-medium">Processed Date</p>
-                          <p className="text-muted-foreground">{item.details.processedDate}</p>
+                          <p className="text-muted-foreground">
+                            {item.details.processedDate}
+                          </p>
                         </div>
                         <div>
                           <p className="font-medium">Pages/Resolution</p>
@@ -166,12 +191,16 @@ export const ConversionHistory = () => {
                       {item.status === "completed" && (
                         <div className="flex gap-2">
                           <Button size="sm" variant="outline" asChild>
-                            <a href={item.preview || '#'} target="_blank" rel="noopener noreferrer">
+                            <a
+                              href={item.preview || "#"}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
                               Preview
                             </a>
                           </Button>
                           <Button size="sm" asChild>
-                            <a href={item.downloadUrl || '#'} download>
+                            <a href={item.downloadUrl || "#"} download>
                               <Download className="h-4 w-4 mr-2" />
                               Download
                             </a>

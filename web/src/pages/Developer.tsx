@@ -1,10 +1,14 @@
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/Ui/tabs";
 import { Code2, Webhook, BookOpen, GripVertical } from "lucide-react";
-import { APIPlayground } from "@/components/developer/APIPlayground";
-import { WebhookSection } from "@/components/developer/WebhookSection";
-import { DocsSection } from "@/components/developer/DocsSection";
-import { TutorialSection } from "@/components/developer/TutorialSection";
+import { APIPlayground } from "../components/developer/APIPlayground";
+import { WebhookSection } from "../components/developer/WebhookSection";
+import { DocsSection } from "../components/developer/DocsSection";
+import { TutorialSection } from "../components/developer/TutorialSection";
 
 const Developer = () => {
   return (

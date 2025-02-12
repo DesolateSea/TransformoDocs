@@ -1,9 +1,14 @@
-
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { Button } from "../Ui/button";
 import { Copy, Check, Play } from "lucide-react";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../Ui/select";
 
 const apiExamples = [
   {
@@ -15,9 +20,9 @@ const apiExamples = [
       targetFormat: "docx",
       options: {
         quality: "high",
-        preserveLinks: true
-      }
-    }
+        preserveLinks: true,
+      },
+    },
   },
   {
     name: "Extract Text",
@@ -26,8 +31,8 @@ const apiExamples = [
     body: {
       file: "document.pdf",
       pages: "all",
-      language: "en"
-    }
+      language: "en",
+    },
   },
   {
     name: "Analyze Document",
@@ -35,9 +40,9 @@ const apiExamples = [
     method: "POST",
     body: {
       file: "document.pdf",
-      analysis: ["structure", "tables", "entities"]
-    }
-  }
+      analysis: ["structure", "tables", "entities"],
+    },
+  },
 ];
 
 export function APIPlayground() {
@@ -54,14 +59,20 @@ export function APIPlayground() {
   const testRequest = () => {
     setIsLoading(true);
     setTimeout(() => {
-      setResponse(JSON.stringify({
-        success: true,
-        data: {
-          fileId: "doc_123",
-          status: "completed",
-          downloadUrl: "https://example.com/download"
-        }
-      }, null, 2));
+      setResponse(
+        JSON.stringify(
+          {
+            success: true,
+            data: {
+              fileId: "doc_123",
+              status: "completed",
+              downloadUrl: "https://example.com/download",
+            },
+          },
+          null,
+          2
+        )
+      );
       setIsLoading(false);
     }, 1500);
   };
@@ -73,12 +84,15 @@ export function APIPlayground() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <Select defaultValue={apiExamples[0].name} onValueChange={(val) => {
-            const example = apiExamples.find(ex => ex.name === val);
-            if (example) {
-              setResponse(JSON.stringify(example.body, null, 2));
-            }
-          }}>
+          <Select
+            defaultValue={apiExamples[0].name}
+            onValueChange={(val) => {
+              const example = apiExamples.find((ex) => ex.name === val);
+              if (example) {
+                setResponse(JSON.stringify(example.body, null, 2));
+              }
+            }}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select API endpoint" />
             </SelectTrigger>
@@ -96,7 +110,7 @@ export function APIPlayground() {
               variant="ghost"
               size="icon"
               className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={() => copyCode(response || '')}
+              onClick={() => copyCode(response || "")}
             >
               {copied ? (
                 <Check className="h-4 w-4" />

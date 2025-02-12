@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Select } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { Button } from "../Ui/button";
+import { Select } from "../Ui/select";
 import { Upload, Download, Cloud, Code } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "../Ui/progress";
 
 export const ConversionCanvas = () => {
   return (
@@ -24,7 +24,9 @@ export const ConversionCanvas = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Input Format</label>
+              <label className="block text-sm font-medium mb-1">
+                Input Format
+              </label>
               <Select>
                 <option>PDF</option>
                 <option>DOCX</option>
@@ -32,7 +34,9 @@ export const ConversionCanvas = () => {
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Output Format</label>
+              <label className="block text-sm font-medium mb-1">
+                Output Format
+              </label>
               <Select>
                 <option>PDF</option>
                 <option>DOCX</option>

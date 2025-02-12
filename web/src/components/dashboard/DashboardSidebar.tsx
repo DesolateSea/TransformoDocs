@@ -1,9 +1,18 @@
-import { Home, Rocket, Zap, LineChart, Settings, Wrench, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Home,
+  Rocket,
+  Zap,
+  LineChart,
+  Settings,
+  Wrench,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { cn } from "../../Lib/utils";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { toggleSidebar } from "@/store/sidebarSlice";
+import { RootState } from "../../store";
+import { toggleSidebar } from "../../Store/sidebarSlice";
 
 const navigation = [
   { name: "Getting Started", href: "/", icon: Rocket },
@@ -17,10 +26,12 @@ const navigation = [
 export function DashboardSidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const isCollapsed = useSelector((state: RootState) => state.sidebar.isCollapsed);
+  const isCollapsed = useSelector(
+    (state: RootState) => state.sidebar.isCollapsed
+  );
 
   return (
-    <div 
+    <div
       className={cn(
         "fixed inset-y-0 z-50 flex flex-col transition-all duration-300",
         isCollapsed ? "w-16" : "w-72"

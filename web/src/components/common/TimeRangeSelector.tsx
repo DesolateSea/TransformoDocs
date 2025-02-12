@@ -1,10 +1,9 @@
-
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
-import { setTimeRange, setCustomDateRange } from "@/store/timeRangeSlice";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RootState } from "../../store";
+import { setTimeRange, setCustomDateRange } from "../../Store/timeRangeSlice";
+import { Button } from "../Ui/button";
+import { Calendar } from "../Ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "../Ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 

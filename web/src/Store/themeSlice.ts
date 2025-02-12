@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ThemeState {
@@ -25,10 +24,13 @@ const themeSlice = createSlice({
     },
     useSystemPreference: (state) => {
       state.systemPreference = true;
-      state.isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      state.isDarkMode = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
     },
   },
 });
 
-export const { toggleTheme, setTheme, useSystemPreference } = themeSlice.actions;
+export const { toggleTheme, setTheme, useSystemPreference } =
+  themeSlice.actions;
 export default themeSlice.reducer;

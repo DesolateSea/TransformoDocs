@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../Ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
 import { CreditCard, Receipt, AlertTriangle } from "lucide-react";
 
 export function BillingSection() {
@@ -16,7 +16,9 @@ export function BillingSection() {
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">Credit Card</h4>
-              <p className="text-sm text-muted-foreground">Manage your payment methods</p>
+              <p className="text-sm text-muted-foreground">
+                Manage your payment methods
+              </p>
             </div>
             <Button>Add Card</Button>
           </div>
@@ -34,7 +36,9 @@ export function BillingSection() {
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">Invoices</h4>
-              <p className="text-sm text-muted-foreground">Download past invoices</p>
+              <p className="text-sm text-muted-foreground">
+                Download past invoices
+              </p>
             </div>
             <Button variant="outline">View All</Button>
           </div>
@@ -52,7 +56,9 @@ export function BillingSection() {
           <div className="flex items-center justify-between">
             <div>
               <h4 className="font-medium">Budget Alerts</h4>
-              <p className="text-sm text-muted-foreground">Set spending limits</p>
+              <p className="text-sm text-muted-foreground">
+                Set spending limits
+              </p>
             </div>
             <Button variant="outline">Configure</Button>
           </div>

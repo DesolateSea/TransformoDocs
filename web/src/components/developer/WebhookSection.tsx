@@ -1,10 +1,10 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { Button } from "../Ui/button";
 import { History, AlertTriangle } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "../Ui/scroll-area";
+import { Badge } from "../Ui/badge";
 
 export function WebhookSection() {
   const [webhookStatus, setWebhookStatus] = useState<'success' | 'error' | null>(null);

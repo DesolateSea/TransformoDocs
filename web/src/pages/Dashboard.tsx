@@ -1,9 +1,8 @@
-
-import { MetricsHeader } from "@/components/dashboard/MetricsHeader";
-import { ConversionChart } from "@/components/dashboard/ConversionChart";
-import { SystemStatus } from "@/components/dashboard/SystemStatus";
-import { StorageStatus } from "@/components/dashboard/StorageStatus";
-import { ConversionHistory } from "@/components/dashboard/ConversionHistory";
+import { MetricsHeader } from "../components/dashboard/MetricsHeader";
+import { ConversionChart } from "../components/dashboard/ConversionChart";
+import { SystemStatus } from "../components/dashboard/SystemStatus";
+import { StorageStatus } from "../components/dashboard/StorageStatus";
+import { ConversionHistory } from "../components/dashboard/ConversionHistory";
 
 const Dashboard = () => {
   return (

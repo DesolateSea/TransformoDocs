@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Button } from "../Ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../Ui/card";
+import { Input } from "../Ui/input";
 import { Palette, Upload, Gauge } from "lucide-react";
 
 export function WorkspaceSection() {
@@ -40,8 +40,14 @@ export function WorkspaceSection() {
         <CardContent className="space-y-4">
           <div>
             <h4 className="font-medium">Rate Limits</h4>
-            <p className="text-sm text-muted-foreground">Configure API rate limits</p>
-            <Input type="number" placeholder="Requests per minute" className="mt-2 max-w-md" />
+            <p className="text-sm text-muted-foreground">
+              Configure API rate limits
+            </p>
+            <Input
+              type="number"
+              placeholder="Requests per minute"
+              className="mt-2 max-w-md"
+            />
           </div>
         </CardContent>
       </Card>

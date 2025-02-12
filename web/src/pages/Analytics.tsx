@@ -1,20 +1,24 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Select } from "@/components/ui/select";
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/Ui/card";
+import { Button } from "../components/Ui/button";
+import { Select } from "../components/Ui/select";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   Legend,
   BarChart,
   Bar,
-  ResponsiveContainer 
+  ResponsiveContainer,
 } from "recharts";
-import { Download, Calendar as CalendarIcon } from "lucide-react";
+import { Download } from "lucide-react";
 
 const apiData = [
   { name: "Jan 1", Team1: 4000, Team2: 2400 },
@@ -32,9 +36,27 @@ const costData = [
 ];
 
 const teamData = [
-  { id: 1, user: "John Doe", lastActive: "2 hours ago", creditsUsed: 1250, favoriteTools: "OCR, PDF Convert" },
-  { id: 2, user: "Jane Smith", lastActive: "5 minutes ago", creditsUsed: 850, favoriteTools: "Image Processing" },
-  { id: 3, user: "Mike Johnson", lastActive: "1 day ago", creditsUsed: 2100, favoriteTools: "Document Scanner" },
+  {
+    id: 1,
+    user: "John Doe",
+    lastActive: "2 hours ago",
+    creditsUsed: 1250,
+    favoriteTools: "OCR, PDF Convert",
+  },
+  {
+    id: 2,
+    user: "Jane Smith",
+    lastActive: "5 minutes ago",
+    creditsUsed: 850,
+    favoriteTools: "Image Processing",
+  },
+  {
+    id: 3,
+    user: "Mike Johnson",
+    lastActive: "1 day ago",
+    creditsUsed: 2100,
+    favoriteTools: "Document Scanner",
+  },
 ];
 
 const Analytics = () => {

@@ -1,6 +1,5 @@
-
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "../Ui/button";
+import { cn } from "../../Lib/utils";
 import { Shield, Building2, CreditCard, Bell, User } from "lucide-react";
 
 interface NavItemProps {
@@ -26,13 +25,32 @@ interface SettingsNavigationProps {
   onSectionChange: (section: string) => void;
 }
 
-export function SettingsNavigation({ activeSection, onSectionChange }: SettingsNavigationProps) {
+export function SettingsNavigation({
+  activeSection,
+  onSectionChange,
+}: SettingsNavigationProps) {
   const sections = [
-    { id: "profile", label: "Profile Settings", icon: <User className="h-4 w-4" /> },
+    {
+      id: "profile",
+      label: "Profile Settings",
+      icon: <User className="h-4 w-4" />,
+    },
     { id: "security", label: "Security", icon: <Shield className="h-4 w-4" /> },
-    { id: "workspace", label: "Workspace Settings", icon: <Building2 className="h-4 w-4" /> },
-    { id: "billing", label: "Billing & Plans", icon: <CreditCard className="h-4 w-4" /> },
-    { id: "notifications", label: "Notifications", icon: <Bell className="h-4 w-4" /> },
+    {
+      id: "workspace",
+      label: "Workspace Settings",
+      icon: <Building2 className="h-4 w-4" />,
+    },
+    {
+      id: "billing",
+      label: "Billing & Plans",
+      icon: <CreditCard className="h-4 w-4" />,
+    },
+    {
+      id: "notifications",
+      label: "Notifications",
+      icon: <Bell className="h-4 w-4" />,
+    },
   ];
 
   return (
