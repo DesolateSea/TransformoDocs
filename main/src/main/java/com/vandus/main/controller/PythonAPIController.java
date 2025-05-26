@@ -40,10 +40,7 @@ public class PythonAPIController {
         return pythonApiService.sentimentAnalysis(request.getText());
     }
     @PostMapping(value = "/optical-character-recognition", consumes = "multipart/form-data")
-    public String opticalCharacterRecognition(@RequestPart("pdf") MultipartFile pdfFile) {
-        System.out.println("\n\033[1;33m[LOG]\033[0m OCR processing file: \033[1;34m" + 
-            Optional.ofNullable(pdfFile.getOriginalFilename()).orElse("null") + "\033[0m");
-        
+    public String opticalCharacterRecognition(@RequestPart("pdf") MultipartFile pdfFile) {        
         if (pdfFile == null || pdfFile.isEmpty()) {
             return "Error: No PDF file provided";
         }
