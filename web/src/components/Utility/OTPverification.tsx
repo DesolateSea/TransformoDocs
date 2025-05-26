@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { OTPVerificationProps } from "../../Lib/interface/Authentication";
+import { OTPVerificationProps } from "../../Lib/interfaces/Authentication";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux"; // Import useDispatch hook from react-redux
 import { loginSuccess } from "../../Store/userSlice"; // Import loginSuccess action from userSlice
-import { ConfirmPasswordProps } from "../../Lib/interface/Authentication";
+import { ConfirmPasswordProps } from "../../Lib/interfaces/Authentication";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Eye, EyeOff } from "lucide-react";

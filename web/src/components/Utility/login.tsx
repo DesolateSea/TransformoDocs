@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"; // Import useDispatch hook from react-redux
 import { loginSuccess } from "../../Store/userSlice"; // Import loginSuccess action from userSlice
-import { LoginProps } from "../../Lib/interface/Authentication";
+import { LoginProps } from "../../Lib/interfaces/Authentication";
 import { RootState } from "../../store";
 import { Eye, EyeOff } from "lucide-react";
 const Login: React.FC<LoginProps> = ({ value, setValue, API }) => {

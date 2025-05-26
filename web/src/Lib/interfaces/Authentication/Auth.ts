@@ -7,7 +7,6 @@ import {
   ForgetPasswordPropsAPI,
   VerficationPropsAPI,
 } from "./AuthenticationAPI";
-import { VerficationProps } from "./Authentication";
 interface Auth {
   /**
    * Resend the OTP (One Time Password) to the user.

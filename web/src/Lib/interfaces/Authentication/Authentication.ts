@@ -1,4 +1,4 @@
-import Auth from "../../Lib/interface/Auth";
+import Auth from "./Authentication/Auth";
 export interface LoginBlockProps {
   API: Auth;
 }

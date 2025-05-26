@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ForgetPasswordProps } from "../../Lib/interface/Authentication";
+import { ForgetPasswordProps } from "../../Lib/interfaces/Authentication";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 const ForgetPassword: React.FC<ForgetPasswordProps> = ({

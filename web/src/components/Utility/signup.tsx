@@ -1,4 +1,4 @@
-import { SignupProps } from "../../Lib/interface/Authentication";
+import { SignupProps } from "../../Lib/interfaces/Authentication";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Eye, EyeOff } from "lucide-react";

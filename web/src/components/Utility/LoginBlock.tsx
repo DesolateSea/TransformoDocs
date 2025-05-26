@@ -5,7 +5,7 @@ import Login from "./login";
 import OTPVerification from "./OTPverification";
 import ForgetPassword from "./forgetPassword";
 import ConfirmPassword from "./ConfirmPassword";
-import { LoginBlockProps } from "../../Lib/interface/Authentication";
+import { LoginBlockProps } from "../../Lib/interfaces/Authentication";
 import icon from "../../constants/icons.json";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
