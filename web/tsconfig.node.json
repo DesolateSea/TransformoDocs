@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2022",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+
     "lib": ["ES2023"],
     "module": "ESNext",
     "skipLibCheck": true,

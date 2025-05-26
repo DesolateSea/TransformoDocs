@@ -11,5 +11,10 @@
     },
     "User":{
         "getUserInfo":"/api/private/user/"
+    },
+    "MLService":{
+        "OCR":"/api/public/v1/optical-character-recognition",
+        "NER":"/api/public/v1/name-entity-recognition",
+        "SENTIMENT_ANALYSIS":"/api/public/v1/sentiment-analysis"
     }
 }

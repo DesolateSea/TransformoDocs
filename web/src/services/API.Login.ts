@@ -1,20 +1,17 @@
 import axios, { AxiosResponse } from "axios";
 import server from "../server.json";
-import { useAppDispatch } from "../Hooks/useAppRedux";
-import { verifyUser } from "../Store/userSlice";
 import {
   LoginAuthProps,
   SignupProps,
-  VerficationProps,
   ResendProps,
   ForgetPasswordProps,
   EmailVerificationProps,
-} from "../Lib/interface/Authentication";
+} from "../Lib/interfaces/Authentication/Authentication";
 import {
   ConfirmPasswordAPI,
   VerficationPropsAPI,
-} from "../Lib/interface/AuthenticationAPI";
-import Auth from "../Lib/interface/Auth";
+} from "../Lib/interfaces/Authentication/AuthenticationAPI";
+import Auth from "../Lib/interfaces/Authentication/Auth";
 class AuthService implements Auth {
   private baseURL: string;
   private server: any;
