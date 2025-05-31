@@ -1,7 +1,8 @@
 import { FileText, Brain, Code, Library } from "lucide-react";
 import { CategoryCard } from "../components/getting-started/CategoryCard";
 import { Button } from "../components/Ui/button";
-
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 const categories = [
   {
     title: "Document Conversions",
@@ -29,14 +30,34 @@ const categories = [
   },
 ];
 
+const lightTheme = {
+  textPrimary: "#111827", // gray-900
+  textSecondary: "#4B5563", // gray-600
+  sectionBg: "#F9FAFB", // gray-50
+  cardBg: "#FFFFFF", // white
+};
+
+const darkTheme = {
+  textPrimary: "#F9FAFB", // light text
+  textSecondary: "#9CA3AF", // muted gray
+  sectionBg: "#1F2937", // gray-800
+  cardBg: "#111827", // gray-900
+};
+
 export default function GettingStarted() {
+  const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
+  const theme = isDarkMode ? darkTheme : lightTheme;
+
   return (
     <div className="mx-auto max-w-7xl animate-fade-in">
       <div className="mb-12 text-center">
-        <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+        <h1
+          className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl"
+          style={{ color: theme.textPrimary }}
+        >
           Welcome to Transformodocs
         </h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg" style={{ color: theme.textSecondary }}>
           Start your document transformation journey with our powerful tools
         </p>
       </div>
@@ -58,12 +79,21 @@ export default function GettingStarted() {
         ))}
       </div>
 
-      <div className="mt-16 rounded-xl bg-gray-50 p-8">
-        <h2 className="mb-6 text-2xl font-semibold text-gray-900">
+      <div
+        className="mt-16 rounded-xl p-8"
+        style={{ backgroundColor: theme.sectionBg }}
+      >
+        <h2
+          className="mb-6 text-2xl font-semibold"
+          style={{ color: theme.textPrimary }}
+        >
           Interactive Tutorial
         </h2>
-        <div className="flex items-center justify-center rounded-lg bg-white p-12 shadow-sm">
-          <p className="text-gray-600">
+        <div
+          className="flex items-center justify-center rounded-lg p-12 shadow-sm"
+          style={{ backgroundColor: theme.cardBg }}
+        >
+          <p style={{ color: theme.textSecondary }}>
             Tutorial content will be implemented here
           </p>
         </div>

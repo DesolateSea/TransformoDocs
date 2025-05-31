@@ -4,9 +4,6 @@ import { useSelector } from "react-redux";
 import { verifyUser } from "./Store/userSlice";
 import { useAppDispatch } from "./Hooks/useAppRedux";
 import LoginUser from "./container/LoginUser";
-import ConvertPdf from "./container/ConvertPdf";
-import ConvertNonMachineReadable from "./container/ConvertNonMachineReadable";
-import ConvertImage from "./container/ConvertImage";
 import Test from "./components/Ui/Test";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor } from "./store";
@@ -38,12 +35,6 @@ const App: React.FC = () => {
               path="/login"
               element={!isAuthenticated ? <LoginUser /> : <div>HELLO</div>}
             />
-            <Route path="convert-pdf" element={<ConvertPdf />} />
-            <Route
-              path="convert-non-machine-readable"
-              element={<ConvertNonMachineReadable />}
-            />
-            <Route path="convert-image" element={<ConvertImage />} />
             <Route path="/ui" element={<Test />} />
             <Route
               path="/"

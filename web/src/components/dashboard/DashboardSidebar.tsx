@@ -23,64 +23,132 @@ const navigation = [
   { name: "Developer Tools", href: "/developer", icon: Wrench },
 ];
 
+// Define light and dark theme colors as constants
+const lightTheme = {
+  background: "#FFFFFF",
+  border: "#E5E7EB", // gray-200
+  text: "#374151", // gray-700
+  textMuted: "#9CA3AF", // gray-400
+  primary: "#3B82F6", // blue-500 (tailwind default primary)
+  hoverBg: "#F3F4F6", // gray-100
+  icon: "#9CA3AF", // gray-400
+  iconHover: "#3B82F6",
+  toggleBtnBgHover: "#F3F4F6",
+  toggleBtnIcon: "#4B5563", // gray-600
+};
+
+const darkTheme = {
+  background: "#111827", // gray-900
+  border: "#1F2937", // gray-800
+  text: "#D1D5DB", // gray-300
+  textMuted: "#6B7280", // gray-400 dark variant
+  primary: "#3B82F6", // same blue-500 for primary
+  hoverBg: "#1F2937", // gray-800
+  icon: "#6B7280", // gray-500
+  iconHover: "#3B82F6",
+  toggleBtnBgHover: "#1F2937",
+  toggleBtnIcon: "#D1D5DB", // gray-300
+};
+
 export function DashboardSidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
   const isCollapsed = useSelector(
     (state: RootState) => state.sidebar.isCollapsed
   );
+  const isDark = useSelector((state: RootState) => state.theme.isDarkMode);
+  const theme = isDark ? darkTheme : lightTheme;
 
   return (
     <div
       className={cn(
-        "fixed inset-y-0 z-50 flex flex-col transition-all duration-300",
+        "fixed inset-y-0 z-50 flex flex-col transition-all duration-300 border-r",
         isCollapsed ? "w-16" : "w-72"
       )}
+      style={{
+        backgroundColor: theme.background,
+        borderColor: theme.border,
+      }}
     >
-      <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-800 px-6 pb-4">
+      <div className="flex grow flex-col gap-y-5 overflow-y-auto px-4 pb-4">
         <div className="flex h-16 shrink-0 items-center justify-between">
           {!isCollapsed && (
-            <h1 className="text-2xl font-bold text-primary">Transformodocs</h1>
+            <h1 className="text-2xl font-bold" style={{ color: theme.primary }}>
+              Transformodocs
+            </h1>
           )}
           <button
             onClick={() => dispatch(toggleSidebar())}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="p-2 rounded-lg"
+            style={{
+              backgroundColor: "transparent",
+            }}
           >
             {isCollapsed ? (
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight
+                className="h-5 w-5"
+                style={{ color: theme.toggleBtnIcon }}
+              />
             ) : (
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft
+                className="h-5 w-5"
+                style={{ color: theme.toggleBtnIcon }}
+              />
             )}
           </button>
         </div>
+
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <li>
               <ul role="list" className="-mx-2 space-y-1">
-                {navigation.map((item) => (
-                  <li key={item.name}>
-                    <Link
-                      to={item.href}
-                      className={cn(
-                        item.href === location.pathname
-                          ? "bg-gray-50 dark:bg-gray-800 text-primary"
-                          : "text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800",
-                        "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
-                      )}
-                    >
-                      <item.icon
+                {navigation.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <li key={item.name}>
+                      <Link
+                        to={item.href}
                         className={cn(
-                          item.href === location.pathname
-                            ? "text-primary"
-                            : "text-gray-400 group-hover:text-primary",
-                          "h-6 w-6 shrink-0"
+                          "group flex items-center gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-colors"
                         )}
-                        aria-hidden="true"
-                      />
-                      {!isCollapsed && item.name}
-                    </Link>
-                  </li>
-                ))}
+                        style={{
+                          backgroundColor: isActive
+                            ? theme.hoverBg
+                            : "transparent",
+                          color: isActive ? theme.primary : theme.text,
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isActive) {
+                            (
+                              e.currentTarget as HTMLAnchorElement
+                            ).style.backgroundColor = theme.hoverBg;
+                            (e.currentTarget as HTMLAnchorElement).style.color =
+                              theme.primary;
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isActive) {
+                            (
+                              e.currentTarget as HTMLAnchorElement
+                            ).style.backgroundColor = "transparent";
+                            (e.currentTarget as HTMLAnchorElement).style.color =
+                              theme.text;
+                          }
+                        }}
+                      >
+                        <item.icon
+                          className="h-6 w-6 shrink-0 transition-colors"
+                          aria-hidden="true"
+                          style={{
+                            color: isActive ? theme.primary : theme.icon,
+                            transition: "color 0.3s ease",
+                          }}
+                        />
+                        {!isCollapsed && <span>{item.name}</span>}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </li>
           </ul>

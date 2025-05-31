@@ -1,5 +1,4 @@
-import { IMLService } from "../../services/MLService/IMLService";
-
+import { IValidCheck } from "../../scripts/validator/IValidCheck";
 export function ValidateInput(paramIndex = 0): MethodDecorator {
   return function (
     target: Object,
@@ -8,7 +7,7 @@ export function ValidateInput(paramIndex = 0): MethodDecorator {
   ) {
     const originalMethod = descriptor.value;
 
-    descriptor.value = function (this: IMLService, ...args: any[]) {
+    descriptor.value = function (this: IValidCheck, ...args: any[]) {
       // Defensive check: make sure 'validate' exists on `this`
       if (typeof this.validate !== "function") {
         throw new Error(

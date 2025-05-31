@@ -2,19 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* body {
-  @apply bg-gray-900 text-white;
-  width:100%;
-} */
+
 #root{
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-body {
-  padding-top: var(--navbar-height);
-  padding-bottom: var(--footer-height);
 }
 .navbar {
   --navbar-height: 64px; /* Example height */
@@ -64,4 +57,20 @@ body {
     justify-content: center;
     background-color:#070133 ;
   }
+}
+.dark {
+  --background: 222.2 47.4% 10.6%;  /* very dark blue */
+  --foreground: 210 40% 98%;        /* almost white */
+  --primary: 210 40% 98%;           /* almost white */
+  --primary-foreground: 222.2 47.4% 11.2%; /* very dark blue */
+  --muted: 217.2 32.6% 17.5%;      /* dark muted blue */
+  --muted-foreground: 210 40% 98%; /* almost white */
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding-top: var(--navbar-height);
+  padding-bottom: var(--footer-height);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

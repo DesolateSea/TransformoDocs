@@ -1,6 +1,7 @@
-import { APICallService } from "./APICallService";
+import { APICallService } from "../../scripts/Network/APICallService";
 import { IMLService } from "./IMLService";
-import { Validator } from "./Validator";
+import { Validator } from "../../scripts/validator/Validator";
+import { IValidationResult } from "../../scripts/validator/IValidation";
 import { Entity, NERResponse } from "../../types/NERResponse";
 import { ValidateInput } from "../../scripts/Decorator/ValidateInput";
 import { AxiosResponse } from "axios";
@@ -13,7 +14,7 @@ export class NERService implements IMLService {
     this.api = new APICallService();
     this.endpoint = endpoint;
   }
-  validate(file: string): { valid: true } | { valid: false; error: string } {
+  validate(file: string): IValidationResult {
     const validity = this.validator.setInput(file).sizeCheck(1000).result();
     if (validity.valid) {
       if (typeof file === "string") return validity;

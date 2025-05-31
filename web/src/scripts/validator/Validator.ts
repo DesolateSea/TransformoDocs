@@ -1,4 +1,5 @@
-export class Validator {
+import { IValidator, IValidationResult } from "./IValidation";
+export class Validator implements IValidator {
   private input: File | string | null = null;
   private isValid = true;
   private errorMessage: string | null = null;
@@ -63,7 +64,7 @@ export class Validator {
     return this;
   }
 
-  result(): { valid: true } | { valid: false; error: string } {
+  result(): IValidationResult {
     return this.isValid
       ? { valid: true }
       : { valid: false, error: this.errorMessage || "Validation failed." };

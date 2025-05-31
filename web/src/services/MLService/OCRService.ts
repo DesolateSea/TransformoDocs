@@ -1,9 +1,9 @@
 import { AxiosResponse } from "axios";
 import { ValidateInput } from "../../scripts/Decorator/ValidateInput";
-import { APICallService } from "./APICallService";
+import { APICallService } from "../../scripts/Network/APICallService";
 import { IMLService } from "./IMLService";
-import { Validator } from "./Validator";
-
+import { Validator } from "../../scripts/validator/Validator";
+import { IValidationResult } from "../../scripts/validator/IValidation";
 export class OCRService implements IMLService {
   public validator: Validator;
   public api: APICallService;
@@ -14,7 +14,7 @@ export class OCRService implements IMLService {
     this.api = new APICallService(); // assuming optional config
   }
 
-  validate(file: File): { valid: true } | { valid: false; error: string } {
+  validate(file: File): IValidationResult {
     return this.validator
       .setInput(file)
       .typeCheck("application/pdf")
