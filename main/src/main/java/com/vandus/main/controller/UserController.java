@@ -42,8 +42,15 @@ public class UserController {
         String email = jwtUtil.getEmail(token);
         return userService.getUserByEmail(email);
     }
-    
-    @GetMapping("/{id}")
+      @GetMapping("/{id}")
+    @Operation(
+        summary="Get user by ID",
+        description="Get user information by user ID"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User found"),
+        @ApiResponse(responseCode = "404", description = "User not found")
+    })
     public User getUserById(@PathVariable("id") String id) {
         return userService.getUserById(id);
     }

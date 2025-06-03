@@ -4,6 +4,9 @@ import java.util.Optional;
 import com.vandus.main.dto.ContentRequest;
 import com.vandus.main.service.NLPService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,23 +28,56 @@ import lombok.RequiredArgsConstructor;
 public class MLServicesController {
       
     private final NLPService nlpService;
-
+    
     @GetMapping("/health")
+    @Operation(
+        summary="Check API health",
+        description="Verify if the NLP service is operational"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Service is healthy"),
+        @ApiResponse(responseCode = "500", description = "Service is not available")
+    })
     public String checkHealth() {
         return nlpService.checkHealth();
     }
-
+    
     @PostMapping("/named-entity-recognition")
+    @Operation(
+        summary="Named Entity Recognition",
+        description="Extracts named entities (people, places, organizations, etc.) from text"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Named entities extracted successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid input text")
+    })
     public String namedEntityRecognition(@RequestBody ContentRequest request) {
         return nlpService.namedEntityRecognition(request.getText());
     }
-
+    
     @PostMapping("/sentiment-analysis")
+    @Operation(
+        summary="Sentiment Analysis",
+        description="Analyzes the sentiment (positive, negative, neutral) of provided text"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Sentiment analysis completed successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid input text")
+    })
     public String sentimentAnalysis(@RequestBody ContentRequest request) {
         return nlpService.sentimentAnalysis(request.getText());
     }
-
+    
     @PostMapping(value = "/optical-character-recognition", consumes = "multipart/form-data")
+    @Operation(
+        summary="Optical Character Recognition",
+        description="Extracts text from PDF documents using OCR technology"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Text extracted successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid file format or empty file"),
+        @ApiResponse(responseCode = "500", description = "OCR processing error")
+    })
     public String opticalCharacterRecognition(@RequestPart("pdf") MultipartFile pdfFile) {        
         if (pdfFile == null || pdfFile.isEmpty()) {
             return "Error: No PDF file provided";
