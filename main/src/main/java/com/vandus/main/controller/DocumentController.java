@@ -64,7 +64,7 @@ public class DocumentController {
         User owner = userService.getCurrentUser();
         DocumentFile document = documentFileService.uploadFile(file, owner);
         
-        DocumentResponse response = new DocumentResponse(document.getId());
+        DocumentResponse response = new DocumentResponse(document);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
     
@@ -78,7 +78,7 @@ public class DocumentController {
         List<DocumentFile> documents = documentFileService.getUserDocuments(owner);
         
         List<DocumentResponse> response = documents.stream()
-            .map(doc -> new DocumentResponse(doc.getId()))
+            .map(doc -> new DocumentResponse(doc))
             .collect(Collectors.toList());
         
         return ResponseEntity.ok(response);
