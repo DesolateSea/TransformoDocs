@@ -1,8 +1,7 @@
 package com.vandus.main.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -11,11 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.core.io.InputStreamResource;
-import java.io.ByteArrayInputStream;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +25,9 @@ import org.springframework.util.MultiValueMap;
 
 import com.vandus.main.client.NLPClient;
 import com.vandus.main.dto.OCRResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.vandus.main.model.DocumentFile;
+import com.vandus.main.util.exception.DocumentNotFoundException;
+import com.vandus.main.util.exception.ProcessingException;
 
 /**
  * Service for interacting with the Python API backend.
@@ -36,20 +38,25 @@ public class NLPService {
 
     private final NLPClient pythonAPI;
     private final RestClient restClient;
-    private static final Logger logger = LoggerFactory.getLogger(NLPService.class);
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 5MB limit
+    private final DocumentFileService documentFileService;
 
     /**
-     * Constructs a NLPService with the specified REST client builder and API URL.
+     * Constructs a NLPService with the specified REST client builder, API URL, and document service.
      * 
      * @param builder The RestClient.Builder to use for building the REST client
      * @param url The base URL of the Python API, injected from configuration
+     * @param documentFileService The service for accessing document files
      */
-    public NLPService(RestClient.Builder builder, @Value("${vandus.python.api.url}") String url) {
+    public NLPService(
+            RestClient.Builder builder, 
+            @Value("${vandus.python.api.url}") String url,
+            DocumentFileService documentFileService) {
+
         this.restClient = builder.baseUrl(url).build();
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         this.pythonAPI = factory.createClient(NLPClient.class);
+        this.documentFileService = documentFileService;
     }
 
     /**
@@ -60,105 +67,99 @@ public class NLPService {
     public String checkHealth() {
         return pythonAPI.checkHealth();
     }
-
+    
     /**
      * Performs Named Entity Recognition (NER) on the provided text.
+     * Returns a structured NLPResponse object.
      * 
      * @param text The text to analyze for named entities
-     * @return A JSON string containing the recognized entities
+     * @return Result of the NER analysis
+     * @throws ProcessingException if there is an error processing the request
      */
-    public String namedEntityRecognition(String text) {
-        return pythonAPI.namedEntityRecognition(text);
+    public String processNamedEntityRecognition(String text) {
+        if (text == null || text.trim().isEmpty())
+            throw new ProcessingException("Text cannot be empty");
+        
+        String result = pythonAPI.namedEntityRecognition(text);
+        return result;
+    }
+    
+    /**
+     * Performs sentiment analysis on the provided text.
+     * Returns a structured NLPResponse object.
+     * 
+     * @param text The text to analyze for sentiment
+     * @return Result of the sentiment analysis
+     * @throws ProcessingException if there is an error processing the request
+     */
+    public String processSentimentAnalysis(String text) {
+        if (text == null || text.trim().isEmpty())
+            throw new ProcessingException("Text cannot be empty");
+        
+        String result = pythonAPI.sentimentAnalysis(text);
+        return result;
     }
 
     /**
-     * Performs sentiment analysis on the provided text.
+     * Performs Optical Character Recognition (OCR) on a PDF file referenced by document ID.
+     * Retrieves the document, validates it, and sends it to the Python API for processing.
      * 
-     * @param text The text to analyze for sentiment
-     * @return A JSON string containing the sentiment analysis results
-     */
-    public String sentimentAnalysis(String text) {
-        return pythonAPI.sentimentAnalysis(text);
-    }
-    
-    /**
-     * Performs Optical Character Recognition (OCR) on a PDF file.
-     * Validates the file, renames it with a timestamp, and sends it to the Python API for processing.
-     * 
-     * @param pdfFile The PDF file to process
-     * @return The extracted text from the PDF, or an error message if processing fails
+     * @param documentId The ID of the DocumentFile to process
+     * @return An OCRResultResponse with the extraction results or error information
+     * @throws DocumentNotFoundException If the document with the specified ID doesn't exist
+     * @throws ProcessingException If there's an error processing the document
      */    
-    public String opticalCharacterRecognition(MultipartFile pdfFile) {
+    public List<String> processDocumentOCR(String documentId) {
         try {
-            // 1. Validate if the file is empty
-            if (pdfFile.isEmpty()) {
-                return "Error: Uploaded file is empty.";
-            }
-    
-            // 2. Validate file size
-            if (pdfFile.getSize() > MAX_FILE_SIZE) {
-                return "Error: File size exceeds the 5MB limit.";
-            }
-    
-            // 3. Validate file type (must be PDF)
-            String contentType = pdfFile.getContentType();
-            if (!Objects.equals(contentType, MediaType.APPLICATION_PDF_VALUE)) {
-                return "Error: Only PDF files are allowed.";
-            }
-    
-            // 4. Rename the file: name-yyyyMMdd_HHmmss.pdf
-            String originalFilename = pdfFile.getOriginalFilename();
-            String baseName = (originalFilename != null && !originalFilename.isEmpty())
-                ? originalFilename.replaceAll("\\.pdf$", "")
-                : "file";
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String newFilename = baseName + "-" + timestamp + ".pdf";
-    
-            logger.info("Processing OCR for file: {}", newFilename);
-    
-            // 5. Build multipart data using MultipartBodyBuilder
-            MultipartBodyBuilder builder = new MultipartBodyBuilder();
-            builder.part("pdf", new InputStreamResource(new ByteArrayInputStream(pdfFile.getBytes())) {
+            DocumentFile document = documentFileService.getDocumentById(documentId);
+
+            OCRResponse ocrResponse = performOCR(document);
+
+            if (ocrResponse == null)
+                throw new ProcessingException("No response from OCR service");
+            
+            List<String> result = ocrResponse.getText();
+            Optional<String> error = ocrResponse.getError();
+            if (error.isPresent())
+                throw new ProcessingException("OCR service error: " + error.get());
+            
+            return result;
+        } catch (IOException e) {
+            throw new ProcessingException("Error reading file: " + e.getMessage(), e);
+        } catch (HttpClientErrorException e) {
+            throw new ProcessingException("OCR service error: " + e.getStatusCode(), e);
+        } catch (Exception e) {
+            throw new ProcessingException("Error processing document: " + e.getMessage(), e);
+        }
+    }
+  
+    private OCRResponse performOCR(DocumentFile document) throws IOException {
+        File file = document.getFile();
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            builder.part("pdf", new InputStreamResource(fileInputStream) {
                 @Override
                 public String getFilename() {
-                    return newFilename;
+                    return document.getName();
                 }
+
                 @Override
                 public long contentLength() {
-                    // Return the known file size to avoid re-reading the stream
-                    return pdfFile.getSize();
+                    return file.length();
                 }
             });
+
             MultiValueMap<String, HttpEntity<?>> multipartData = builder.build();
-    
-            // 6. Call Python API using RestClient and pass the multipart data directly.
+
             ResponseEntity<OCRResponse> response = restClient.method(HttpMethod.POST)
                 .uri("/ocr")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
                 .body(multipartData)
                 .retrieve()
                 .toEntity(OCRResponse.class);
-    
-            OCRResponse ocrResponse = response.getBody();
-            if (ocrResponse == null) {
-                logger.warn("No response body received from OCR service");
-                return "Error: No response from OCR service";
-            }
-    
-            // 7. Process the OCR response
-            if (ocrResponse.message().startsWith("Error") || ocrResponse.text().isEmpty()) {
-                return ocrResponse.message();
-            }
-    
-            return String.join("\n", ocrResponse.text());
-    
-        } catch (HttpClientErrorException e) {
-            logger.error("HTTP error from OCR service: {}", e.getStatusCode(), e);
-            return "Error: OCR service returned " + e.getStatusCode();
-        } catch (Exception e) {
-            logger.error("Error processing OCR: ", e);
-            return "Error: " + e.getMessage();
+
+            return response.getBody();
         }
     }
-    
 }

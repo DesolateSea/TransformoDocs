@@ -13,7 +13,7 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     /**
      * Find a user by their email address.
-     * Use UserRepository::findByEmailExcludePassword() to exclude the user's password.
+     * Use {@link #findByEmailExcludePassword(String)} to exclude the user's password.
      * 
      * @param email The email address of the user
      * @return An Optional containing the User entity with the specified email, or an empty Optional if no user with the specified email exists

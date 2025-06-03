@@ -1,7 +1,9 @@
 package com.vandus.main.controller;
 
-import java.util.Optional;
 import com.vandus.main.dto.ContentRequest;
+import com.vandus.main.dto.NLPResponse;
+import com.vandus.main.dto.OCRRequest;
+import com.vandus.main.dto.OCRResultResponse;
 import com.vandus.main.service.NLPService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,14 +11,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.RequestPart;
+
+import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("${vandus.api.public}")
@@ -26,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 )
 @RequiredArgsConstructor
 public class MLServicesController {
-      
+
     private final NLPService nlpService;
     
     @GetMapping("/health")
@@ -47,12 +53,10 @@ public class MLServicesController {
         summary="Named Entity Recognition",
         description="Extracts named entities (people, places, organizations, etc.) from text"
     )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Named entities extracted successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input text")
-    })
-    public String namedEntityRecognition(@RequestBody ContentRequest request) {
-        return nlpService.namedEntityRecognition(request.getText());
+    public ResponseEntity<NLPResponse> processNamedEntityRecognition(@Valid @RequestBody ContentRequest request) {
+        String result = nlpService.processNamedEntityRecognition(request.getText());
+        NLPResponse response = new NLPResponse(result);
+        return ResponseEntity.ok(response);
     }
     
     @PostMapping("/sentiment-analysis")
@@ -60,40 +64,20 @@ public class MLServicesController {
         summary="Sentiment Analysis",
         description="Analyzes the sentiment (positive, negative, neutral) of provided text"
     )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Sentiment analysis completed successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input text")
-    })
-    public String sentimentAnalysis(@RequestBody ContentRequest request) {
-        return nlpService.sentimentAnalysis(request.getText());
+    public ResponseEntity<NLPResponse> processSentimentAnalysis(@Valid @RequestBody ContentRequest request) {
+        String result = nlpService.processSentimentAnalysis(request.getText());
+        NLPResponse response = new NLPResponse(result);
+        return ResponseEntity.ok(response);
     }
     
-    @PostMapping(value = "/optical-character-recognition", consumes = "multipart/form-data")
+    @PostMapping("/ocr")
     @Operation(
         summary="Optical Character Recognition",
-        description="Extracts text from PDF documents using OCR technology"
+        description="Extracts text from PDF documents using OCR technology based on document ID"
     )
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Text extracted successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid file format or empty file"),
-        @ApiResponse(responseCode = "500", description = "OCR processing error")
-    })
-    public String opticalCharacterRecognition(@RequestPart("pdf") MultipartFile pdfFile) {        
-        if (pdfFile == null || pdfFile.isEmpty()) {
-            return "Error: No PDF file provided";
-        }
-        
-        String filename = pdfFile.getOriginalFilename();
-        if (!Optional.ofNullable(filename)
-                .map(String::toLowerCase)
-                .filter(name -> name.endsWith(".pdf"))
-                .isPresent()) {
-            System.out.println("\n\033[1;33m[LOG]\033[0m Invalid file format. Only PDF is allowed.");
-            return "Error: Invalid file format. Only PDF is allowed.";
-        }
-        
-        System.out.println("\n\033[1;33m[LOG]\033[0m OCR processing file: \033[1;34m" + filename + "\033[0m");
-        return nlpService.opticalCharacterRecognition(pdfFile);
+    public ResponseEntity<OCRResultResponse> processDocumentWithOcr(@Valid @RequestBody OCRRequest request) {
+        List<String> result = nlpService.processDocumentOCR(request.getDocumentId());
+        OCRResultResponse response = new OCRResultResponse(result);
+        return ResponseEntity.ok(response);
     }
-    
 }
