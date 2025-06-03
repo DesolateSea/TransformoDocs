@@ -1,16 +1,20 @@
 package com.vandus.main.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.time.Instant;
+
 @Document(collection = "documents")
-@Getter @Setter
+@Getter @Setter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DocumentFile {
@@ -24,4 +28,6 @@ public class DocumentFile {
     @DBRef
     private User owner;
 
+    @CreatedDate
+    private Instant createdAt;
 }
