@@ -2,6 +2,9 @@ package com.vandus.main.service;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.vandus.main.model.User;
 import com.vandus.main.repository.UserRepository;
 import com.vandus.main.util.exception.UserNotFoundException;
@@ -24,5 +27,16 @@ public class UserService {
         return userRepository
             .findByEmailExcludePassword(email)
             .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            return getUserByEmail(email);
+        }
+        
+        return null;
     }
 }
