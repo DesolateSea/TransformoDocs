@@ -31,14 +31,17 @@ public class PythonAPIController {
     public String checkHealth() {
         return pythonApiService.checkHealth();
     }
+
     @PostMapping("/name-entity-recognition")
     public String nameEntityRecognition(@RequestBody NameEntityRecognition request) {
         return pythonApiService.nameEntityRecognition(request.getText());
     }
+
     @PostMapping("/sentiment-analysis")
     public String sentimentAnalysis(@RequestBody SentimentAnalysisDTO request) {
         return pythonApiService.sentimentAnalysis(request.getText());
     }
+
     @PostMapping(value = "/optical-character-recognition", consumes = "multipart/form-data")
     public String opticalCharacterRecognition(@RequestPart("pdf") MultipartFile pdfFile) {        
         if (pdfFile == null || pdfFile.isEmpty()) {
@@ -56,4 +59,6 @@ public class PythonAPIController {
         
         System.out.println("\n\033[1;33m[LOG]\033[0m OCR processing file: \033[1;34m" + filename + "\033[0m");
         return pythonApiService.opticalCharacterRecognition(pdfFile);
-    }}
+    }
+    
+}
