@@ -21,7 +21,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
-import com.vandus.main.client.PythonAPIClient;
+import com.vandus.main.client.NLPClient;
 import com.vandus.main.dto.OCRResponse;
 
 import org.slf4j.Logger;
@@ -32,24 +32,24 @@ import org.slf4j.LoggerFactory;
  * Provides methods for natural language processing tasks such as OCR, NER, and sentiment analysis.
  */
 @Service
-public class PythonAPIService {
+public class NLPService {
 
-    private final PythonAPIClient pythonAPI;
+    private final NLPClient pythonAPI;
     private final RestClient restClient;
-    private static final Logger logger = LoggerFactory.getLogger(PythonAPIService.class);
+    private static final Logger logger = LoggerFactory.getLogger(NLPService.class);
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 5MB limit
 
     /**
-     * Constructs a PythonAPIService with the specified REST client builder and API URL.
+     * Constructs a NLPService with the specified REST client builder and API URL.
      * 
      * @param builder The RestClient.Builder to use for building the REST client
      * @param url The base URL of the Python API, injected from configuration
      */
-    public PythonAPIService(RestClient.Builder builder, @Value("${vandus.python.api.url}") String url) {
+    public NLPService(RestClient.Builder builder, @Value("${vandus.python.api.url}") String url) {
         this.restClient = builder.baseUrl(url).build();
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
-        this.pythonAPI = factory.createClient(PythonAPIClient.class);
+        this.pythonAPI = factory.createClient(NLPClient.class);
     }
 
     /**

@@ -5,6 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class SentimentAnalysisDTO {
+public class ContentRequest {
     protected String text;
 }

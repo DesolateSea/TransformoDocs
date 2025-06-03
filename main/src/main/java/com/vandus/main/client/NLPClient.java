@@ -8,7 +8,7 @@ import com.vandus.main.dto.OCRResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 @HttpExchange(accept = "application/json")
-public interface PythonAPIClient {
+public interface NLPClient {
     
     @GetExchange("/health")
     String checkHealth();

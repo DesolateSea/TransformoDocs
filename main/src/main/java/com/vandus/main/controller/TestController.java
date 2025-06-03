@@ -1,6 +1,6 @@
 package com.vandus.main.controller;
 
-import com.vandus.main.service.PythonAPIService;
+import com.vandus.main.service.NLPService;
 import com.vandus.main.util.exception.InvalidEmailPasswordException;
 import com.vandus.main.util.exception.UnableToSendOTPException;
 import com.vandus.main.util.exception.UserAlreadyExistsException;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @Autowired
-    private PythonAPIService pythonAPIService;
+    private NLPService nlpService;
 
     @GetMapping("/public/test")
     public String test(HttpServletRequest request) {
@@ -54,7 +54,7 @@ public class TestController {
 
     @GetMapping("/public/python/health")
     public String healthTest() {
-        return pythonAPIService.checkHealth();
+        return nlpService.checkHealth();
     }
 
 }

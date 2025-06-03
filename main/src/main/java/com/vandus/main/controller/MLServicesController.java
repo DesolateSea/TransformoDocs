@@ -2,7 +2,7 @@ package com.vandus.main.controller;
 
 import java.util.Optional;
 import com.vandus.main.dto.ContentRequest;
-import com.vandus.main.service.PythonAPIService;
+import com.vandus.main.service.NLPService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -22,23 +22,23 @@ import lombok.RequiredArgsConstructor;
     description="API endpoints for our ML services"
 )
 @RequiredArgsConstructor
-public class PythonAPIController {
+public class MLServicesController {
       
-    private final PythonAPIService pythonApiService;
+    private final NLPService nlpService;
 
     @GetMapping("/health")
     public String checkHealth() {
-        return pythonApiService.checkHealth();
+        return nlpService.checkHealth();
     }
 
     @PostMapping("/named-entity-recognition")
     public String namedEntityRecognition(@RequestBody ContentRequest request) {
-        return pythonApiService.namedEntityRecognition(request.getText());
+        return nlpService.namedEntityRecognition(request.getText());
     }
 
     @PostMapping("/sentiment-analysis")
     public String sentimentAnalysis(@RequestBody ContentRequest request) {
-        return pythonApiService.sentimentAnalysis(request.getText());
+        return nlpService.sentimentAnalysis(request.getText());
     }
 
     @PostMapping(value = "/optical-character-recognition", consumes = "multipart/form-data")
@@ -57,7 +57,7 @@ public class PythonAPIController {
         }
         
         System.out.println("\n\033[1;33m[LOG]\033[0m OCR processing file: \033[1;34m" + filename + "\033[0m");
-        return pythonApiService.opticalCharacterRecognition(pdfFile);
+        return nlpService.opticalCharacterRecognition(pdfFile);
     }
     
 }
