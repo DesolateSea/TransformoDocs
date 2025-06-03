@@ -5,6 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class NameEntityRecognition {
+public class ContentRequest {
     protected String text;
 }

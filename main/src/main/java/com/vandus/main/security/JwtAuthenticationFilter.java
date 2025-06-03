@@ -5,7 +5,6 @@ import com.vandus.main.util.JwtUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.servlet.Filter;
@@ -20,6 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import static java.util.Arrays.stream;
+
+// TODO: Use role-based access control instead of public/private endpoints
 
 @Component
 public class JwtAuthenticationFilter implements Filter {
@@ -54,6 +55,11 @@ public class JwtAuthenticationFilter implements Filter {
         httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
     }
 
+    /**
+     * Handles public endpoints by allowing access without authentication.
+     *
+     * @return true if the request was handled, false otherwise
+     */
     private boolean handlePublicEndpoint(
             HttpServletRequest request, 
             HttpServletResponse response, 
@@ -70,6 +76,11 @@ public class JwtAuthenticationFilter implements Filter {
         return false;
     }
 
+    /**
+     * Handles private endpoints by requiring authentication.
+     *
+     * @return true if the request was handled, false otherwise
+     */
     private boolean handlePrivateEndpoint(
             HttpServletRequest request, 
             HttpServletResponse response, 

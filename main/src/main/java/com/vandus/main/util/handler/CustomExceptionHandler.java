@@ -10,6 +10,8 @@ import com.vandus.main.util.exception.UserNotFoundException;
 import com.vandus.main.util.exception.InvalidOTPException;
 import com.vandus.main.util.exception.InvalidFileException;
 import com.vandus.main.util.exception.UnableToUploadFileException;
+import com.vandus.main.util.exception.DocumentNotFoundException;
+import com.vandus.main.util.exception.ProcessingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,8 +83,8 @@ public class CustomExceptionHandler {
     public ResponseEntity<ErrorResponse> handleInvalidFileException(
             InvalidFileException exception) {
         return handlerUtil.handleException(HttpStatus.BAD_REQUEST, exception);
-    }
-
+    }    
+    
     @ExceptionHandler(UnableToUploadFileException.class)
     /*
      * Error: Failed to upload file
@@ -91,5 +93,25 @@ public class CustomExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUnableToUploadFileException(
             UnableToUploadFileException exception) {
         return handlerUtil.handleException(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+    }
+
+    @ExceptionHandler(DocumentNotFoundException.class)
+    /*
+     * Error: Document not found
+     * Status: 404 Not Found
+     */
+    public ResponseEntity<ErrorResponse> handleDocumentNotFoundException(
+            DocumentNotFoundException exception) {
+        return handlerUtil.handleException(HttpStatus.NOT_FOUND, exception);
+    }
+    
+    @ExceptionHandler(ProcessingException.class)
+    /*
+     * Error: Processing error (OCR, NLP, etc.)
+     * Status: 422 Unprocessable Entity
+     */
+    public ResponseEntity<ErrorResponse> handleProcessingException(
+            ProcessingException exception) {
+        return handlerUtil.handleException(HttpStatus.UNPROCESSABLE_ENTITY, exception);
     }
 }
