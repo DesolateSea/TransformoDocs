@@ -3,6 +3,7 @@ from flask_restful import Api
 from app.routes.ner import NamedEntityRecognition
 from app.routes.sentiment import SentimentAnalysis
 from app.routes.ocr import OCR
+from app.routes.data_extractor import DataExtractor
 
 def create_app():
     app = Flask(__name__)
@@ -13,6 +14,7 @@ def create_app():
     api.add_resource(NamedEntityRecognition, '/ner')
     api.add_resource(SentimentAnalysis, '/sentiment')
     api.add_resource(OCR, '/ocr')
+    api.add_resource(DataExtractor, '/data-extractor')
     
     # Health check route
     @app.route('/health')
