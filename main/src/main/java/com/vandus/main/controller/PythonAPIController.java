@@ -1,8 +1,7 @@
 package com.vandus.main.controller;
 
 import java.util.Optional;
-import com.vandus.main.dto.NameEntityRecognition;
-import com.vandus.main.dto.SentimentAnalysisDTO;
+import com.vandus.main.dto.ContentRequest;
 import com.vandus.main.service.PythonAPIService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,12 +32,12 @@ public class PythonAPIController {
     }
 
     @PostMapping("/name-entity-recognition")
-    public String nameEntityRecognition(@RequestBody NameEntityRecognition request) {
+    public String nameEntityRecognition(@RequestBody ContentRequest request) {
         return pythonApiService.nameEntityRecognition(request.getText());
     }
 
     @PostMapping("/sentiment-analysis")
-    public String sentimentAnalysis(@RequestBody SentimentAnalysisDTO request) {
+    public String sentimentAnalysis(@RequestBody ContentRequest request) {
         return pythonApiService.sentimentAnalysis(request.getText());
     }
 
