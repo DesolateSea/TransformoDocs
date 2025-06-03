@@ -36,6 +36,11 @@ public class User {
         this.emailVerified = false;
     }
 
+    /**
+     * Adds a document to the user's list of documents.
+     * 
+     * @param document The document to add
+     */
     public void addDocument(DocumentFile document) {
         if (documents == null) {
             documents = new ArrayList<>();

@@ -27,6 +27,10 @@ import com.vandus.main.dto.OCRResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Service for interacting with the Python API backend.
+ * Provides methods for natural language processing tasks such as OCR, NER, and sentiment analysis.
+ */
 @Service
 public class PythonAPIService {
 
@@ -35,6 +39,12 @@ public class PythonAPIService {
     private static final Logger logger = LoggerFactory.getLogger(PythonAPIService.class);
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 5MB limit
 
+    /**
+     * Constructs a PythonAPIService with the specified REST client builder and API URL.
+     * 
+     * @param builder The RestClient.Builder to use for building the REST client
+     * @param url The base URL of the Python API, injected from configuration
+     */
     public PythonAPIService(RestClient.Builder builder, @Value("${vandus.python.api.url}") String url) {
         this.restClient = builder.baseUrl(url).build();
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
@@ -42,18 +52,42 @@ public class PythonAPIService {
         this.pythonAPI = factory.createClient(PythonAPIClient.class);
     }
 
+    /**
+     * Checks the health of the Python API service.
+     * 
+     * @return A string indicating the health status of the service
+     */
     public String checkHealth() {
         return pythonAPI.checkHealth();
     }
 
-    public String nameEntityRecognition(String text) {
-        return pythonAPI.nameEntityRecognition(text);
+    /**
+     * Performs Named Entity Recognition (NER) on the provided text.
+     * 
+     * @param text The text to analyze for named entities
+     * @return A JSON string containing the recognized entities
+     */
+    public String namedEntityRecognition(String text) {
+        return pythonAPI.namedEntityRecognition(text);
     }
 
+    /**
+     * Performs sentiment analysis on the provided text.
+     * 
+     * @param text The text to analyze for sentiment
+     * @return A JSON string containing the sentiment analysis results
+     */
     public String sentimentAnalysis(String text) {
         return pythonAPI.sentimentAnalysis(text);
     }
-        
+    
+    /**
+     * Performs Optical Character Recognition (OCR) on a PDF file.
+     * Validates the file, renames it with a timestamp, and sends it to the Python API for processing.
+     * 
+     * @param pdfFile The PDF file to process
+     * @return The extracted text from the PDF, or an error message if processing fails
+     */    
     public String opticalCharacterRecognition(MultipartFile pdfFile) {
         try {
             // 1. Validate if the file is empty

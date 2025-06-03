@@ -14,7 +14,7 @@ public interface PythonAPIClient {
     String checkHealth();
 
     @GetExchange("/ner")
-    String nameEntityRecognition(@RequestParam("text") String text);
+    String namedEntityRecognition(@RequestParam("text") String text);
 
     @GetExchange("/sentiment")
     String sentimentAnalysis(@RequestParam("text") String text);

@@ -31,9 +31,9 @@ public class PythonAPIController {
         return pythonApiService.checkHealth();
     }
 
-    @PostMapping("/name-entity-recognition")
-    public String nameEntityRecognition(@RequestBody ContentRequest request) {
-        return pythonApiService.nameEntityRecognition(request.getText());
+    @PostMapping("/named-entity-recognition")
+    public String namedEntityRecognition(@RequestBody ContentRequest request) {
+        return pythonApiService.namedEntityRecognition(request.getText());
     }
 
     @PostMapping("/sentiment-analysis")
