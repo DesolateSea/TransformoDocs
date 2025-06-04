@@ -28,6 +28,13 @@ public class User {
     @DBRef
     private List<DocumentFile> documents = new ArrayList<>();
 
+    /**
+     * Constructor for a new user.
+     * Sets email and password, and marks emailVerified as false.
+     * 
+     * @param email The user's email
+     * @param password The user's password
+     */
     public User(String email, String password) {
         this.email = email;
         this.password = password;
