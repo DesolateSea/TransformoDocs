@@ -42,7 +42,7 @@ public class AuthController {
     private final AuthService authService;
     private final OTPService otpService;
     private final CookieUtil cookieUtil;
-
+    
 
     @PostMapping("/register")
     @Operation(

@@ -1,6 +1,7 @@
 package com.vandus.main.service;
 
 import com.vandus.main.model.User;
+import com.vandus.main.model.UserRole;
 import com.vandus.main.repository.UserRepository;
 import com.vandus.main.util.JwtUtil;
 
@@ -12,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Service class handling authentication operations such as user signup, login,
@@ -26,10 +30,8 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     /**
-     * Registers a new temporary user in the system with an email and password.
-     * If a user with the same email exists but is not verified, the existing user data is deleted.
-     * It is advised to use a scheduled task to periodically remove unverified users.
-     * This system is not intended to provide services to unverified users.
+     * Registers a new user in the system with an email and password.
+     * If a user with the same email exists but is not verified, the existing user will be deleted first.
      *
      * @param email The email address for the new user
      * @param password The password for the new user (will be encoded)
@@ -66,12 +68,12 @@ public class AuthService {
     }
 
     /**
-     * Authenticates a user and generates a JWT token if successful. Fails if email is unverified or password doesn't match.
+     * Authenticates a user and generates a JWT token if successful.
      *
      * @param email The email address of the user
      * @param password The password to validate
      * @return A JWT token string for authenticated users
-     * @throws InvalidEmailPasswordException If the email doesn't exist or is unverified or the password doesn't match
+     * @throws InvalidEmailPasswordException If the email doesn't exist or the password doesn't match
      */
     public String login(String email, String password) {
         User user = userRepository.findByEmail(email)
@@ -81,9 +83,13 @@ public class AuthService {
             throw new InvalidEmailPasswordException("Email not verified");
         
         if (!passwordEncoder.matches(password, user.getPassword()))
-            throw new InvalidEmailPasswordException("Password does not match");
+            throw new InvalidEmailPasswordException("Invalid email or password");
 
-        return jwtUtil.generateToken(email);
+        List<String> roles = user.getRoles().stream()
+                .map(UserRole::name)
+                .collect(toList());
+
+        return jwtUtil.generateToken(email, roles);
     }
 
     /**
