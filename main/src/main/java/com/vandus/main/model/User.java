@@ -1,7 +1,5 @@
 package com.vandus.main.model;
 
-import com.vandus.main.model.DocumentFile;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
