@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +73,7 @@ class AuthServiceTest {
     }
 
     @Test
-    void signup_UserExistsButNotVerified_UpdatesPassword() {
+    void signup_UserExistsButNotVerified_CreatesNewUser() {
         // Arrange
         mockUser.setEmailVerified(false);
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(mockUser));
@@ -82,8 +83,8 @@ class AuthServiceTest {
         authService.signup(email, password);
         
         // Assert
-        verify(userRepository).save(mockUser);
-        assertEquals(hashedPassword, mockUser.getPassword());
+        verify(userRepository).delete(mockUser);
+        verify(userRepository).save(argThat(user -> user.getEmail().equals(email) && user.getPassword().equals(hashedPassword)));
     }
 
     @Test
