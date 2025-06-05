@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +47,7 @@ public class DocumentController {
     private final DocumentFileService documentFileService; 
     private final UserService userService;
     
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     @Operation(
         summary="Upload a document",
         description="Upload a document file to the server"
@@ -56,14 +57,13 @@ public class DocumentController {
         @ApiResponse(responseCode = "400", description = "Invalid file or file is empty"),
         @ApiResponse(responseCode = "500", description = "Failed to upload file")
     })
-    public ResponseEntity<DocumentResponse> uploadDocument(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<DocumentResponse> uploadDocument(@RequestPart("file") MultipartFile file) {
         if (file.isEmpty()) {
             throw new InvalidFileException("File is empty");
         }
 
         User owner = userService.getCurrentUser();
         DocumentFile document = documentFileService.uploadFile(file, owner);
-        
         DocumentResponse response = new DocumentResponse(document);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

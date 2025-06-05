@@ -1,6 +1,7 @@
 import { BaseDocumentService } from "./BaseDocumentService";
 import { IValidationResult } from "../../scripts/validator/IValidation";
 import { ValidateInput } from "../../scripts/Decorator/ValidateInput";
+import axios from "axios";
 /**
  * Service for handling PDF documents
  */
@@ -47,18 +48,12 @@ export class PDFDocumentService extends BaseDocumentService {
       // Call PDF-specific API endpoint for text extraction
       const formData = new FormData();
       formData.append("file", file);
-      const response = await this.api.uploadFile<string>(
-        this.endpoint,
-        formData,
-        {
-          "Content-Type": "multipart/form-data",
-        }
-      );
-      console.log(response);
-      return response;
+      const response = await this.api.uploadFile<any>(this.endpoint, formData, {
+        "Content-Type": "multipart/form-data",
+      });
+      return response.id;
     } catch (error) {
-      console.error("Error processing PDF:", error);
-      throw new Error("Failed to process PDF content");
+      console.log(error);
     }
   }
 

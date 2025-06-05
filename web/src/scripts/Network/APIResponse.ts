@@ -18,7 +18,7 @@ export class APIResponse {
   constructor(config?: APIConfig) {
     const baseURL = import.meta.env.VITE_REACT_APP_BACKWEB;
 
-    this.maxRetries = config?.maxRetries ?? 10;
+    this.maxRetries = config?.maxRetries ?? 0;
 
     this.axiosInstance = axios.create({
       baseURL,
@@ -43,6 +43,7 @@ export class APIResponse {
         ...headers,
         ...(isFormData ? {} : { "Content-Type": "application/json" }),
       },
+      withCredentials: true,
       data: isFormData ? data : data ? JSON.stringify(data) : undefined,
     };
 
@@ -53,6 +54,7 @@ export class APIResponse {
         );
         return response;
       } catch (error: any) {
+        console.log(error);
         if (axios.isAxiosError(error)) {
           const message = error.response?.data || error.message;
           if (retries < this.maxRetries) {

@@ -28,7 +28,7 @@ export abstract class BaseDocumentService implements IDocumentService {
     maxSizeKB: number = MAX_FILE_SIZE / 1024
   ) {
     this.validator = new Validator();
-    this.api = new APICallService();
+    this.api = new APICallService({ timeoutMs: 100000, maxRetries: 0 });
     this.endpoint = endpoint;
     this.supportedTypes = supportedTypes;
     this.maxSizeKB = maxSizeKB;

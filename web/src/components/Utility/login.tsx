@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux"; // Import useDispatch hook from react-redux
-import { loginSuccess } from "../../Store/userSlice"; // Import loginSuccess action from userSlice
-import { LoginProps } from "../../Lib/interfaces/Authentication";
-import { RootState } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess } from "../../Store/userSlice";
 import { Eye, EyeOff } from "lucide-react";
+import { EmailVerifier } from "../../scripts/UserAuth";
+import { RootState } from "../../store";
+import { LoginProps } from "../../Lib/interfaces/Authentication/Authentication";
+
 const Login: React.FC<LoginProps> = ({ value, setValue, API }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [msg, setMsg] = useState<string>("");
   const mode = useSelector((state: RootState) => state.mode.mode);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value: inputValue } = e.target;
+    setValue({ ...value, [name]: inputValue });
   };
-  const [showPassword, setShowPassword] = useState<boolean>(true);
+
   const setRegister = (info: any) => {
     dispatch(loginSuccess(info));
   };
 
+  const isEmailValid = EmailVerifier(value.EMAIL);
+
   const handleLogin = () => {
+    if (!isEmailValid && value.EMAIL.trim().length > 0) {
+      setMsg("Invalid Email");
+      return;
+    }
     API.login({ value, setRegister }, setMsg, navigate);
   };
 
@@ -35,7 +42,11 @@ const Login: React.FC<LoginProps> = ({ value, setValue, API }) => {
           value={value.EMAIL}
           onChange={handleChange}
         />
+        {!isEmailValid && value.EMAIL.trim().length > 0 && (
+          <div className="text-red-500">Invalid Email</div>
+        )}
       </div>
+
       <div className="flex flex-col px-2 text-left">
         <div className={`head-info ${mode ? "dark-mode" : ""}`}>Password*</div>
         <div className="relative">
@@ -45,21 +56,21 @@ const Login: React.FC<LoginProps> = ({ value, setValue, API }) => {
             name="PASSWORD"
             value={value.PASSWORD}
             onChange={handleChange}
-          ></input>
+          />
           <button
             type="button"
-            className={`absolute right-2 top-6 transform -translate-y-1/2 ${
-              mode ? "text-white" : "text-black"
-            }`}
+            className="absolute right-2 top-6 transform -translate-y-1/2"
             onClick={() => setShowPassword((prev) => !prev)}
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
       </div>
+
       <button className="enterdetail btn" onClick={handleLogin}>
         Login
       </button>
+
       {msg && (
         <div className="mt-2 text-base text-center text-red-500 msg">{msg}</div>
       )}

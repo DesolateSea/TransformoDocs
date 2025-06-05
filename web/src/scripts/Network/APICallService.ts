@@ -1,12 +1,15 @@
 import { AxiosProgressEvent } from "axios";
 import { APIResponse } from "./APIResponse";
+import { APIConfig } from "./APIResponse";
 export class APICallService extends APIResponse {
+  constructor(config?: APIConfig) {
+    super(config);
+  }
   async get<T>(path: string, headers?: Record<string, string>): Promise<T> {
     const res = await super.getResponse<T>(path, headers);
     const data = res.data;
     return data;
   }
-
   async post<T>(
     path: string,
     data: any,

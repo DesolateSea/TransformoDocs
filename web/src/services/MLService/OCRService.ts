@@ -24,10 +24,10 @@ export class OCRService implements IMLService {
   @ValidateInput()
   public async extract(file: File): Promise<string> {
     const documentId = await this.documentService.processContent(file);
-    const extractedText = await this.api.post<string>(this.endpoint, {
+    const extractedText = await this.api.post<any>(this.endpoint, {
       documentId,
     });
-    return extractedText;
+    return extractedText["extractedText"][0];
   }
   @ValidateInput()
   public async response(file: File): Promise<AxiosResponse<Response>> {
