@@ -4,7 +4,7 @@ import { APICallService } from "../../scripts/Network/APICallService";
 import { IMLService } from "./IMLService";
 import { Validator } from "../../scripts/validator/Validator";
 import { IValidationResult } from "../../scripts/validator/IValidation";
-import { PDFDocumentService } from "../DocumentService/PdfDocumentService";
+import { PDFDocumentService } from "../DocumentService/PDFDocumentService";
 import server from "../../server.json";
 export class OCRService implements IMLService {
   public validator: Validator;

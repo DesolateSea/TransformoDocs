@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.Base64;
-import org.springframework.beans.factory.annotation.Value;
 /**
  * Service for handling One-Time Password (OTP) operations.
  * Manages the generation, sending, and verification of OTPs for email verification
