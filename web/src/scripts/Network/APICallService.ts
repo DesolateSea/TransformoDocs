@@ -1,3 +1,4 @@
+import { AxiosProgressEvent } from "axios";
 import { APIResponse } from "./APIResponse";
 export class APICallService extends APIResponse {
   async get<T>(path: string, headers?: Record<string, string>): Promise<T> {
@@ -35,6 +36,20 @@ export class APICallService extends APIResponse {
     headers?: Record<string, string>
   ): Promise<T> {
     const res = await super.uploadFileResponse<T>(path, formData, headers);
+    return res.data;
+  }
+  async uploadFileWithProgress<T>(
+    path: string,
+    formData: FormData,
+    headers?: Record<string, string>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+  ): Promise<T> {
+    const res = await super.uploadFileResponseWithProgress<T>(
+      path,
+      formData,
+      headers,
+      onUploadProgress
+    );
     return res.data;
   }
 }

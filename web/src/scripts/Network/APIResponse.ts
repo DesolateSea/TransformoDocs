@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosProgressEvent,
+} from "axios";
 
 export interface APIConfig {
   defaultHeaders?: Record<string, string>;
@@ -20,8 +25,6 @@ export class APIResponse {
       timeout: config?.timeoutMs ?? 10000,
       headers: config?.defaultHeaders ?? {},
     });
-
-    // Optional: Add interceptors for logging, auth, etc.
   }
 
   private async request<T>(
@@ -94,5 +97,43 @@ export class APIResponse {
     headers?: Record<string, string>
   ) {
     return this.request<T>("POST", path, formData, headers, true);
+  }
+
+  async uploadFileResponseWithProgress<T>(
+    path: string,
+    formData: FormData,
+    headers?: Record<string, string>,
+    onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
+  ): Promise<AxiosResponse<T>> {
+    let retries = 0;
+
+    while (retries <= this.maxRetries) {
+      try {
+        const response = await this.axiosInstance.post<T>(path, formData, {
+          headers: {
+            ...headers,
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress,
+        });
+
+        return response;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const message = error.response?.data || error.message;
+          if (retries < this.maxRetries) {
+            retries++;
+            console.warn(`Retrying upload (${retries}/${this.maxRetries})...`);
+            await this.delay(500 * retries);
+          } else {
+            throw new Error(`Upload failed: ${message}`);
+          }
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    throw new Error("Upload failed after retries.");
   }
 }

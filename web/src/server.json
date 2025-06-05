@@ -13,8 +13,14 @@
         "getUserInfo":"/api/private/user/"
     },
     "MLService":{
-        "OCR":"/api/public/v1/optical-character-recognition",
+        "OCR":"/api/public/v1/ocr",
         "NER":"/api/public/v1/name-entity-recognition",
         "SENTIMENT_ANALYSIS":"/api/public/v1/sentiment-analysis"
+    },
+    "Document":{
+        "upload":"/api/private/document",
+        "getDocuments":"/api/private/document",
+        "getDocument":"/api/private/document/{id}",
+        "deleteDocument":"/api/private/document/{id}"
     }
 }

@@ -35,14 +35,21 @@
       }
 
       const formData = new FormData();
-      formData.append("pdf", file);
+      formData.append("file", file);
 
-      fetch("http://localhost:7052/api/public/v1/optical-character-recognition", {
+      fetch("http://localhost:7052/api/public/document", {
         method: "POST",
-        body: formData
+        body: formData,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       })
-      .then(response => response.text())
+      .then(response => {
+        console.log(response);
+        response.text();
+      })
       .then(result => {
+        console.log(response);
         document.getElementById("response").textContent = result;
       })
       .catch(error => {

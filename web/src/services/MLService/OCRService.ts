@@ -4,45 +4,37 @@ import { APICallService } from "../../scripts/Network/APICallService";
 import { IMLService } from "./IMLService";
 import { Validator } from "../../scripts/validator/Validator";
 import { IValidationResult } from "../../scripts/validator/IValidation";
+import { PDFDocumentService } from "../DocumentService/PdfDocumentService";
+import server from "../../server.json";
 export class OCRService implements IMLService {
   public validator: Validator;
   public api: APICallService;
   public endpoint: string;
+  protected readonly documentService: PDFDocumentService;
   constructor(endpoint: string) {
     this.endpoint = endpoint;
     this.validator = new Validator();
     this.api = new APICallService(); // assuming optional config
+    this.documentService = new PDFDocumentService(server.Document.upload);
   }
 
   validate(file: File): IValidationResult {
-    return this.validator
-      .setInput(file)
-      .typeCheck("application/pdf")
-      .sizeCheck(1000)
-      .result();
+    return this.validator.setInput(file).typeCheck("application/pdf").result();
   }
   @ValidateInput()
   public async extract(file: File): Promise<string> {
-    // 2. Build FormData
-    const formData = new FormData();
-    formData.append("pdf", file);
-
-    const extractedText = await this.api.uploadFile<string>(
-      this.endpoint,
-      formData
-    );
+    const documentId = await this.documentService.processContent(file);
+    const extractedText = await this.api.post<string>(this.endpoint, {
+      documentId,
+    });
     return extractedText;
   }
   @ValidateInput()
   public async response(file: File): Promise<AxiosResponse<Response>> {
-    // 2. Build FormData
-    const formData = new FormData();
-    formData.append("pdf", file);
-
-    const extractedText = await this.api.uploadFileResponse<Response>(
-      this.endpoint,
-      formData
-    );
-    return extractedText;
+    const documentId = await this.documentService.processContent(file);
+    const response = await this.api.postResponse<Response>(this.endpoint, {
+      documentId,
+    });
+    return response;
   }
 }
