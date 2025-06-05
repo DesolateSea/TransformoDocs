@@ -13,14 +13,16 @@ import { cn } from "../../Lib/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { toggleSidebar } from "../../Store/sidebarSlice";
-
+import { LogOut } from "lucide-react";
+import { logout } from "../../Store/userSlice";
+import AuthService from "../../services/API.Login";
 const navigation = [
-  { name: "Getting Started", href: "/", icon: Rocket },
-  { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Transformations", href: "/transformations", icon: Zap },
-  { name: "Analytics", href: "/analytics", icon: LineChart },
-  { name: "Settings", href: "/settings", icon: Settings },
-  { name: "Developer Tools", href: "/developer", icon: Wrench },
+  { name: "Getting Started", href: "/app/", icon: Rocket },
+  { name: "Dashboard", href: "/app/dashboard", icon: Home },
+  { name: "Transformations", href: "/app/transformations", icon: Zap },
+  { name: "Analytics", href: "/app/analytics", icon: LineChart },
+  { name: "Settings", href: "/app/settings", icon: Settings },
+  { name: "Developer Tools", href: "/app/developer", icon: Wrench },
 ];
 
 // Define light and dark theme colors as constants
@@ -49,7 +51,35 @@ const darkTheme = {
   toggleBtnBgHover: "#1F2937",
   toggleBtnIcon: "#D1D5DB", // gray-300
 };
-
+const LogoutButton = () => {
+  const dispatch = useDispatch();
+  const API = new AuthService();
+  const isCollapsed = useSelector(
+    (state: RootState) => state.sidebar.isCollapsed
+  );
+  const UserLogout = async () => {
+    await API.logout();
+    dispatch(logout());
+  };
+  return (
+    <button
+      onClick={() => UserLogout()}
+      className="p-2 rounded-lg hover:text-red-500"
+      style={{
+        backgroundColor: "transparent",
+      }}
+    >
+      {isCollapsed ? (
+        <LogOut className="h-5 w-5" aria-hidden="true" />
+      ) : (
+        <div className="flex items-center gap-x-2">
+          <LogOut className="h-5 w-5" aria-hidden="true" />
+          Logout
+        </div>
+      )}
+    </button>
+  );
+};
 export function DashboardSidebar() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -153,6 +183,7 @@ export function DashboardSidebar() {
             </li>
           </ul>
         </nav>
+        <LogoutButton />
       </div>
     </div>
   );
