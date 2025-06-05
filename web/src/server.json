@@ -15,7 +15,8 @@
     "MLService":{
         "OCR":"/api/public/v1/ocr",
         "NER":"/api/public/v1/name-entity-recognition",
-        "SENTIMENT_ANALYSIS":"/api/public/v1/sentiment-analysis"
+        "SENTIMENT_ANALYSIS":"/api/public/v1/sentiment-analysis",
+        "DATA_EXTRACTION":"/api/public/v1/dataextraction"
     },
     "Document":{
         "upload":"/api/private/document",

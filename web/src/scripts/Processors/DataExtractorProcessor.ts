@@ -3,9 +3,9 @@ import { mlService } from "../../services/MLService";
 import { BaseProcessor } from "./BaseProcessor";
 import type { AxiosResponse } from "axios";
 
-export class OCRProcessor extends BaseProcessor {
+export class DataExtractorProcessor extends BaseProcessor {
   getMode(): ProcessingMode {
-    return "ocr";
+    return "dataExtractor";
   }
 
   canHandle(file: File): boolean {
@@ -16,18 +16,18 @@ export class OCRProcessor extends BaseProcessor {
     this.updateProgress(30);
     await this.sleep(500);
 
-    const res: AxiosResponse<any> = await mlService.responseOCR(file);
+    const res: AxiosResponse<any> = await mlService.responseDataExtraction(
+      file
+    );
 
     this.updateProgress(70);
     await this.sleep(500);
     // 1) Create a Blob from the text
-    console.log(res.data.extractedText);
-    const textBlob = new Blob([res.data.extractedText[0]], {
-      type: "text/plain",
-    });
+    const entitiesJson = JSON.stringify(res.data, null, 2);
+    const blob = new Blob([entitiesJson], { type: "application/json" });
 
     // 2) Generate a URL for that Blob
-    const previewURL = URL.createObjectURL(textBlob);
+    const previewURL = URL.createObjectURL(blob);
 
     return {
       data: res.data,

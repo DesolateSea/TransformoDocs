@@ -6,30 +6,13 @@ import traceback
 import json
 from app.utility.deep_jsonify import deep_jsonify
 class DataExtractor(Resource):
-    def post(self):
-        # Check if file is provided
-        if 'file' not in request.files:
-            return {"message": "No file provided"}, 400
-
-        file = request.files['file']
-        if file.filename == '':
-            return {"message": "No selected file"}, 400
-
-        # Get optional parameters
-        analyze_only = request.form.get('analyze_only', 'false').lower() == 'true'
-        document_type = request.form.get('document_type', None)
-
+    def get(self):
         try:
-            # Extract text based on file type
-            text = ""
-            if file.filename.lower().endswith('.pdf'):
-                pdf_reader = PyPDF2.PdfReader(file)
-                for page in pdf_reader.pages:
-                    text += page.extract_text() or ""
-            elif file.filename.lower().endswith(('.txt', '.md')):
-                text = file.read().decode('utf-8')
-            else:
-                return {"message": "Unsupported file format. Only PDF, TXT, and MD files are allowed."}, 400
+            text = request.args.get('text')
+            # Get optional parameters
+            print("Text: " + text)
+            analyze_only = request.args.get('analyze_only', 'false').lower() == 'true'
+            document_type = request.args.get('document_type', None)
 
             # Analyze only mode
             if analyze_only:

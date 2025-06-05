@@ -25,6 +25,7 @@ export function TutorialSection() {
   const serviceDescriptions = {
     ocr: "Optical Character Recognition",
     ner: "Name Entity Recognition",
+    dataExtractor: "Data Extractor",
   };
   // Progress tracker implementation
   const progressTracker: IProgressTracker = {
@@ -114,7 +115,9 @@ export function TutorialSection() {
             </label>
             <Select
               value={mode}
-              onValueChange={(val) => setMode(val as "ocr" | "ner")}
+              onValueChange={(val) =>
+                setMode(val as "ocr" | "ner" | "dataExtractor")
+              }
             >
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Select transformation type" />

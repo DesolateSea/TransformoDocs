@@ -35,4 +35,17 @@ public interface NLPClient {
      */
     @GetExchange("/sentiment")
     String sentimentAnalysis(@RequestParam("text") String text);
-}
+
+    /**
+     * Performs sentiment analysis on the provided text.
+     *
+     * @param text The text to analyze for data extraction
+     * @return A JSON string containing the data extraction results
+     */
+    @GetExchange("/dataExtractor")
+    String dataExtraction(
+        @RequestParam("text") String text,
+        @RequestParam(value = "documentType", required = false) String documentType,
+        @RequestParam(value = "analyzeOnly", required = false) Boolean analyzeOnly
+    );
+    }

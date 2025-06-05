@@ -28,6 +28,7 @@ import com.vandus.main.dto.OCRResponse;
 import com.vandus.main.model.DocumentFile;
 import com.vandus.main.util.exception.DocumentNotFoundException;
 import com.vandus.main.util.exception.ProcessingException;
+import com.vandus.main.util.handler.Utility;
 
 /**
  * Service for interacting with the Python API backend.
@@ -39,7 +40,7 @@ public class NLPService {
     private final NLPClient pythonAPI;
     private final RestClient restClient;
     private final DocumentFileService documentFileService;
-
+    
     /**
      * Constructs a NLPService with the specified REST client builder, API URL, and document service.
      * 
@@ -162,4 +163,18 @@ public class NLPService {
             return response.getBody();
         }
     }
+    public Object processDataInfoExtraction(String text, String documentType, Boolean analyzeOnly) {
+        if (text == null || text.trim().isEmpty())
+            throw new ProcessingException("Text cannot be empty");
+
+        try {
+            String responseJson = pythonAPI.dataExtraction(text, documentType, analyzeOnly);
+            // Assuming the response can be one of multiple structures, deserialize dynamically
+            return Utility.parseFlexibleJson(responseJson);
+        } catch (Exception e) {
+            throw new ProcessingException("Failed to extract data: " + e.getMessage(), e);
+        }
+    }
+    
+
 }

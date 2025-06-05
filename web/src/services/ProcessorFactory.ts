@@ -3,6 +3,7 @@ import { IProcessor } from "../Lib/interfaces/MLProcess/IProcessor";
 import { ProcessingMode } from "../types/ProcessingTypes";
 import { OCRProcessor } from "../scripts/Processors/OCRProcessor";
 import { NERProcessor } from "../scripts/Processors/NERProcessor";
+import { DataExtractorProcessor } from "../scripts/Processors/DataExtractorProcessor";
 export class ProcessorFactory {
   private static processors: Map<
     ProcessingMode,
@@ -10,6 +11,7 @@ export class ProcessorFactory {
   > = new Map([
     ["ocr", OCRProcessor],
     ["ner", NERProcessor],
+    ["dataExtractor", DataExtractorProcessor], // Placeholder for DataExtractorProcessor, replace with actual class
   ]);
 
   static createProcessor(

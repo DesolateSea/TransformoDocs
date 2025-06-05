@@ -8,57 +8,95 @@ import {
   SelectContent,
   SelectItem,
 } from "../Ui/select";
-import { Download, Cloud, Code } from "lucide-react";
-import { mlService } from "../../services/MLService";
-import { Entity } from "../../types/NERResponse";
-import DownloadAdapter from "../../services/DownloadService";
 import FileUploader from "../common/FileUploader";
 import ProcessingBar from "../common/ProgressBar";
-
+import { OCRStrategy } from "../../scripts/ProcessingStrategy/OCRStrategy";
+import { NERStrategy } from "../../scripts/ProcessingStrategy/NERStrategy";
+import { DataExtractorStrategy } from "../../scripts/ProcessingStrategy/DataExtractorStrategy";
+import {
+  ActionHandler,
+  DownloadProssingResult,
+} from "../../types/ProcessingTypes";
+import { DownloadHandler } from "../../scripts/ActionHandler/DownloadHandler";
+import { CloudSaveHandler } from "../../scripts/ActionHandler/CloudSaveHandler";
+import { APICallbackHandler } from "../../scripts/ActionHandler/APICallbackHandler";
+import { ProcessingStrategyRegistry } from "../../scripts/ActionHandler/ProcessingStrategyRegistry";
+import { ActionHandlerRegistry } from "../../scripts/ActionHandler/ActionRegistry";
+import { ProcessingEngine } from "../../services/ProcessingEngine";
 export const ConversionCanvas: React.FC = () => {
-  const [mode, setMode] = useState<"ocr" | "ner">("ocr");
+  const [selectedStrategyId, setSelectedStrategyId] = useState<string>("ocr");
   const [file, setFile] = useState<File | null>(null);
   const [progress, setProgress] = useState<number>(0);
   const [processing, setProcessing] = useState<boolean>(false);
-  const [result, setResult] = useState<string | null>(null);
-  const sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+  const [result, setResult] = useState<DownloadProssingResult | null>(null);
+
+  // Initialize registries
+  const strategyRegistry = React.useMemo(() => {
+    const registry = new ProcessingStrategyRegistry();
+    registry.register(new OCRStrategy());
+    registry.register(new NERStrategy());
+    registry.register(new DataExtractorStrategy());
+    return registry;
+  }, []);
+
+  const actionRegistry = React.useMemo(() => {
+    const registry = new ActionHandlerRegistry();
+    registry.register(new DownloadHandler());
+    registry.register(new CloudSaveHandler());
+    registry.register(new APICallbackHandler());
+    return registry;
+  }, []);
+
+  const processingEngine = React.useMemo(
+    () => new ProcessingEngine(strategyRegistry, setProgress),
+    [strategyRegistry]
+  );
+
+  const availableStrategies = React.useMemo(() => {
+    return file
+      ? strategyRegistry.getCompatibleStrategies(file)
+      : strategyRegistry.getAll();
+  }, [file, strategyRegistry]);
+
+  const availableActions = React.useMemo(
+    () => actionRegistry.getAvailableActions(result),
+    [result, actionRegistry]
+  );
 
   const handleUpload = async () => {
     if (!file) {
       alert("Please select a file first.");
       return;
     }
-    setProcessing(true);
-    setProgress(10);
-    setResult(null);
-    await sleep(3000);
-    try {
-      let extracted = "";
-      if (mode === "ocr") {
-        setProgress(30);
-        await sleep(3000);
-        extracted = await mlService.extractText(file);
-        setProgress(99);
-        await sleep(1500);
-        setProgress(100);
-        await sleep(300);
-        setResult(extracted);
-      } else if (mode === "ner") {
-        setProgress(30);
-        const nerResult: Entity[] = await mlService.extractFileInformation(
-          file
-        );
-        setProgress(99);
-        await sleep(1500);
-        setProgress(100);
-        await sleep(300);
 
-        extracted = JSON.stringify(nerResult, null, 2);
-        setResult(extracted);
-      }
+    setProcessing(true);
+    setProgress(0);
+    setResult(null);
+
+    try {
+      const processedResult = await processingEngine.process(
+        file,
+        selectedStrategyId
+      );
+      setResult(processedResult);
     } catch (err: any) {
-      setResult(`Error: ${err.message || err}`);
+      setResult({
+        data: `Error: ${err.message || err}`,
+        format: "text",
+        filename: "error",
+      });
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleAction = async (handler: ActionHandler) => {
+    if (!result) return;
+
+    try {
+      await handler.execute(result, file);
+    } catch (err: any) {
+      alert(`Action failed: ${err.message}`);
     }
   };
 
@@ -70,26 +108,30 @@ export const ConversionCanvas: React.FC = () => {
       <CardContent>
         <div className="space-y-4">
           {/* File Upload Section */}
-          <FileUploader setFile={setFile} file={file}></FileUploader>
+          <FileUploader setFile={setFile} file={file} />
+
           {/* Transformation Mode Selection */}
           <div>
             <label className="block text-sm font-medium mb-1">
               Transformation Type
             </label>
             <Select
-              value={mode}
-              onValueChange={(val) => setMode(val as "ocr" | "ner")}
+              value={selectedStrategyId}
+              onValueChange={setSelectedStrategyId}
             >
               <SelectTrigger className="w-full bg-white">
                 <SelectValue placeholder="Select transformation type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ocr" className="bg-white focus:bg-slate-50">
-                  Extract Data (OCR Only)
-                </SelectItem>
-                <SelectItem value="ner" className="bg-white focus:bg-slate-50">
-                  Convert to Machine Readable Format (OCR + NER)
-                </SelectItem>
+                {availableStrategies.map((strategy) => (
+                  <SelectItem
+                    key={strategy.id}
+                    value={strategy.id}
+                    className="bg-white focus:bg-slate-50"
+                  >
+                    {strategy.displayName}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -99,45 +141,37 @@ export const ConversionCanvas: React.FC = () => {
             processing={processing}
             progress={progress}
             gradientOption="ic"
-          ></ProcessingBar>
+          />
+
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-2">
             <Button onClick={handleUpload} disabled={processing}>
               Start Processing
             </Button>
-            <Button
-              onClick={() => {
-                if (!result) return;
-                const filename =
-                  mode === "ocr" ? "extracted-text" : "ner-result";
-                const format = mode === "ocr" ? "text" : "json";
-                DownloadAdapter.download(result, filename, format);
-              }}
-              disabled={!result}
-            >
-              <Download className="h-4 w-4" /> Download
-            </Button>
 
-            <Button
-              variant="outline"
-              className="flex items-center gap-2"
-              disabled
-            >
-              <Cloud className="h-4 w-4" /> Save to Cloud
-            </Button>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2"
-              disabled
-            >
-              <Code className="h-4 w-4" /> API Callback
-            </Button>
+            {availableActions.map((handler) => {
+              const IconComponent = handler.icon;
+              return (
+                <Button
+                  key={handler.id}
+                  variant={handler.variant || "default"}
+                  className="flex items-center gap-2"
+                  onClick={() => handleAction(handler)}
+                  disabled={!handler.canExecute(result)}
+                >
+                  <IconComponent className="h-4 w-4" />
+                  {handler.label}
+                </Button>
+              );
+            })}
           </div>
 
           {/* Result Display */}
           {result && (
             <div className="p-4 mt-4 bg-gray-100 dark:bg-gray-800 rounded text-sm whitespace-pre-wrap max-h-64 overflow-auto">
-              {result}
+              {typeof result.data === "string"
+                ? result.data
+                : JSON.stringify(result.data, null, 2)}
             </div>
           )}
         </div>

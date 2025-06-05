@@ -5,6 +5,7 @@ import com.vandus.main.dto.NLPResponse;
 import com.vandus.main.dto.OCRRequest;
 import com.vandus.main.dto.OCRResultResponse;
 import com.vandus.main.service.NLPService;
+import com.vandus.main.dto.DataAgentExtraction;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -79,5 +80,14 @@ public class MLServicesController {
         List<String> result = nlpService.processDocumentOCR(request.getDocumentId());
         OCRResultResponse response = new OCRResultResponse(result);
         return ResponseEntity.ok(response);
+    }
+    @PostMapping("/dataextraction")
+    @Operation(
+        summary="Data Extraction",
+        description="Extracts data from text using a pre-trained model"
+    )
+    public ResponseEntity<Object> processDataExtraction(@Valid @RequestBody DataAgentExtraction request) {
+        Object result = nlpService.processDataInfoExtraction(request.getText(), request.getDocumentType(), request.getAnalyzeOnly());
+        return ResponseEntity.ok(result);
     }
 }

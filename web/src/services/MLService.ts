@@ -1,14 +1,17 @@
 import { DataExtraction } from "./MLService/DataExtraction";
 import server from "../server.json";
 import { Entity } from "../types/NERResponse";
+import { DataAgent } from "./MLService/DataAgent";
 
 class MLService {
   private static instance: MLService;
   private service: DataExtraction;
+  private dataExtractor: DataAgent;
   public endpoints = server.MLService;
 
   private constructor() {
     this.service = new DataExtraction(this.endpoints.OCR, this.endpoints.NER);
+    this.dataExtractor = new DataAgent();
   }
 
   // Singleton accessor
@@ -30,11 +33,17 @@ class MLService {
   async extractNERInformation(text: string): Promise<Entity[]> {
     return this.service.extractNERInformation(text);
   }
+  async extractData(file: File): Promise<any> {
+    return this.dataExtractor.extract(file);
+  }
   async responseOCR(file: File): Promise<any> {
     return this.service.responseOCR(file);
   }
   async responseNER(text: string): Promise<any> {
     return this.service.responseNER(text);
+  }
+  async responseDataExtraction(file: File): Promise<any> {
+    return this.dataExtractor.response(file);
   }
 }
 

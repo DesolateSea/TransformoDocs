@@ -14,7 +14,7 @@ def create_app():
     api.add_resource(NamedEntityRecognition, '/ner')
     api.add_resource(SentimentAnalysis, '/sentiment')
     api.add_resource(OCR, '/ocr')
-    api.add_resource(DataExtractor, '/data-extractor')
+    api.add_resource(DataExtractor, '/dataExtractor')
     
     # Health check route
     @app.route('/health')
