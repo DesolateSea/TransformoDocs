@@ -1,145 +1,94 @@
-# Introduction to Transformodocs
+# 🧾 TransformoDocs
 
-Welcome to **Transformodocs**! This document will provide you with a comprehensive overview of Transformodocs, a powerful tool designed to streamline and enhance your document management and transformation processes.
+**TransformoDocs** is a full-stack platform for automated document understanding. It extracts structured data from unstructured documents like PDFs, scans, and forms, and allows users to query them using natural language. 
 
-## What is Transformodocs?
-
-TransformoDocs is a powerful document management system that empowers businesses to overcome the challenges of non-machine-readable formats.It is a versatile platform that allows you to efficiently manage, convert, and transform various types of documents. Whether you’re dealing with text files, spreadsheets, presentations, or any other document formats, Transformodocs offers a range of features to make your work easier and more efficient.
-
-## Key Features
-
-- **Data Accessibility:** Non-machine-readable formats hinder data accessibility, making it difficult to search, analyze, and extract information from documents.
-- **Automation challenges:** Manual processing of non-machine-readable formats is time-consuming and prone to errors, hindering workflow efficiency and productivity.
-- **Limited Insights:** Non-machine-readable formats limit the ability to derive meaningful insights from data contained within documents, impacting informed decision-making.
-- **workflow Integration:** Seamlessly integrate with existing business workflows for streamlined document processing.
-- **Security and Privacy:** Securely store and manage sensitive data with advanced encryption and access controls.
-
-- **Data Extraction**
-
-Data extraction is a core function of TransformoDocs. We use machine learning models to automatically extract key information from documents, such as dates, names, and addresses.
-
-- **Model Selection**
-
-Choosing the right ML model for a particular task is crucial. We have a range of models available, including supervised, unsupervised, and reinforcement learning. We select the model that best fits the specific document type and extraction needs.
-
-- **NLP (Natural Language Processing)**
-
-NLP models are utilized to perform tasks such as sentiment analysis, named entity recognition, and document classification, enabling deeper insights and contextual understanding of the content.
-
-- **Advanced Analytics**
-
-Compliance and Security:Our system incorporates ML models to ensure regulatory compliance by monitoring and managing document access and storage according to standards like GDPR and HIPAA.
-
- Accessibility Features:We integrate ML-based text-to-speech capabilities to enhance accessibility for users with disabilities, converting text into spoken words seamlessly.
-
-
-
-## Tech Stack
-
-Transformodocs is built using a robust and diverse tech stack to ensure high performance and scalability. Our tech stack includes:
-
-- **React.js:** A JavaScript library for building user interfaces.
-- **React Native (Expo):** A framework for building cross-platform mobile applications.
-- **Node.js:** A JavaScript runtime environment for building server-side applications.
-- **TypeScript:** A superset of JavaScript that adds static typing.
-- **Python:** A general-purpose programming language.
-- **Flask:** A lightweight Python web framework.
-- **Jupyter Notebook:** An open-source web application for interactive computing.
-- **TensorFlow:** An open-source machine learning library.
-- **PyTorch:** An open-source machine learning library.
-- **AWS (Lambda, S3, Textract):** Cloud computing services from Amazon Web Services.
-- **MongoDb:** developing scalable applications with evolving data schemas.
-
-
-## How to Start
-
-- **Start Server**
-  ```bash
-  mvn spring-boot:run
-  ```
-
-- **Create .env file**
-  ```bash
-  cp .env.example .env
-  ```
-
-- **For Web**
-  ```bash
-  cd web
-  npm install
-  npm run dev
-  ```
+Whether you’re verifying ID proofs, parsing contracts, or building smart document search, TransformoDocs turns raw documents into usable, queryable, intelligent data.
 
 ---
 
-*For more information, visit our [website](https://docs.google.com/presentation/d/1DPhbXj-Dd6qpzB5iwH1Nh-SyKn0wYqMf/edit?usp=drive_link&ouid=117197762259622512565&rtpof=true&sd=true) or follow us on [social media](#).*
+## ❓ What Is TransformoDocs?
 
-# TransformoDocs - Spring Boot Backend
+TransformoDocs provides a unified system to:
 
-Spring Boot Backend for TransformoDocs, a Spring Boot project that leverages Spring Web, Spring Security, Spring Data MongoDB, and Spring Data Redis for its backend operations.
+- 📄 **Upload documents** (PDFs, images, forms)
+- 🧠 **Automatically extract key data** using OCR and LLMs
+- 💬 **Ask natural-language questions** like _"What is the due date on this invoice?"_
+- 🛠️ **Automate workflows using REST APIs** — perfect for pipelines, integrations, or backend systems
+- 🌐 **Access via a modern web interface or fully-documented APIs**
 
-![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
-![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
+It’s ideal for:
 
-## Prerequisites
+- Legal firms automating contract review  
+- KYC / onboarding flows  
+- HR teams parsing resumes or certificates  
+- Financial institutions extracting tables and metrics from scanned documents  
+- Teams building document-processing workflows in CI/CD pipelines or cloud systems
+- Or just general purpose use for any unstructured document
 
-- Java 17 or higher
-- Maven
-- MongoDB
-- Redis
+---
 
-## Getting Started
+## 🚀 Key Highlights
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/Nishant-mohan/TransformoDocs.git
-    cd TransformoDocs
-    ```
+- ⚙️ **Spring Boot REST APIs**  
+  Secure and modular API backend with Spring Web, Security, Validation, and Actuator.
 
-2. Make sure the servers for `WEBURL` and `PYTHON_BACKEND_URL` are running and the following configurations are set in the `.env` file:
-    ```env
-    WEBURL=http://localhost:5173
-    PYTHON_BACKEND_URL=http://localhost:5000
-    ```
+- 🔐 **JWT Authentication & Validation**  
+  Encrypted access control and schema-validated input with Spring Security & Validation.
 
-3. Ensure that the `redis` and `mongodb` servers are running and the MONGODB_URI is set in the `.env` file:
-    ```env
-    MONGODB_URI=mongodb://localhost:27017/transformodocs
-    ```
+- 💾 **MongoDB & Redis Integration**  
+  Persistent storage for document data (MongoDB) and caching/session support (Redis).
 
-4. Build the project:
-    ```sh
-    mvn clean install
-    ```
+- 📩 **OTP via Spring Mail**  
+  Email-based verification to support authentication and transactional flows.
 
-5. Run the application:
-    ```sh
-    mvn spring-boot:run
-    ```
+- 🧠 **Python Microservices**  
+  - OCR service for image-to-text conversion  
+  - LLM-based information extraction  
+  - Prompt-based question answering over document content
 
-## Updating Documentation
+- 🤖 **Automation-Ready via API**  
+  Every major feature is available as a REST endpoint for easy integration into custom workflows, CRON jobs, or cloud-based pipelines.
 
-TransformoDocs uses [widdershins](https://github.com/Mermade/widdershins) to generate the documentation from the OpenAPI specification. To update the documentation, run the following commands:
+- 🧠 **ML & AI Integration**  
+  Powered by **TensorFlow**, **PyTorch**, and optionally integrated with **AWS Textract**.
 
-1. Install widdershins:
-    ```sh
-    npm install widdershins -g
-    ```
+- 📘 **Automated Documentation**  
+  Swagger UI via Springdoc, with markdown generation using **Widdershins**.
 
-2. Make sure the server is running.
-    ```sh
-    mvn spring-boot:run
-    ```
+- ⚛️ **Frontend with React + TypeScript**  
+  A clean, component-driven web UI built using modern React and Vite (under development).
 
-3. Run the script to generate the documentation:
+- 📱 **Optional Mobile Support**  
+  Future-ready mobile client built in **React Native (Expo)** (not yet released).
 
-    Windows:
-    ```powershell
-    ./update-docs.ps1 <server_url>
-    ```
+---
 
-    Linux/Mac:
-    ```bash
-    bash update-docs.sh <server_url>
-    ```
+## 🧰 Tech Stack
+
+### Backend
+- Java 17, Spring Boot 3.4
+- Spring Security, Spring Mail, Validation, Actuator
+- JWT
+- MongoDB & Redis
+- OpenAPI (Springdoc), Lombok
+
+### Python Microservices
+- Python 3.8+
+- Flask + Jupyter Notebooks
+- Tesseract / PaddleOCR (for OCR)
+- HuggingFace / Julep AI (for LLMs)
+- TensorFlow, PyTorch
+
+### Frontend
+- React.js + TypeScript
+- Node.js + npm
+- Vite
+- Widdershins (OpenAPI → Markdown)
+
+---
+
+## 📂 Project Setup
+
+To get started locally, check out the [SETUP.md](SETUP.md) guide.
+
+For a list of contributors, check out the [CONTRIBUTORS.md](CONTRIBUTORS.md) file.
