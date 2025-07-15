@@ -4,7 +4,7 @@ param(
     [string]$SERVER_URL = "http://localhost:8080"
 )
 
-$documentationPath = "../docs/server"
+$documentationPath = "./docs/server"
 
 echo ""
 echo "[TransformoDocs] Generating Authentication API documentation..."

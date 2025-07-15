@@ -176,6 +176,10 @@ func main() {
 
 `GET /api/private/user/{id}`
 
+*Get user by ID*
+
+Get user information by user ID
+
 <h3 id="getuserbyid-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
@@ -190,7 +194,8 @@ func main() {
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[User](#schemauser)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|User found|[User](#schemauser)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|User not found|[User](#schemauser)|
 
 <aside class="success">
 This operation does not require authentication
@@ -525,7 +530,9 @@ Status Code **200**
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |*anonymous*|[[DocumentResponse](#schemadocumentresponse)]|false|none|none|
+|» message|string|false|none|none|
 |» id|string|false|none|none|
+|» name|string|false|none|none|
 
 <aside class="success">
 This operation does not require authentication
@@ -540,7 +547,7 @@ This operation does not require authentication
 ```shell
 # You can also use wget
 curl -X POST http://localhost:8080/api/private/document \
-  -H 'Content-Type: application/json' \
+  -H 'Content-Type: multipart/form-data' \
   -H 'Accept: */*'
 
 ```
@@ -548,7 +555,7 @@ curl -X POST http://localhost:8080/api/private/document \
 ```http
 POST http://localhost:8080/api/private/document HTTP/1.1
 Host: localhost:8080
-Content-Type: application/json
+Content-Type: multipart/form-data
 Accept: */*
 
 ```
@@ -558,7 +565,7 @@ const inputBody = '{
   "file": "string"
 }';
 const headers = {
-  'Content-Type':'application/json',
+  'Content-Type':'multipart/form-data',
   'Accept':'*/*'
 };
 
@@ -581,7 +588,7 @@ require 'rest-client'
 require 'json'
 
 headers = {
-  'Content-Type' => 'application/json',
+  'Content-Type' => 'multipart/form-data',
   'Accept' => '*/*'
 }
 
@@ -596,7 +603,7 @@ p JSON.parse(result)
 ```python
 import requests
 headers = {
-  'Content-Type': 'application/json',
+  'Content-Type': 'multipart/form-data',
   'Accept': '*/*'
 }
 
@@ -612,7 +619,7 @@ print(r.json())
 require 'vendor/autoload.php';
 
 $headers = array(
-    'Content-Type' => 'application/json',
+    'Content-Type' => 'multipart/form-data',
     'Accept' => '*/*',
 );
 
@@ -666,7 +673,7 @@ import (
 func main() {
 
     headers := map[string][]string{
-        "Content-Type": []string{"application/json"},
+        "Content-Type": []string{"multipart/form-data"},
         "Accept": []string{"*/*"},
     }
 
@@ -689,10 +696,9 @@ Upload a document file to the server
 
 > Body parameter
 
-```json
-{
-  "file": "string"
-}
+```yaml
+file: string
+
 ```
 
 <h3 id="uploaddocument-parameters">Parameters</h3>
@@ -1063,7 +1069,9 @@ This operation does not require authentication
 
 ```json
 {
-  "id": "string"
+  "message": "string",
+  "id": "string",
+  "name": "string"
 }
 
 ```
@@ -1072,7 +1080,9 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
+|message|string|false|none|none|
 |id|string|false|none|none|
+|name|string|false|none|none|
 
 <h2 id="tocS_DocumentFile">DocumentFile</h2>
 <!-- backwards compatibility -->
@@ -1086,21 +1096,9 @@ This operation does not require authentication
   "id": "string",
   "name": "string",
   "path": "string",
-  "owner": {
-    "id": "string",
-    "email": "string",
-    "emailVerified": true,
-    "documents": [
-      {
-        "id": "string",
-        "name": "string",
-        "path": "string",
-        "owner": {},
-        "createdAt": "2019-08-24T14:15:22Z"
-      }
-    ]
-  },
-  "createdAt": "2019-08-24T14:15:22Z"
+  "createdAt": "2019-08-24T14:15:22Z",
+  "expiryDate": "2019-08-24T14:15:22Z",
+  "file": "string"
 }
 
 ```
@@ -1112,8 +1110,9 @@ This operation does not require authentication
 |id|string|false|none|none|
 |name|string|false|none|none|
 |path|string|false|none|none|
-|owner|[User](#schemauser)|false|none|none|
 |createdAt|string(date-time)|false|none|none|
+|expiryDate|string(date-time)|false|none|none|
+|file|string(binary)|false|none|none|
 
 <h2 id="tocS_User">User</h2>
 <!-- backwards compatibility -->
@@ -1127,18 +1126,17 @@ This operation does not require authentication
   "id": "string",
   "email": "string",
   "emailVerified": true,
+  "roles": [
+    "USER"
+  ],
   "documents": [
     {
       "id": "string",
       "name": "string",
       "path": "string",
-      "owner": {
-        "id": "string",
-        "email": "string",
-        "emailVerified": true,
-        "documents": []
-      },
-      "createdAt": "2019-08-24T14:15:22Z"
+      "createdAt": "2019-08-24T14:15:22Z",
+      "expiryDate": "2019-08-24T14:15:22Z",
+      "file": "string"
     }
   ]
 }
@@ -1152,6 +1150,7 @@ This operation does not require authentication
 |id|string|false|none|none|
 |email|string|false|none|none|
 |emailVerified|boolean|false|none|none|
+|roles|[string]|false|none|none|
 |documents|[[DocumentFile](#schemadocumentfile)]|false|none|none|
 
 <h2 id="tocS_MessageResponse">MessageResponse</h2>

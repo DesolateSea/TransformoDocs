@@ -3,7 +3,7 @@
 SERVER_URL="${1:-http://localhost:8080}"
 
 WIDDERSHINS_OPTIONS="--expandBody true"
-DOCUMENTATION_PATH="../docs/server"
+DOCUMENTATION_PATH="./docs/server"
 
 echo ""
 echo "[TransformoDocs] Generating Authentication API documentation..."
